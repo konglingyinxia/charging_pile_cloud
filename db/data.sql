@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 127.0.0.1_8.0
+ Source Server         : 127.0.0.1_5.5
  Source Server Type    : MySQL
- Source Server Version : 80014
- Source Host           : 127.0.0.1:3307
- Source Schema         : suda_shop
+ Source Server Version : 50553
+ Source Host           : localhost:3306
+ Source Schema         : charging_pile
 
  Target Server Type    : MySQL
- Target Server Version : 80014
+ Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 09/05/2019 15:01:08
+ Date: 30/05/2019 13:57:08
 */
 
 SET NAMES utf8mb4;
@@ -25,31 +25,34 @@ CREATE TABLE `admin_permission`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `menu_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '菜单或按钮名字',
   `menu_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '菜单URL',
-  `menu_lev` int(4) NULL DEFAULT 0 COMMENT '菜单级别  1 一级菜单  2 二级菜单',
+  `menu_lev` int(4) NULL DEFAULT NULL COMMENT '菜单级别  1 一级菜单  2 二级菜单',
   `menu_class` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '菜单样式',
-  `menu_type` int(4) NULL DEFAULT 1 COMMENT '菜单类型  1 菜单  2按钮',
-  `parent_id` bigint(20) NULL DEFAULT 0 COMMENT '上级菜单',
-  `menu_order` int(10) NULL DEFAULT 0 COMMENT '排序',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  `menu_type` int(4) NULL DEFAULT NULL COMMENT '菜单类型  1 菜单  2按钮',
+  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '上级菜单',
+  `menu_order` int(10) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '菜单资源表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '菜单资源表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of admin_permission
 -- ----------------------------
-INSERT INTO `admin_permission` VALUES (1, '系统设置', NULL, 1, NULL, 1, 0, 0, NULL, '2019-05-06 15:36:14');
-INSERT INTO `admin_permission` VALUES (2, '权限管理', NULL, 1, NULL, 1, 0, 0, NULL, '2019-05-06 15:36:19');
-INSERT INTO `admin_permission` VALUES (3, '会员管理', NULL, 1, NULL, 1, 0, 0, NULL, '2019-05-06 15:36:22');
-INSERT INTO `admin_permission` VALUES (4, '商品管理', NULL, 1, NULL, 1, 0, 0, NULL, '2019-05-06 15:36:24');
-INSERT INTO `admin_permission` VALUES (5, '抽奖商品', NULL, 1, NULL, 1, 0, 0, NULL, '2019-05-06 15:36:27');
-INSERT INTO `admin_permission` VALUES (6, '内容管理', NULL, 1, NULL, 1, 0, 0, NULL, '2019-05-06 15:36:30');
-INSERT INTO `admin_permission` VALUES (7, '财务管理', NULL, 1, NULL, 1, 0, 0, NULL, '2019-05-06 15:36:32');
-INSERT INTO `admin_permission` VALUES (8, '日志管理', NULL, 1, NULL, 1, 0, 0, NULL, '2019-05-06 15:36:35');
-INSERT INTO `admin_permission` VALUES (9, '轮播图', NULL, 2, NULL, 1, 1, 0, NULL, '2019-05-06 16:36:14');
-INSERT INTO `admin_permission` VALUES (10, '大转盘', NULL, 2, NULL, 1, 1, 0, NULL, '2019-05-06 16:36:37');
-INSERT INTO `admin_permission` VALUES (11, '编辑', NULL, 0, NULL, 2, 9, 0, NULL, '2019-05-06 16:38:15');
-INSERT INTO `admin_permission` VALUES (12, '添加', '11', 0, NULL, 2, 9, 12, NULL, '2019-05-06 17:27:22');
+INSERT INTO `admin_permission` VALUES (1, '系统管理', 'xxxx.html', 1, 'icon-credit-card', 1, 0, 1);
+INSERT INTO `admin_permission` VALUES (2, '角色管理', NULL, 2, 'icon-credit-card', 1, 1, 2);
+INSERT INTO `admin_permission` VALUES (3, '用户管理', NULL, 2, 'icon-credit-card', 1, 1, 3);
+INSERT INTO `admin_permission` VALUES (4, '系统日志', NULL, 2, 'icon-credit-card', 1, 1, 4);
+INSERT INTO `admin_permission` VALUES (5, '角色管理添加', NULL, NULL, '', 2, 2, NULL);
+INSERT INTO `admin_permission` VALUES (6, '角色管理删除', NULL, NULL, NULL, 2, 2, NULL);
+INSERT INTO `admin_permission` VALUES (7, '角色管理查看', NULL, NULL, NULL, 2, 2, NULL);
+INSERT INTO `admin_permission` VALUES (8, '用户管理添加', NULL, NULL, NULL, 2, 3, NULL);
+INSERT INTO `admin_permission` VALUES (9, '用户管理删除', NULL, NULL, NULL, 2, 3, NULL);
+INSERT INTO `admin_permission` VALUES (10, '用户管理查看', NULL, NULL, NULL, 2, 3, NULL);
+INSERT INTO `admin_permission` VALUES (11, '系统日志查看', NULL, NULL, NULL, 2, 4, NULL);
+INSERT INTO `admin_permission` VALUES (12, '系统监控', NULL, NULL, NULL, 1, 1, 5);
+INSERT INTO `admin_permission` VALUES (13, '系统监控查看', NULL, NULL, NULL, 2, 12, NULL);
+INSERT INTO `admin_permission` VALUES (14, '分销管理', NULL, 1, 'icon-credit-card', 1, 0, 6);
+INSERT INTO `admin_permission` VALUES (15, '分销级别', NULL, 2, 'icon-credit-card', 1, 14, 7);
+INSERT INTO `admin_permission` VALUES (16, '分销级别查看', NULL, NULL, NULL, 2, 15, NULL);
+INSERT INTO `admin_permission` VALUES (17, '分销级别添加', NULL, NULL, NULL, 2, 15, NULL);
 
 -- ----------------------------
 -- Table structure for admin_role
@@ -60,19 +63,23 @@ CREATE TABLE `admin_role`  (
   `role_parent_id` bigint(20) NULL DEFAULT 0,
   `role_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '角色名',
   `role_value` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '角色编码',
-  `create_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `details` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色描述',
-  `last` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '1:最后一级代理，可创建会员，0:不是最后一级',
+  `is_last` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '1:最后一级代理，可创建会员，0:不是最后一级',
   `admin_user_id` bigint(20) NULL DEFAULT 0 COMMENT '所属管理员下级管理员角色',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `role_name`(`role_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1088704347015835653 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '角色表' ROW_FORMAT = Dynamic;
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1088704347015835651 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '角色表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of admin_role
 -- ----------------------------
-INSERT INTO `admin_role` VALUES (1, 0, '超级管理员', 'cc8271b4-1dc5-424a-9be4-0a8a5663658f', '2019-05-07 09:50:19', NULL, 1, 1, '2019-05-07 09:50:19');
+INSERT INTO `admin_role` VALUES (1083303491852402689, NULL, 'admin', '867cd70f-00cd-4a70-a8d9-57c1d3bd9c61', 1547114653771, NULL, 0, 1, '2019-01-25 13:18:18');
+INSERT INTO `admin_role` VALUES (1083632255647973378, NULL, '角色管理', 'd7fe35cb-4591-4878-8f1f-608614c3c968', 1547193037167, NULL, 0, 1, '2019-01-25 13:18:18');
+INSERT INTO `admin_role` VALUES (1083632642748694530, NULL, '用户管理', 'e0d697e3-c2a5-488e-b420-9db7d88e677b', 1547193129484, NULL, 0, 1, '2019-01-25 13:18:19');
+INSERT INTO `admin_role` VALUES (1083641901943209986, NULL, '超级管理员', '0c370f3b-a937-4125-94fc-52778fd37ae6', 1547195337041, NULL, 0, 1, '2019-01-25 15:58:25');
+INSERT INTO `admin_role` VALUES (1085418800952483842, NULL, '1', 'a52f9525-779b-4f15-b91d-0ee9f5de2599', 1547618982764, NULL, 0, 1, '2019-01-25 13:18:24');
+INSERT INTO `admin_role` VALUES (1088704347015835650, 0, '2', '9289131e-360c-4e4a-afd4-97d88f4de75e', 1548402317988, NULL, 1, 1, '2019-01-25 16:01:19');
 
 -- ----------------------------
 -- Table structure for admin_role_permission
@@ -80,19 +87,17 @@ INSERT INTO `admin_role` VALUES (1, 0, '超级管理员', 'cc8271b4-1dc5-424a-9b
 DROP TABLE IF EXISTS `admin_role_permission`;
 CREATE TABLE `admin_role_permission`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_id` bigint(20) NULL DEFAULT NULL COMMENT '角色ID',
-  `permission_id` bigint(20) NULL DEFAULT NULL COMMENT '菜单ID',
+  `r_id` bigint(20) NULL DEFAULT NULL COMMENT '角色ID',
+  `m_id` bigint(20) NULL DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '角色菜单关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '角色菜单关联表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of admin_role_permission
 -- ----------------------------
-INSERT INTO `admin_role_permission` VALUES (5, 1, 1);
-INSERT INTO `admin_role_permission` VALUES (6, 1, 3);
-INSERT INTO `admin_role_permission` VALUES (7, 1, 4);
-INSERT INTO `admin_role_permission` VALUES (8, 1, 5);
-INSERT INTO `admin_role_permission` VALUES (9, 1, 7);
+INSERT INTO `admin_role_permission` VALUES (1, 1083303491852402689, 1);
+INSERT INTO `admin_role_permission` VALUES (2, 1083303491852402689, 2);
+INSERT INTO `admin_role_permission` VALUES (3, 1083303491852402689, 3);
 
 -- ----------------------------
 -- Table structure for admin_user
@@ -104,222 +109,9 @@ CREATE TABLE `admin_user`  (
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '密码',
   `nickname` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '昵称',
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户名',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '添加时间',
-  `last_login_time` datetime(0) NULL DEFAULT NULL COMMENT '最后登录时间',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  `status` tinyint(2) NULL DEFAULT 0 COMMENT '其他状态',
-  `is_disable` tinyint(1) NULL DEFAULT 0 COMMENT '0:有效 1:禁止登录',
-  `is_delete` tinyint(1) NULL DEFAULT 0 COMMENT '1:删除，0:未删除',
-  `admin_parent_id` bigint(20) NULL DEFAULT 0 COMMENT '父级管理员id',
-  `agent_parent_id` bigint(20) NULL DEFAULT 0 COMMENT '父级分销代理商id',
-  `user_invite_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '代理商邀请码',
-  `invitation_path` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '推荐邀请关系树',
-  `inspect_status` tinyint(3) NULL DEFAULT 1 COMMENT '审核状态(1-待审核;2-已审核;3-拒绝)',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of admin_user
--- ----------------------------
-INSERT INTO `admin_user` VALUES (1, 'admin', 'admin', NULL, 'admin', NULL, NULL, '2019-04-20 09:56:32', NULL, 1, 0, 0, 0, NULL, NULL, 1);
-INSERT INTO `admin_user` VALUES (2, '1', '1', NULL, NULL, NULL, NULL, '2019-05-07 10:31:13', NULL, 1, 0, 0, 0, NULL, NULL, 1);
-INSERT INTO `admin_user` VALUES (3, '2', '2', NULL, NULL, NULL, NULL, '2019-05-07 10:25:14', NULL, NULL, 0, 0, 0, NULL, NULL, 1);
-
--- ----------------------------
--- Table structure for admin_user_role
--- ----------------------------
-DROP TABLE IF EXISTS `admin_user_role`;
-CREATE TABLE `admin_user_role`  (
-  `role_id` bigint(20) NULL DEFAULT NULL COMMENT '角色id',
-  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '角色用户关联表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of admin_user_role
--- ----------------------------
-INSERT INTO `admin_user_role` VALUES (1, 1);
-INSERT INTO `admin_user_role` VALUES (1, 2);
-
--- ----------------------------
--- Table structure for agent_permission
--- ----------------------------
-DROP TABLE IF EXISTS `agent_permission`;
-CREATE TABLE `agent_permission`  (
-  `id` bigint(20) NOT NULL,
-  `menu_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '菜单或按钮名字',
-  `menu_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '菜单URL',
-  `menu_lev` int(4) NULL DEFAULT NULL COMMENT '菜单级别  1 一级菜单  2 二级菜单',
-  `menu_class` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '菜单样式',
-  `menu_type` int(4) NULL DEFAULT NULL COMMENT '菜单类型  1 菜单  2按钮',
-  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '上级菜单',
-  `menu_order` int(10) NULL DEFAULT NULL COMMENT '排序',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '代理商菜单资源表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of agent_permission
--- ----------------------------
-INSERT INTO `agent_permission` VALUES (1, '系统管理', 'xxxx.html', 1, 'icon-credit-card', 1, 0, 1);
-INSERT INTO `agent_permission` VALUES (2, '角色管理', NULL, 2, 'icon-credit-card', 1, 1, 2);
-INSERT INTO `agent_permission` VALUES (3, '用户管理', NULL, 2, 'icon-credit-card', 1, 1, 3);
-INSERT INTO `agent_permission` VALUES (4, '系统日志', NULL, 2, 'icon-credit-card', 1, 1, 4);
-INSERT INTO `agent_permission` VALUES (5, '角色管理添加', NULL, NULL, '', 2, 2, NULL);
-INSERT INTO `agent_permission` VALUES (6, '角色管理删除', NULL, NULL, NULL, 2, 2, NULL);
-INSERT INTO `agent_permission` VALUES (7, '角色管理查看', NULL, NULL, NULL, 2, 2, NULL);
-INSERT INTO `agent_permission` VALUES (8, '用户管理添加', NULL, NULL, NULL, 2, 3, NULL);
-INSERT INTO `agent_permission` VALUES (9, '用户管理删除', NULL, NULL, NULL, 2, 3, NULL);
-INSERT INTO `agent_permission` VALUES (10, '用户管理查看', NULL, NULL, NULL, 2, 3, NULL);
-INSERT INTO `agent_permission` VALUES (11, '系统日志查看', NULL, NULL, NULL, 2, 4, NULL);
-INSERT INTO `agent_permission` VALUES (12, '系统监控', NULL, NULL, NULL, 1, 1, 5);
-INSERT INTO `agent_permission` VALUES (13, '系统监控查看', NULL, NULL, NULL, 2, 12, NULL);
-INSERT INTO `agent_permission` VALUES (14, '分销管理', NULL, 1, 'icon-credit-card', 1, 0, 6);
-INSERT INTO `agent_permission` VALUES (15, '分销级别', NULL, 2, 'icon-credit-card', 1, 14, 7);
-INSERT INTO `agent_permission` VALUES (16, '分销级别查看', NULL, NULL, NULL, 2, 15, NULL);
-INSERT INTO `agent_permission` VALUES (17, '分销级别添加', NULL, NULL, NULL, 2, 15, NULL);
-
--- ----------------------------
--- Table structure for agent_role
--- ----------------------------
-DROP TABLE IF EXISTS `agent_role`;
-CREATE TABLE `agent_role`  (
-  `id` bigint(20) NOT NULL,
-  `role_parent_id` bigint(20) NULL DEFAULT 0,
-  `role_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '角色名',
-  `role_value` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '角色编码',
-  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
-  `details` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色描述',
-  `is_last` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '1:最后一级代理，可创建会员，0:不是最后一级',
-  `admin_user_id` bigint(20) NULL DEFAULT 0 COMMENT '所属管理员下级管理员角色',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '代理商角色表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of agent_role
--- ----------------------------
-INSERT INTO `agent_role` VALUES (1083303491852402689, NULL, 'admin', '867cd70f-00cd-4a70-a8d9-57c1d3bd9c61', 1547114653771, NULL, 0, 1, '2019-01-25 13:18:18');
-INSERT INTO `agent_role` VALUES (1083632255647973378, NULL, '角色管理', 'd7fe35cb-4591-4878-8f1f-608614c3c968', 1547193037167, NULL, 0, 1, '2019-01-25 13:18:18');
-INSERT INTO `agent_role` VALUES (1083632642748694530, NULL, '用户管理', 'e0d697e3-c2a5-488e-b420-9db7d88e677b', 1547193129484, NULL, 0, 1, '2019-01-25 13:18:19');
-INSERT INTO `agent_role` VALUES (1083641901943209986, NULL, '超级管理员', '0c370f3b-a937-4125-94fc-52778fd37ae6', 1547195337041, NULL, 0, 1, '2019-01-25 15:58:25');
-INSERT INTO `agent_role` VALUES (1085418800952483842, NULL, '1', 'a52f9525-779b-4f15-b91d-0ee9f5de2599', 1547618982764, NULL, 0, 1, '2019-01-25 13:18:24');
-INSERT INTO `agent_role` VALUES (1088704347015835650, 0, '2', '9289131e-360c-4e4a-afd4-97d88f4de75e', 1548402317988, NULL, 1, 1, '2019-01-25 16:01:19');
-
--- ----------------------------
--- Table structure for agent_role_permission
--- ----------------------------
-DROP TABLE IF EXISTS `agent_role_permission`;
-CREATE TABLE `agent_role_permission`  (
-  `id` bigint(20) NOT NULL,
-  `r_id` bigint(20) NULL DEFAULT NULL COMMENT '角色ID',
-  `m_id` bigint(20) NULL DEFAULT NULL COMMENT '菜单ID',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '代理商菜单角色' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of agent_role_permission
--- ----------------------------
-INSERT INTO `agent_role_permission` VALUES (1083303491911122946, 1083303491852402689, 1);
-INSERT INTO `agent_role_permission` VALUES (1083303491923705857, 1083303491852402689, 2);
-INSERT INTO `agent_role_permission` VALUES (1083303491936288770, 1083303491852402689, 3);
-INSERT INTO `agent_role_permission` VALUES (1083303491936288771, 1083303491852402689, 4);
-INSERT INTO `agent_role_permission` VALUES (1083632255710887938, 1083632255647973378, 1);
-INSERT INTO `agent_role_permission` VALUES (1083632255727665154, 1083632255647973378, 2);
-INSERT INTO `agent_role_permission` VALUES (1083632642803220482, 1083632642748694530, 1);
-INSERT INTO `agent_role_permission` VALUES (1083632642811609089, 1083632642748694530, 3);
-INSERT INTO `agent_role_permission` VALUES (1083641902006124545, 1083641901943209986, 1);
-INSERT INTO `agent_role_permission` VALUES (1083641902014513153, 1083641901943209986, 2);
-INSERT INTO `agent_role_permission` VALUES (1083641902031290369, 1083641901943209986, 5);
-INSERT INTO `agent_role_permission` VALUES (1083641902048067585, 1083641901943209986, 6);
-INSERT INTO `agent_role_permission` VALUES (1083641902056456193, 1083641901943209986, 7);
-INSERT INTO `agent_role_permission` VALUES (1083641902060650497, 1083641901943209986, 3);
-INSERT INTO `agent_role_permission` VALUES (1083641902069039106, 1083641901943209986, 8);
-INSERT INTO `agent_role_permission` VALUES (1083641902077427713, 1083641901943209986, 9);
-INSERT INTO `agent_role_permission` VALUES (1083641902085816322, 1083641901943209986, 10);
-INSERT INTO `agent_role_permission` VALUES (1083641902102593537, 1083641901943209986, 4);
-INSERT INTO `agent_role_permission` VALUES (1083641902110982146, 1083641901943209986, 11);
-INSERT INTO `agent_role_permission` VALUES (1083641902110982147, 1083641901943209986, 12);
-INSERT INTO `agent_role_permission` VALUES (1083641902110982148, 1083641901943209986, 13);
-INSERT INTO `agent_role_permission` VALUES (1085418801011204097, 1085418800952483842, 1);
-INSERT INTO `agent_role_permission` VALUES (1085418801027981314, 1085418800952483842, 2);
-INSERT INTO `agent_role_permission` VALUES (1085418801044758530, 1085418800952483842, 5);
-INSERT INTO `agent_role_permission` VALUES (1085418801057341442, 1085418800952483842, 6);
-INSERT INTO `agent_role_permission` VALUES (1085418801069924354, 1085418800952483842, 7);
-INSERT INTO `agent_role_permission` VALUES (1085418801078312961, 1085418800952483842, 3);
-INSERT INTO `agent_role_permission` VALUES (1085418801095090178, 1085418800952483842, 8);
-INSERT INTO `agent_role_permission` VALUES (1085418801111867393, 1085418800952483842, 9);
-INSERT INTO `agent_role_permission` VALUES (1085418801120256002, 1085418800952483842, 10);
-INSERT INTO `agent_role_permission` VALUES (1085418801128644610, 1085418800952483842, 4);
-INSERT INTO `agent_role_permission` VALUES (1085418801137033218, 1085418800952483842, 11);
-INSERT INTO `agent_role_permission` VALUES (1085418801145421826, 1085418800952483842, 12);
-INSERT INTO `agent_role_permission` VALUES (1085418801153810434, 1085418800952483842, 13);
-INSERT INTO `agent_role_permission` VALUES (1085418801153810435, 1083641901943209986, 14);
-INSERT INTO `agent_role_permission` VALUES (1085418801153810436, 1083641901943209986, 15);
-INSERT INTO `agent_role_permission` VALUES (1085418801153810437, 1083641901943209986, 16);
-INSERT INTO `agent_role_permission` VALUES (1085418801153810438, 1083641901943209986, 17);
-INSERT INTO `agent_role_permission` VALUES (1088672560147406850, 1088672560080297985, 1);
-INSERT INTO `agent_role_permission` VALUES (1088672560168378370, 1088672560080297985, 2);
-INSERT INTO `agent_role_permission` VALUES (1088672560193544193, 1088672560080297985, 5);
-INSERT INTO `agent_role_permission` VALUES (1088672560210321409, 1088672560080297985, 6);
-INSERT INTO `agent_role_permission` VALUES (1088672560227098625, 1088672560080297985, 7);
-INSERT INTO `agent_role_permission` VALUES (1088672560235487233, 1088672560080297985, 3);
-INSERT INTO `agent_role_permission` VALUES (1088672560252264450, 1088672560080297985, 8);
-INSERT INTO `agent_role_permission` VALUES (1088672560269041666, 1088672560080297985, 9);
-INSERT INTO `agent_role_permission` VALUES (1088672560290013185, 1088672560080297985, 10);
-INSERT INTO `agent_role_permission` VALUES (1088672560302596097, 1088672560080297985, 4);
-INSERT INTO `agent_role_permission` VALUES (1088672560319373314, 1088672560080297985, 11);
-INSERT INTO `agent_role_permission` VALUES (1088672560336150529, 1088672560080297985, 12);
-INSERT INTO `agent_role_permission` VALUES (1088672560344539137, 1088672560080297985, 13);
-INSERT INTO `agent_role_permission` VALUES (1088672560361316353, 1088672560080297985, 14);
-INSERT INTO `agent_role_permission` VALUES (1088672560382287873, 1088672560080297985, 15);
-INSERT INTO `agent_role_permission` VALUES (1088672560390676482, 1088672560080297985, 16);
-INSERT INTO `agent_role_permission` VALUES (1088672560407453697, 1088672560080297985, 17);
-INSERT INTO `agent_role_permission` VALUES (1088691924649127938, 1088691924611379201, 1);
-INSERT INTO `agent_role_permission` VALUES (1088691924674293761, 1088691924611379201, 2);
-INSERT INTO `agent_role_permission` VALUES (1088691924695265282, 1088691924611379201, 5);
-INSERT INTO `agent_role_permission` VALUES (1088691924712042498, 1088691924611379201, 6);
-INSERT INTO `agent_role_permission` VALUES (1088691924741402625, 1088691924611379201, 7);
-INSERT INTO `agent_role_permission` VALUES (1088691924758179842, 1088691924611379201, 3);
-INSERT INTO `agent_role_permission` VALUES (1088691924774957057, 1088691924611379201, 8);
-INSERT INTO `agent_role_permission` VALUES (1088691924791734273, 1088691924611379201, 9);
-INSERT INTO `agent_role_permission` VALUES (1088691924804317185, 1088691924611379201, 10);
-INSERT INTO `agent_role_permission` VALUES (1088691924821094401, 1088691924611379201, 4);
-INSERT INTO `agent_role_permission` VALUES (1088691924829483009, 1088691924611379201, 11);
-INSERT INTO `agent_role_permission` VALUES (1088691924846260225, 1088691924611379201, 12);
-INSERT INTO `agent_role_permission` VALUES (1088691924863037442, 1088691924611379201, 13);
-INSERT INTO `agent_role_permission` VALUES (1088691924879814657, 1088691924611379201, 14);
-INSERT INTO `agent_role_permission` VALUES (1088691924896591873, 1088691924611379201, 15);
-INSERT INTO `agent_role_permission` VALUES (1088691924909174786, 1088691924611379201, 16);
-INSERT INTO `agent_role_permission` VALUES (1088691924934340610, 1088691924611379201, 17);
-INSERT INTO `agent_role_permission` VALUES (1088701987405283329, 1088701987367534594, 1);
-INSERT INTO `agent_role_permission` VALUES (1088701987434643457, 1088701987367534594, 2);
-INSERT INTO `agent_role_permission` VALUES (1088701987464003585, 1088701987367534594, 5);
-INSERT INTO `agent_role_permission` VALUES (1088701987480780801, 1088701987367534594, 6);
-INSERT INTO `agent_role_permission` VALUES (1088701987493363713, 1088701987367534594, 7);
-INSERT INTO `agent_role_permission` VALUES (1088701987514335233, 1088701987367534594, 3);
-INSERT INTO `agent_role_permission` VALUES (1088701987531112450, 1088701987367534594, 8);
-INSERT INTO `agent_role_permission` VALUES (1088701987552083969, 1088701987367534594, 9);
-INSERT INTO `agent_role_permission` VALUES (1088701987568861185, 1088701987367534594, 10);
-INSERT INTO `agent_role_permission` VALUES (1088701987581444098, 1088701987367534594, 4);
-INSERT INTO `agent_role_permission` VALUES (1088701987589832706, 1088701987367534594, 11);
-INSERT INTO `agent_role_permission` VALUES (1088701987606609921, 1088701987367534594, 12);
-INSERT INTO `agent_role_permission` VALUES (1088701987623387138, 1088701987367534594, 13);
-INSERT INTO `agent_role_permission` VALUES (1088704347082944514, 1088704347015835650, 14);
-INSERT INTO `agent_role_permission` VALUES (1088704347099721729, 1088704347015835650, 15);
-INSERT INTO `agent_role_permission` VALUES (1088704347116498945, 1088704347015835650, 17);
-
--- ----------------------------
--- Table structure for agent_user
--- ----------------------------
-DROP TABLE IF EXISTS `agent_user`;
-CREATE TABLE `agent_user`  (
-  `id` bigint(20) NOT NULL,
-  `account` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '帐号',
-  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '密码',
-  `nickname` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '昵称',
-  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户名',
-  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '添加时间',
-  `last_login_time` datetime(0) NULL DEFAULT NULL COMMENT '最后登录时间',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  `create_time` datetime NULL DEFAULT NULL COMMENT '添加时间',
+  `last_login_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` tinyint(2) NULL DEFAULT NULL COMMENT '其他状态',
   `is_disable` tinyint(1) NULL DEFAULT NULL COMMENT '0:有效 1:禁止登录',
   `is_delete` tinyint(1) NULL DEFAULT 0 COMMENT '1:删除，0:未删除',
@@ -329,82 +121,118 @@ CREATE TABLE `agent_user`  (
   `invitation_path` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '推荐邀请关系树',
   `inspect_status` tinyint(3) NULL DEFAULT 1 COMMENT '审核状态(1-待审核;2-已审核;3-拒绝)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '代理商用户表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of agent_user
+-- Records of admin_user
 -- ----------------------------
-INSERT INTO `agent_user` VALUES (1, 'admin', 'admin', NULL, 'admin', NULL, NULL, '2019-01-24 17:49:01', NULL, NULL, 0, 0, 0, NULL, NULL, 1);
+INSERT INTO `admin_user` VALUES (1, 'admin', '57dd03ed397eabaeaa395eb740b770fd', NULL, 'admin', NULL, NULL, '2019-04-26 09:59:05', NULL, NULL, 0, 0, 0, NULL, NULL, 1);
 
 -- ----------------------------
--- Table structure for agent_user_info
+-- Table structure for admin_user_role
 -- ----------------------------
-DROP TABLE IF EXISTS `agent_user_info`;
-CREATE TABLE `agent_user_info`  (
-  `admin_user_id` bigint(20) NOT NULL,
-  `margin` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '保证金',
-  `concession_ratio` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '佣金比例',
-  `tel` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号',
-  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '代理商名字',
-  `details` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注详情',
+DROP TABLE IF EXISTS `admin_user_role`;
+CREATE TABLE `admin_user_role`  (
+  `role_id` bigint(20) NULL DEFAULT NULL COMMENT '角色id',
+  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id'
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '角色用户关联表' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of admin_user_role
+-- ----------------------------
+INSERT INTO `admin_user_role` VALUES (1083303491852402689, 1);
+
+-- ----------------------------
+-- Table structure for charging_pile_info
+-- ----------------------------
+DROP TABLE IF EXISTS `charging_pile_info`;
+CREATE TABLE `charging_pile_info`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `charging_stations_id` bigint(20) NULL DEFAULT NULL COMMENT '充电站id',
+  `serial_number` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '编号',
+  `parking_lot_no` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '车位号',
+  `rate_of_work` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '功率',
+  `ac_dc` tinyint(2) NULL DEFAULT NULL COMMENT '1:直流 2:交流',
+  `has_a_gun_status` tinyint(2) NULL DEFAULT 1 COMMENT '有枪状态0:无枪 1：有枪',
+  `open_start_time` time NULL DEFAULT NULL COMMENT '开放开始时间',
+  `open_end_time` time NULL DEFAULT NULL COMMENT '开放结束时间',
+  `price` decimal(25, 4) NULL DEFAULT 1.8000 COMMENT '价格单位元度',
+  `service_charge` decimal(25, 4) NULL DEFAULT NULL COMMENT '服务费 价格单位元度',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '0:未删除 1:删除',
+  `use_status` tinyint(1) NULL DEFAULT NULL COMMENT '0未使用 1：正在使用',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '充电桩' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of charging_pile_info
+-- ----------------------------
+INSERT INTO `charging_pile_info` VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, '00:00:00', NULL, 1.8000, NULL, NULL, '0000-00-00 00:00:00', 0, NULL);
+
+-- ----------------------------
+-- Table structure for charging_record
+-- ----------------------------
+DROP TABLE IF EXISTS `charging_record`;
+CREATE TABLE `charging_record`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `stock_user_id` bigint(20) NULL DEFAULT NULL COMMENT '充电用户id',
+  `charging_stations_id` bigint(20) NULL DEFAULT NULL COMMENT '充电站id',
+  `charging_pile_info_id` bigint(20) NULL DEFAULT NULL COMMENT '充电桩id',
   `province` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省',
   `city` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市',
   `county` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '县',
   `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '详细地点',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`admin_user_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分销代理商信息' ROW_FORMAT = Dynamic;
+  `price` decimal(25, 4) NULL DEFAULT 1.8000 COMMENT '价格单位元',
+  `service_charge` decimal(25, 4) NULL DEFAULT NULL COMMENT '服务费 价格单位元度',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `charge_start_time` datetime NULL DEFAULT NULL COMMENT '充电开始时间',
+  `charge_end_time` datetime NULL DEFAULT NULL COMMENT '充电结束时间',
+  `charge_num` decimal(25, 4) NULL DEFAULT 0.0000 COMMENT '充电度数',
+  `charge_total_money` decimal(25, 4) NULL DEFAULT 0.0000 COMMENT '充电总金额',
+  `payment_status` tinyint(2) NULL DEFAULT NULL COMMENT '0:未付款 1:已付款',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '充电记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for agent_user_role
+-- Records of charging_record
 -- ----------------------------
-DROP TABLE IF EXISTS `agent_user_role`;
-CREATE TABLE `agent_user_role`  (
-  `role_id` bigint(20) NULL DEFAULT NULL COMMENT '角色id',
-  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '角色用户关联表' ROW_FORMAT = Dynamic;
+INSERT INTO `charging_record` VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1.8000, NULL, NULL, '2019-05-30 11:04:12', NULL, NULL, 0.0000, 0.0000, NULL);
 
 -- ----------------------------
--- Records of agent_user_role
+-- Table structure for charging_stations
 -- ----------------------------
-INSERT INTO `agent_user_role` VALUES (1083641901943209986, 1);
-
--- ----------------------------
--- Table structure for app_version
--- ----------------------------
-DROP TABLE IF EXISTS `app_version`;
-CREATE TABLE `app_version`  (
+DROP TABLE IF EXISTS `charging_stations`;
+CREATE TABLE `charging_stations`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '升级标题',
-  `app_version` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '版本号',
-  `details` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '内容',
-  `down_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '下载地址',
-  `app_type` tinyint(3) UNSIGNED NULL DEFAULT 0 COMMENT '系统类型  1:ios 2:android 3:pc',
-  `is_forced_update` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '是否强制更新  0:不强更  1:强更',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '1:删除，0:未删除',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  `longitude` decimal(25, 8) NULL DEFAULT NULL COMMENT '经度',
+  `dimensionality` decimal(25, 8) NULL DEFAULT NULL COMMENT '维度',
+  `station_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '充电站名字',
+  `station_details` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '详情',
+  `province` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省',
+  `city` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市',
+  `county` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '县',
+  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '详细地点',
+  `price` decimal(25, 4) NULL DEFAULT 1.8000 COMMENT '价格单位元',
+  `parking_fee_details` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '停车费',
+  `have_parking_fee` tinyint(2) NULL DEFAULT 0 COMMENT '0:无停车费 1:有停车费',
+  `open_start_time` time NULL DEFAULT NULL COMMENT '开放开始时间',
+  `open_end_time` time NULL DEFAULT NULL COMMENT '开放结束时间',
+  `cover_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '产品封面图',
+  `banner_img` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '产品轮播图',
+  `has_a_gun_status` tinyint(2) NULL DEFAULT 1 COMMENT '有枪状态0:无枪 1：有枪',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '0:未删除 1:删除',
+  `is_disable` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '0:未禁用 1：禁用',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '充电站' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for com_config_agreement
+-- Records of charging_stations
 -- ----------------------------
-DROP TABLE IF EXISTS `com_config_agreement`;
-CREATE TABLE `com_config_agreement`  (
-  `id` bigint(20) NOT NULL,
-  `content` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '文本',
-  `update_time` bigint(20) NOT NULL COMMENT '最后一次修改时间',
-  `type` int(4) NOT NULL COMMENT '类型 1 用户协议',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统协议' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of com_config_agreement
--- ----------------------------
-INSERT INTO `com_config_agreement` VALUES (1087626971716517890, '<p>2019-01-25 11:39:00.313  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:02.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1967\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8924\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4549\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4792\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6284\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4974\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6373\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3495\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3300\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4451\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4083\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3010\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4770\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4722\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4105\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8869\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2413\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6478\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6090\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3687\\\"}\"]}<br>2019-01-25 11:39:02.836  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -1043<br>2019-01-25 11:39:03.720  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 2446<br>2019-01-25 11:39:04.921  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:07.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5780\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3066\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9592\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4254\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7747\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9443\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9639\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5739\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6447\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"1821\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2504\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3361\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4541\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6391\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4570\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2400\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3170\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9056\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8540\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2364\\\"}\"]}<br>2019-01-25 11:39:08.715  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -5990<br>2019-01-25 11:39:09.227  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 1890<br>2019-01-25 11:39:09.750  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:12.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"119\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6473\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5718\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2158\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5087\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5634\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2423\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9511\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"531\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3782\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7344\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"5072\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"767\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5767\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3069\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"7093\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4385\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1226\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"79\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2963\\\"}\"]}<br>2019-01-25 11:39:13.336  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -648<br>2019-01-25 11:39:15.572  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:17.421  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5295\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3768\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6464\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1788\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1624\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4909\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9513\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3550\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7946\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3954\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"5860\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2162\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"37\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"877\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"197\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2941\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"6451\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5538\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3386\\\"}\"]}<br>2019-01-25 11:39:17.463  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -5858<br>2019-01-25 11:39:19.746  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:22.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3748\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"7272\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2292\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"816\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9458\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6027\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9817\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6097\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4411\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4189\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2949\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4141\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6976\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"310\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8647\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2801\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4304\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"325\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1546\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7074\\\"}\"]}<br>2019-01-25 11:39:25.046  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕,本次模拟无交易&lt;/a&gt;<br>2019-01-25 11:39:27.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9615\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4135\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2150\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8188\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"6591\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4032\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9987\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3823\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3218\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"6023\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4067\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"441\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9256\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3039\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5568\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9533\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2134\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1744\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"454\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"1155\\\"}\"]}<br>2019-01-25 11:39:28.336  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 4047<br>2019-01-25 11:39:30.609  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:32.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"886\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"685\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"753\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8378\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1784\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7107\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7526\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2679\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"119\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9341\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4588\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7856\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6111\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9364\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4317\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"595\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2084\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9353\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4250\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8744\\\"}\"]}<br>2019-01-25 11:39:32.963  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -3702<br>2019-01-25 11:39:32.984  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -6970<br>2019-01-25 11:39:33.251  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 90<br>2019-01-25 11:39:33.252  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -1399<br>2019-01-25 11:39:34.071  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:37.426  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1232\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3854\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7182\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6920\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4281\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2068\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1751\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"7082\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6219\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9043\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8283\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1488\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6956\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1876\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8585\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"6771\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2211\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4226\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8626\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"557\\\"}\"]}<br>2019-01-25 11:39:38.412  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -7051<br>2019-01-25 11:39:39.350  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -2917<br>2019-01-25 11:39:40.429  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:42.421  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9202\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4803\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8808\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"56\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9218\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"109\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4805\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6047\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9599\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1281\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3844\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4220\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6740\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7949\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8520\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"365\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"235\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4462\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9797\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1776\\\"}\"]}<br>2019-01-25 11:39:42.977  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 1253<br>2019-01-25 11:39:43.778  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 4568<br>2019-01-25 11:39:45.880  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:47.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4351\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9214\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7164\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5146\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4230\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"911\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4266\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4218\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2742\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7759\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6603\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"6090\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3055\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7728\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1154\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1396\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3081\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7557\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8182\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9828\\\"}\"]}<br>2019-01-25 11:39:47.842  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 7818<br>2019-01-25 11:39:49.396  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:52.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1940\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3449\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6089\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4678\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1445\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9926\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6388\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"869\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2885\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3609\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9066\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8604\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3560\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6101\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6366\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9862\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3267\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3406\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1736\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4974\\\"}\"]}<br>2019-01-25 11:39:53.538  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -296<br>2019-01-25 11:39:53.723  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:39:57.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3011\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8841\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8956\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8317\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9222\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7064\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2157\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3239\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1990\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"94\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"1093\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1157\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6200\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3100\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8148\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2892\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9066\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4348\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"1637\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1420\\\"}\"]}<br>2019-01-25 11:39:58.241  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -3189<br>2019-01-25 11:39:58.485  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 4493<br>2019-01-25 11:39:58.729  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 7319<br>2019-01-25 11:40:00.201  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:02.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2594\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"5853\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"463\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7718\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8811\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"7297\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"497\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1210\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6659\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3602\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4907\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6797\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8747\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"6119\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3670\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2339\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2743\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1955\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9615\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1971\\\"}\"]}<br>2019-01-25 11:40:03.315  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -3525<br>2019-01-25 11:40:03.320  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 3898<br>2019-01-25 11:40:04.647  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:07.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3724\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7201\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8146\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9613\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2793\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4462\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7083\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5662\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8167\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3118\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8109\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8671\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"7145\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7008\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7706\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8612\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6030\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6111\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5532\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9757\\\"}\"]}<br>2019-01-25 11:40:08.176  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -1411<br>2019-01-25 11:40:10.207  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:12.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9391\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5179\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2708\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3755\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"6514\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4063\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6181\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4645\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5372\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8079\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9838\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8959\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5255\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1854\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2863\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"524\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2284\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6961\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9022\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3538\\\"}\"]}<br>2019-01-25 11:40:12.991  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -447<br>2019-01-25 11:40:13.013  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 6528<br>2019-01-25 11:40:13.094  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 2895<br>2019-01-25 11:40:13.096  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -1782<br>2019-01-25 11:40:13.507  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -6314<br>2019-01-25 11:40:14.642  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:17.421  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4239\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3141\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4968\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2017\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5028\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"5522\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8746\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"43\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3105\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1017\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3318\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"672\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8649\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"80\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2504\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7270\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1043\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4559\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2719\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5912\\\"}\"]}<br>2019-01-25 11:40:17.956  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -4410<br>2019-01-25 11:40:17.980  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 1735<br>2019-01-25 11:40:18.410  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 2098<br>2019-01-25 11:40:19.403  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 2249<br>2019-01-25 11:40:20.581  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:22.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7715\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7512\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7863\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"913\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7506\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"464\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5531\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7403\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9969\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5568\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"7127\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4399\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4460\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3593\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8902\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7939\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8378\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"1527\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7162\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4423\\\"}\"]}<br>2019-01-25 11:40:22.439  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 3255<br>2019-01-25 11:40:22.945  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 5985<br>2019-01-25 11:40:24.016  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -3510<br>2019-01-25 11:40:24.730  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:27.421  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5390\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2588\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5568\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4005\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2782\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3156\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1280\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9301\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"700\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"5791\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2584\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1464\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2045\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4708\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7863\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4553\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7273\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"5294\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"461\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5746\\\"}\"]}<br>2019-01-25 11:40:28.056  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 2806<br>2019-01-25 11:40:29.125  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 5107<br>2019-01-25 11:40:30.000  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:32.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5008\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8104\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5767\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7006\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6757\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2720\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4865\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2651\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7474\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4391\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5115\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"849\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1445\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8596\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2167\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2643\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3684\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"278\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8882\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2991\\\"}\"]}<br>2019-01-25 11:40:33.185  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -3588<br>2019-01-25 11:40:33.197  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 2841<br>2019-01-25 11:40:33.579  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 5461<br>2019-01-25 11:40:34.609  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:37.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9957\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6282\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4574\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4243\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2882\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"449\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4373\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8720\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3596\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"194\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9536\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2259\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1023\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5352\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2140\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8193\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9943\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5549\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2871\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5821\\\"}\"]}<br>2019-01-25 11:40:37.747  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 7698<br>2019-01-25 11:40:37.748  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 8934<br>2019-01-25 11:40:37.767  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -1911<br>2019-01-25 11:40:38.809  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -1578<br>2019-01-25 11:40:39.434  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:42.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3828\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1434\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8393\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"7046\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8589\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4947\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3020\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4846\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4607\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4408\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3035\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"6857\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6259\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1341\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5386\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2287\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"5129\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1569\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1049\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2597\\\"}\"]}<br>2019-01-25 11:40:42.826  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -3029<br>2019-01-25 11:40:43.153  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -135<br>2019-01-25 11:40:44.136  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:47.421  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"369\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2164\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7862\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5842\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2155\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9768\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"352\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9737\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"582\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3077\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4995\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"1219\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"312\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8893\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"207\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3589\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2814\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9926\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7433\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3893\\\"}\"]}<br>2019-01-25 11:40:48.169  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -4626<br>2019-01-25 11:40:48.176  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -850<br>2019-01-25 11:40:48.177  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 57<br>2019-01-25 11:40:48.966  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -650<br>2019-01-25 11:40:49.000  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -7762<br>2019-01-25 11:40:49.264  INFO 5092 --- [trap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration<br>2019-01-25 11:40:50.615  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:52.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7915\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9275\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9769\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9241\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5003\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4642\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3442\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9499\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8767\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7146\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2873\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2557\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8589\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9112\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3986\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9113\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9015\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3481\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4604\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3954\\\"}\"]}<br>2019-01-25 11:40:53.007  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 5358<br>2019-01-25 11:40:53.921  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 162<br>2019-01-25 11:40:56.186  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:40:57.421  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3481\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4458\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6413\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5824\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3556\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2137\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5229\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5009\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9705\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3761\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4916\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4130\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8480\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1664\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3803\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9431\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2045\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"1837\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"7216\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3612\\\"}\"]}<br>2019-01-25 11:40:57.903  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -649<br>2019-01-25 11:40:57.904  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 1817<br>2019-01-25 11:40:59.143  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -803<br>2019-01-25 11:40:59.755  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:41:02.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2774\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"554\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6842\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6356\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3700\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"5120\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8753\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6251\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8845\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"793\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4814\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8692\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2836\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1107\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"5418\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2584\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8057\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6742\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9322\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3788\\\"}\"]}<br>2019-01-25 11:41:02.820  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -5918<br>2019-01-25 11:41:02.821  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -62<br>2019-01-25 11:41:02.821  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -2644<br>2019-01-25 11:41:03.010  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -2030<br>2019-01-25 11:41:03.012  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -6188<br>2019-01-25 11:41:04.041  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 2568<br>2019-01-25 11:41:04.082  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:41:07.421  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8240\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2300\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3196\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7946\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4736\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7354\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2900\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9242\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"713\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9902\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"218\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8256\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5998\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7589\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9802\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8810\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"962\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2077\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1488\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3272\\\"}\"]}<br>2019-01-25 11:41:07.980  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 2242<br>2019-01-25 11:41:09.396  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 4674<br>2019-01-25 11:41:10.084  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:41:12.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9958\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6282\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3228\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7432\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9855\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"6655\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4466\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8975\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"902\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9135\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8981\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"345\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"487\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2478\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"915\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1975\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4390\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4185\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4601\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6644\\\"}\"]}<br>2019-01-25 11:41:14.733  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕,本次模拟无交易&lt;/a&gt;<br>2019-01-25 11:41:17.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"5678\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5007\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"145\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"7865\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7599\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6091\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"936\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3767\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3668\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8977\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6412\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2324\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5183\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7323\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6690\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"5875\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"808\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5754\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"889\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2899\\\"}\"]}<br>2019-01-25 11:41:18.729  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -747<br>2019-01-25 11:41:19.715  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -744<br>2019-01-25 11:41:20.255  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 4966<br>2019-01-25 11:41:20.257  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:41:22.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9073\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3717\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4631\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2530\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9804\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4987\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3673\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4726\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3193\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8790\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9620\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"9580\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4102\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6103\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3919\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9702\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4595\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"8734\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"6641\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2744\\\"}\"]}<br>2019-01-25 11:41:22.591  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -507<br>2019-01-25 11:41:22.593  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 2970<br>2019-01-25 11:41:24.234  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:41:27.421  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3390\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1345\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6081\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7709\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8392\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6526\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3257\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1255\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"1980\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"5296\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5498\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"647\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2286\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6673\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7049\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3598\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2578\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2458\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9946\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9071\\\"}\"]}<br>2019-01-25 11:41:27.693  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -2108<br>2019-01-25 11:41:27.694  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -3659<br>2019-01-25 11:41:29.128  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -3865<br>2019-01-25 11:41:30.147  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:41:32.420  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4306\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6317\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"8311\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1938\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7572\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"164\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7864\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4643\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1714\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"341\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9027\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"734\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3557\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4189\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"6402\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"326\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"4210\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"9463\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"388\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"138\\\"}\"]}<br>2019-01-25 11:41:33.167  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -4721<br>2019-01-25 11:41:33.176  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ -2096<br>2019-01-25 11:41:33.958  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 7923<br>2019-01-25 11:41:34.878  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 1800<br>2019-01-25 11:41:34.928  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:41:37.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"7131\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9505\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3506\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"7037\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8015\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1282\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"3422\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"1632\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"2210\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"9896\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1077\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3527\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2236\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7027\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1557\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"3952\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"8624\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"6192\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8007\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2981\\\"}\"]}<br>2019-01-25 11:41:38.441  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 5553<br>2019-01-25 11:41:38.443  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 已产生一笔交易，本次交易模拟金额为：￥ 881<br>2019-01-25 11:41:39.671  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 结束通道: &lt;a&gt;本次交易完毕&lt;/a&gt;<br>2019-01-25 11:41:42.419  INFO 5092 --- [cTaskExecutor-1] c.admin.web.AdminControllerApplication   : 本次交易模拟数据为:{\"link1\":[\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"2798\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"9169\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"7637\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1824\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"168\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"6401\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"2984\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"1955\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"4451\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"3292\\\"}\"],\"link2\":[\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"1186\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"8433\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"3531\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"2788\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5188\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4651\\\"}\",\"{\\\"type\\\":\\\"2\\\",\\\"moeny\\\":\\\"1141\\\"}\",\"{\\\"type\\\":\\\"0\\\",\\\"moeny\\\":\\\"5353\\\"}\",\"{\\\"type\\\":\\\"1\\\",\\\"moeny\\\":\\\"4744\\\"}\",\"{\\\"type\\\":\\\"3\\\",\\\"moeny\\\":\\\"4587\\\"}\"]}<br>&nbsp;<br></p>', 1548387786599, 1, '2019-01-25 11:43:05');
-INSERT INTO `com_config_agreement` VALUES (1087627059243253761, '<div id=\"leftmenu\"><div id=\"blog-calendar\"><table id=\"blogCalendar\" title=\"Calendar\" cellspacing=\"0\" cellpadding=\"0\">\n	<tbody><tr><td colspan=\"7\"><table cellspacing=\"0\">\n		<tbody><tr><td><a href=\"javascript:void(0);\" onclick=\"loadBlogCalendar(\'2018/12/01\');return false;\">&lt;</a></td><td align=\"center\">2019年1月</td><td align=\"right\"><a href=\"javascript:void(0);\" onclick=\"loadBlogCalendar(\'2019/02/01\');return false;\">&gt;</a></td></tr>\n	</tbody></table></td></tr><tr><th abbr=\"日\" scope=\"col\" align=\"center\">日</th><th abbr=\"一\" scope=\"col\" align=\"center\">一</th><th abbr=\"二\" scope=\"col\" align=\"center\">二</th><th abbr=\"三\" scope=\"col\" align=\"center\">三</th><th abbr=\"四\" scope=\"col\" align=\"center\">四</th><th abbr=\"五\" scope=\"col\" align=\"center\">五</th><th abbr=\"六\" scope=\"col\" align=\"center\">六</th></tr><tr><td align=\"center\">30</td><td align=\"center\">31</td><td align=\"center\">1</td><td align=\"center\">2</td><td align=\"center\">3</td><td align=\"center\">4</td><td align=\"center\">5</td></tr><tr><td align=\"center\">6</td><td align=\"center\">7</td><td align=\"center\">8</td><td align=\"center\">9</td><td align=\"center\">10</td><td align=\"center\">11</td><td align=\"center\">12</td></tr><tr><td align=\"center\">13</td><td align=\"center\">14</td><td align=\"center\">15</td><td align=\"center\">16</td><td align=\"center\">17</td><td align=\"center\">18</td><td align=\"center\">19</td></tr><tr><td align=\"center\">20</td><td align=\"center\">21</td><td align=\"center\">22</td><td align=\"center\">23</td><td align=\"center\">24</td><td align=\"center\">25</td><td align=\"center\">26</td></tr><tr><td align=\"center\">27</td><td align=\"center\">28</td><td align=\"center\">29</td><td align=\"center\">30</td><td align=\"center\">31</td><td align=\"center\">1</td><td align=\"center\">2</td></tr><tr><td align=\"center\">3 <br></td><td align=\"center\"></td><td align=\"center\"></td><td align=\"center\"></td><td align=\"center\"></td><td align=\"center\"></td><td align=\"center\"></td></tr></tbody></table></div></div><div><div>\n    </div></div><a name=\"demo\"> </a><div>\n  <fieldset>\n    <legend>体验</legend>\n  </fieldset>\n</div><div>\n  <div>\n    <span>iframe 版</span>\n    \n    \n  </div>\n  <div>\n    <div id=\"LAY_preview\" lay-filter=\"preview\" lay-anim=\"fade\" lay-indicator=\"outside\" lay-arrow=\"hover\">\n      <div carousel-item=\"\">\n        <div>\n          <a href=\"https://www.layui.com/admin/std/dist/views/\" target=\"_blank\">\n            <img src=\"https://cdn.layui.com/upload/2018_5/168_1527689303593_64334.png\" alt=\"iframe 版\">\n          </a>\n        </div>\n        \n        \n      </div>\n    <div><ul><li><br></li></ul></div></div></div></div><p><br></p>', 1548212338956, 2, '2019-02-23 11:23:02');
+INSERT INTO `charging_stations` VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1.8000, NULL, 0, NULL, NULL, NULL, NULL, 1, NULL, '2019-05-30 11:38:48', 0, 0);
 
 -- ----------------------------
 -- Table structure for com_config_area
@@ -419,7 +247,7 @@ CREATE TABLE `com_config_area`  (
   `area_sequence` int(11) NULL DEFAULT NULL COMMENT '区域序列',
   `area_parent_id` int(11) NULL DEFAULT NULL COMMENT '上级主键',
   `letter` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '首字母',
-  `init_date` datetime(0) NULL DEFAULT NULL COMMENT '初始时间',
+  `init_date` datetime NULL DEFAULT NULL COMMENT '初始时间',
   `init_addr` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '初始地址',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `parent_id`(`area_parent_id`) USING BTREE
@@ -4179,403 +4007,6 @@ INSERT INTO `com_config_area` VALUES (820301, '圣方济各堂区', 'St Francis 
 INSERT INTO `com_config_area` VALUES (900000, '钓鱼岛', 'DiaoyuDao', NULL, NULL, NULL, 0, NULL, '2017-08-08 14:48:16', '127.0.0.1');
 
 -- ----------------------------
--- Table structure for com_config_pay
--- ----------------------------
-DROP TABLE IF EXISTS `com_config_pay`;
-CREATE TABLE `com_config_pay`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `pay_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '付款金额（cny）',
-  `pay_gold` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '获取金币数量',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1119498104577953794 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '付款金币配置' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of com_config_pay
--- ----------------------------
-INSERT INTO `com_config_pay` VALUES (2, 10.00000000, 15.00000000, '2019-04-20 15:04:46', '2019-04-20 15:07:14');
-INSERT INTO `com_config_pay` VALUES (3, 10.00000000, 15.00000000, '2019-04-20 15:06:31', '2019-04-20 15:07:20');
-INSERT INTO `com_config_pay` VALUES (1119498007387541506, 10.00000000, 15.00000000, '2019-04-20 15:08:19', '2019-04-20 15:08:18');
-INSERT INTO `com_config_pay` VALUES (1119498104577953793, 10.00000000, 15.00000000, '2019-04-20 15:08:42', '2019-04-20 15:08:42');
-INSERT INTO `com_config_pay` VALUES (1119498104577953794, 0.00000000, 0.00000000, NULL, '2019-04-20 15:09:59');
-
--- ----------------------------
--- Table structure for com_config_pay_channel
--- ----------------------------
-DROP TABLE IF EXISTS `com_config_pay_channel`;
-CREATE TABLE `com_config_pay_channel`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `pay_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付方式名字',
-  `start_status` tinyint(2) NULL DEFAULT NULL COMMENT '启用状态：-1停用 1：停用',
-  `pay_channel_type` tinyint(2) NULL DEFAULT NULL COMMENT '1，支付宝 2，微信 3，银联',
-  `pay_in_out_type` tinyint(2) NULL DEFAULT NULL COMMENT '1，入 2，出',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述信息',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for com_config_service
--- ----------------------------
-DROP TABLE IF EXISTS `com_config_service`;
-CREATE TABLE `com_config_service`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `account` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客服账号',
-  `qr_code_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '二维码路径',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  `type` tinyint(3) NULL DEFAULT NULL COMMENT '客服类型1，qq 2，微信 3，邮箱',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '客服设置' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of com_config_service
--- ----------------------------
-INSERT INTO `com_config_service` VALUES (1, '1', '1', NULL, '2019-04-20 14:14:06', NULL);
-
--- ----------------------------
--- Table structure for com_config_sys
--- ----------------------------
-DROP TABLE IF EXISTS `com_config_sys`;
-CREATE TABLE `com_config_sys`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表id',
-  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '配置的key键名',
-  `value` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '配置的val值',
-  `type` tinyint(3) NULL DEFAULT NULL COMMENT '配置分组(1-网站信息;2-网站协议;3-法币交易;4-币币交易;5-杠杆交易;6-短信设置;7-充/提设置;8-平台账户,9-关于我们,10-APP轮播图,11-集团信息)',
-  `name_notes` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注信息',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统配置' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of com_config_sys
--- ----------------------------
-INSERT INTO `com_config_sys` VALUES (27, 'store_name', '牛', 1, '网站名字');
-INSERT INTO `com_config_sys` VALUES (29, 'store_title', '牛', 1, '网站标题');
-INSERT INTO `com_config_sys` VALUES (33, 'store_phone', '18000000000', 1, '联系电话');
-INSERT INTO `com_config_sys` VALUES (34, 'store_email', 'suda@163.com', 1, '联系邮箱');
-INSERT INTO `com_config_sys` VALUES (35, 'store_address', 'suda', 1, '联系地址');
-INSERT INTO `com_config_sys` VALUES (36, 'store_copyright', 'Copyright 2016-2023 数据库 All Rights Reserved. Powered by HREX.11111', 1, '网站归属权');
-
--- ----------------------------
--- Table structure for com_config_viewpager
--- ----------------------------
-DROP TABLE IF EXISTS `com_config_viewpager`;
-CREATE TABLE `com_config_viewpager`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `img_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '#',
-  `type` tinyint(3) NOT NULL DEFAULT 1 COMMENT '图片类型：1.app 2.pc',
-  `sort` int(25) NULL DEFAULT 1 COMMENT '排序字段',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '轮播图配置' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of com_config_viewpager
--- ----------------------------
-INSERT INTO `com_config_viewpager` VALUES (18, '#', 1, 1, NULL, '2019-05-07 15:53:30');
-
--- ----------------------------
--- Table structure for com_config_withdraw
--- ----------------------------
-DROP TABLE IF EXISTS `com_config_withdraw`;
-CREATE TABLE `com_config_withdraw`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `min_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '最大提现',
-  `max_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '最小提现',
-  `isDisable` tinyint(1) NULL DEFAULT 0 COMMENT '0:不禁用 1：禁用',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '提现额度设置' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of com_config_withdraw
--- ----------------------------
-INSERT INTO `com_config_withdraw` VALUES (1, 10.00000000, 60.00000000, 0, NULL, '2019-04-20 15:40:46');
-
--- ----------------------------
--- Table structure for com_screen_notice
--- ----------------------------
-DROP TABLE IF EXISTS `com_screen_notice`;
-CREATE TABLE `com_screen_notice`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tile` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `details` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '公告内容',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '弹屏公告' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of com_screen_notice
--- ----------------------------
-INSERT INTO `com_screen_notice` VALUES (1, '哈哈', '真的吗', '2019-04-20 15:59:22');
-
--- ----------------------------
--- Table structure for content_message
--- ----------------------------
-DROP TABLE IF EXISTS `content_message`;
-CREATE TABLE `content_message`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `stock_user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id',
-  `stock_user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '姓名',
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题',
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内容',
-  `reply_user_id` bigint(20) NULL DEFAULT NULL COMMENT '回复者ID',
-  `reply_user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '回复者姓名',
-  `reply_content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '回复内容',
-  `reply_time` datetime(0) NULL DEFAULT NULL COMMENT '回复时间',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '1:删除，0:未删除',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '留言' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of content_message
--- ----------------------------
-INSERT INTO `content_message` VALUES (1, 63, '李小白', NULL, '1111111', NULL, NULL, NULL, NULL, '2018-10-12 10:37:28', 0, '2018-10-12 10:37:31');
-
--- ----------------------------
--- Table structure for content_news
--- ----------------------------
-DROP TABLE IF EXISTS `content_news`;
-CREATE TABLE `content_news`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id',
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '新闻标题',
-  `img_cover` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '封面图',
-  `source` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '新闻来源',
-  `details` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '新闻内容',
-  `content_type` tinyint(3) UNSIGNED NULL DEFAULT 0 COMMENT '新闻类型 默认为0 方便以后扩展',
-  `is_show` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '是否展示 默认为1 展示',
-  `is_top` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '是否置顶 默认为0 不置顶（推荐）',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '1:删除，0:未删除',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公司新闻' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of content_news
--- ----------------------------
-INSERT INTO `content_news` VALUES (1, NULL, '`的撒撒旦`', NULL, NULL, '的撒反对方式上的负担十分', NULL, 1, 0, '2018-10-12 10:37:35', 0, '2019-03-07 18:47:05');
-INSERT INTO `content_news` VALUES (2, NULL, '我认为', NULL, NULL, '为而为', 0, 1, 0, '2019-03-05 14:17:22', 0, '2019-03-07 18:23:03');
-INSERT INTO `content_news` VALUES (3, NULL, '是否', 'https://hrex.oss-cn-hongkong.aliyuncs.com/file/e8484b2204a743c9b296261c513e0b79.jpg?x-oss-process=image/resize,w_300,h_300/quality,q_100', '212', '<p id=\"news_details_p\"></p><p id=\"news_details_p\"></p><p id=\"news_details_p\"></p><p id=\"news_details_p\"></p><p id=\"news_details_p\"></p><p id=\"news_details_p\"></p><p id=\"news_details_p\"></p><p id=\"news_details_p\"></p><p id=\"news_details_p\"></p><p id=\"news_details_p\"></p><p id=\"news_details_p\">是否是</p><p><br><img src=\"https://hrex.oss-cn-hongkong.aliyuncs.com/file/1e579471d43142c38e6480d91e5bceed.jpg?x-oss-process=image/resize,w_300,h_300/quality,q_100\" style=\"max-width:100%;\"></p><p></p><p><br></p><p></p><p><br></p><p></p><p><br></p><p></p><p><br></p><p></p><p><br></p><p></p><p><br></p><p></p><p><br></p><p></p><p><br></p><p></p><p><br></p><p></p><p><br></p>', 0, 1, 0, '2019-03-14 14:17:29', 0, '2019-03-12 20:20:44');
-INSERT INTO `content_news` VALUES (4, NULL, NULL, NULL, NULL, NULL, 0, 1, 0, NULL, 1, '2019-03-07 18:47:14');
-
--- ----------------------------
--- Table structure for content_notice
--- ----------------------------
-DROP TABLE IF EXISTS `content_notice`;
-CREATE TABLE `content_notice`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id',
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '公告标题',
-  `details` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '公告内容',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '1:删除，0:未删除',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统公告' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of content_notice
--- ----------------------------
-INSERT INTO `content_notice` VALUES (1, NULL, 'H-REX交易所上线通知', '<p>H-REX交易所上线了，欢迎全球的投资者在本平台交易。</p>', '2017-11-18 09:00:00', 1, '2019-01-02 16:50:49');
-INSERT INTO `content_notice` VALUES (2, NULL, 'test', '222', '2018-08-05 23:12:12', 1, '2018-08-15 14:15:48');
-INSERT INTO `content_notice` VALUES (3, NULL, 'test', 'test', '2018-08-05 23:12:12', 1, '2018-12-05 20:56:54');
-INSERT INTO `content_notice` VALUES (4, NULL, '2222222222', '1111111111', '2018-10-12 10:01:01', 1, '2018-10-12 10:01:40');
-INSERT INTO `content_notice` VALUES (5, NULL, '今天会下雪的通知', '<p>天气预报说:&quot;今天会下雪&quot;.<br/></p>', '2018-12-05 00:00:00', 1, '2018-12-05 20:18:30');
-INSERT INTO `content_notice` VALUES (6, NULL, '今天中午吃宴席的通知', '<p>天气严寒,为了防冻,今天特此通知,吃火锅.</p>', '2018-12-05 00:00:00', 1, '2018-12-05 20:18:28');
-INSERT INTO `content_notice` VALUES (7, NULL, '今天多喝水的通知.', '<p>今天多喝水,防冻,防寒.</p>', '2018-12-05 00:00:00', 1, '2018-12-05 20:18:25');
-INSERT INTO `content_notice` VALUES (8, NULL, '明天会更好的通知', '<p>我相信,我们今天做的好,明天会更好.</p>', '2018-12-05 00:00:00', 1, '2018-12-05 20:18:23');
-INSERT INTO `content_notice` VALUES (9, NULL, '今天会不会值日', '<p>有时候,我们想,我们会不会值日.</p>', '2018-12-05 00:00:00', 1, '2018-12-05 20:18:21');
-INSERT INTO `content_notice` VALUES (10, NULL, '请说出你内心事', '<p>我们知道,我们会做什么,有什么烦心事.</p>', '2018-12-05 00:00:00', 1, '2018-12-05 20:18:19');
-INSERT INTO `content_notice` VALUES (11, NULL, '我们只有这样,才会更好', '<p>我们相信,只有跟着党走,明天的日子会更好.</p>', '2018-12-05 00:00:00', 1, '2018-12-05 20:18:17');
-INSERT INTO `content_notice` VALUES (12, NULL, '在希望的田野上.', '<p>在希望的田野上.</p>', '2018-12-05 00:00:00', 1, '2018-12-05 20:18:14');
-INSERT INTO `content_notice` VALUES (13, NULL, '春天里', '<p>冬天来了,春天还会远吗?</p>', '2018-12-05 00:00:00', 1, '2018-12-05 20:18:12');
-INSERT INTO `content_notice` VALUES (14, NULL, '大雪', '<p><span style=\"font-size: 18px;\">大雪节气，太阳黄经达255度。大雪，顾名思义，雪量大。古人云：“大者，盛也，至此而雪盛也”。到了这个时段，雪往往下得大、范围也广。</span></p><p><span style=\"font-size: 18px;\">这时我国大部分地区的最低温度都降到了0℃或以下。往往在强冷空气前沿冷暖空气交锋的地区，会降大雪，甚至暴雪。可见，大雪节气是表示这一时期，降大雪的起始时间和雪量程度，它和小雪、雨水、谷雨等节气一样，都是直接反映降水的节气。</span></p><p><span style=\"font-size: 18px;\">大雪时节分为三候：“一候鹖鴠不鸣；二候虎始交；三候荔挺出。”是说此时因天气寒冷，寒号鸟也不再鸣叫了；此时是阴气最盛时期，所谓盛极而衰，阳气已有所萌动，老虎开始有求偶行为；“荔挺”为兰草的一种，感到阳气的萌动而抽出新芽。</span></p><p><span style=\"font-size: 18px;\">常说，“瑞雪兆丰年”。严冬积雪覆盖大地，保持地面及作物周围的温度不会因寒流侵袭而降得很低，冬作物创造了良好的越冬环境。积雪融化时又增加了土壤水分含量，供作物春季生长的需要。雪水中氮化物的含量是普通雨水的5倍，有一定的肥田作用。有“今年麦盖三层被，来年枕着馒头睡”的农谚。</span></p><p><br/></p>', '2018-12-06 00:00:00', 1, '2019-01-01 17:37:08');
-INSERT INTO `content_notice` VALUES (15, NULL, 'H-REX 承兑商招募公告 ', '<p style=\"white-space: normal;\">&nbsp;因近期H-REX&nbsp;用户C2C交易上涨<br/>交易活跃，需求量大<br/>H-REX&nbsp;现向全球招募法币交易区承立商</p><p style=\"white-space: normal;\"><br/>招标如下：<br/>1，年龄20-60岁之间能够正常使用普通话交流<br/>2，二品行端正，无不良个人记录数字<br/>3，具备数字货币相关基础知识<br/>4，了解H-REX&nbsp;法交易规则及操作流程<br/>5，具备一定的经济能力</p><p style=\"white-space: normal;\"><br/></p><p style=\"white-space: normal;\">申请函标准：</p><p style=\"white-space: normal;\">将您的个人资料（身份证正/反面照片，手持身份证照片，手机号码）<br/>发送到H-REX 官网邮箱：hrexpro@hotmail.com(备注“承兑商申请”）<br/>审核通过后官方会第一时间将以邮件的形式通知您，谢谢参与！</p><p><br/></p>', '2017-11-28 09:00:00', 0, '2019-01-03 15:43:55');
-INSERT INTO `content_notice` VALUES (16, NULL, '关于H-REX升级公告', '<p><br/></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">亲爱的</span><span style=\"font-family: 宋体; letter-spacing: 0px;\">H-REX</span><span style=\"font-family: 宋体; letter-spacing: 0px;\">用户</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">您好！</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">为了更好的服务广大用户，我们将在2018年11月25日14:30—16：:30</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">对交易所服务器进行优化升级，升级期间，将无法登陆您的账户，请广</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">大用户提前做好平仓及止损止盈，以免造成风险损失！</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">H-REX</span><span style=\"font-family: 宋体; letter-spacing: 0px;\">交易所</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">2018年4月5日</span></p><p style=\"white-space: normal;\"><br/></p><p><br/></p>', '2018-04-05 10:00:00', 0, '2019-01-01 19:33:26');
-INSERT INTO `content_notice` VALUES (17, NULL, '关于强平说明', '<p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">关于强平：强平是指您的爆仓率达到70%时，系统会自动止损</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp; &nbsp; &nbsp; 如果您在持有单的情况下再建仓，请您务必提前关注您账户里</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">面的动态权益，动态权益是您当期实时的可用资金，如需再建仓时</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">，需先考虑到您的资金是否支持您再下单，强行下单会导致您整单</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">爆仓。</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">动态权益以及爆仓率公式：</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">1，动态权益=余额+建仓及委托（保证金）+浮动盈亏</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">2，爆仓率=动态权益/保证金*100%（当爆仓率达到70%，系统会自动强平）</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">（具体交易规格请参照官网的交易规格）</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">温馨提示：用户建仓位高于30%，都属于高风险建仓！</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">交易有风险，一定请谨慎操作！</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">H-REX</span><span style=\"font-family: 宋体; letter-spacing: 0px;\">X交易所</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">2018年5月6日</span></p><p><span style=\"font-family: 宋体; letter-spacing: 0px;\"><br/></span></p><p><br/></p>', '2018-05-06 17:00:00', 1, '2019-01-02 16:50:45');
-INSERT INTO `content_notice` VALUES (18, NULL, '关于H-REX手续费活动', '<p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">活动声明</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">为感谢</span><span style=\"font-family: 宋体; letter-spacing: 0px;\">H-REX</span><span style=\"font-family: 宋体; letter-spacing: 0px;\">用户的信任与支持，交易所将于2018年11月27日12：00起</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">手续费调降至双边：0.03%</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">活动时间：11月27—12月27日</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">&nbsp;</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">H-REX</span><span style=\"font-family: 宋体; letter-spacing: 0px;\">交易所</span></p><p style=\"white-space: normal;\"><span style=\"font-family: 宋体; letter-spacing: 0px;\">2018年6月18日</span></p><p style=\"white-space: normal;\"><br/></p>', '2018-06-18 17:00:00', 0, '2019-01-03 15:44:08');
-INSERT INTO `content_notice` VALUES (19, NULL, '关于手续费恢复', '<p>亲爱的H-REX用户</p><p>&nbsp;您好！</p><p>手续费活动已圆满结束，现在恢复至双边0.04%，请知悉！</p><p>H-REX交易所</p><p>2018年10月7日</p>', '2018-10-07 16:00:00', 0, '2019-01-07 11:48:28');
-INSERT INTO `content_notice` VALUES (20, NULL, '服务器维护通知', '<p>尊敬的用户：</p><p><br/></p><p>为了提升用户体验，&nbsp; &nbsp; H-REX的币币交易和合约交易页面将于2019年1月7日12：00-13:00 (GMT+8)全新升级。改版后，页面结构优化，视觉换新，体验更流畅。</p><p><br/></p><p><br/></p><p>H-REX交易所<br/></p><p>2019年1月7日</p><p><br/></p>', '2019-01-07 12:00:00', 0, '2019-01-08 12:01:06');
-INSERT INTO `content_notice` VALUES (21, NULL, '服务器维护通知', '<p>尊敬的用户：</p><p><br/></p><p><br/></p><p><br/></p><p>为了提升用户体验， &nbsp; &nbsp;H-REX的币币交易和合约交易页面将于2019年1月8日12：00-13:00 (GMT+8)全新升级。改版后，页面结构优化，视觉换新，体验更流畅。</p><p><br/></p><p><br/></p><p><br/></p><p><br/></p><p><br/></p><p>H-REX交易所</p><p><br/></p><p>2019年1月8日</p><p><br/></p><p><br/></p>', '2019-01-08 00:00:00', 0, '2019-01-08 11:59:10');
-INSERT INTO `content_notice` VALUES (22, NULL, '服务器短暂维护', '<p>尊敬的用户：</p><p>为了提升用户体验， H-REX的币币交易和合约交易页面将于2019年1月9日12：00-13:00 (GMT+8)进行系统维护升级。</p><p><br/></p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H-REX交易所</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2019年1月9日<br/></p><p><br/></p>', '2019-01-09 00:00:00', 0, '2019-01-09 11:49:56');
-INSERT INTO `content_notice` VALUES (23, NULL, '服务器12点到13点升级维护', '<p style=\"white-space: normal;\">尊敬的用户：</p><p style=\"white-space: normal;\">为了提升用户体验， H-REX的币币交易和合约交易页面将于2019年1月10日12：00-13:00 (GMT+8)进行系统维护升级。</p><p style=\"white-space: normal;\"><br/></p><p style=\"white-space: normal;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H-REX交易所</p><p style=\"white-space: normal;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2019年1月10日</p><p><br/></p>', '2019-01-10 00:00:00', 0, '2019-01-10 11:35:53');
-
--- ----------------------------
--- Table structure for log_admin_agent
--- ----------------------------
-DROP TABLE IF EXISTS `log_admin_agent`;
-CREATE TABLE `log_admin_agent`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `request_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求地址',
-  `request_way` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求方式',
-  `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'IP',
-  `method_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '方法地址',
-  `method_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '方法别名',
-  `request_param` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求参数',
-  `return_param` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '返回参数',
-  `time` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '耗时',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `operator_id` bigint(255) NULL DEFAULT NULL COMMENT '操作人id',
-  `operator_platform` tinyint(2) NULL DEFAULT 1 COMMENT '1,admin，2，agent',
-  `login_facility` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录设备',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of log_admin_agent
--- ----------------------------
-INSERT INTO `log_admin_agent` VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL);
-
--- ----------------------------
--- Table structure for log_app_pc
--- ----------------------------
-DROP TABLE IF EXISTS `log_app_pc`;
-CREATE TABLE `log_app_pc`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `request_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求地址',
-  `request_way` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求方式',
-  `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'IP',
-  `method_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '方法地址',
-  `method_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '方法别名',
-  `request_param` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求参数',
-  `return_param` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '返回参数',
-  `time` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '耗时',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `operator_id` bigint(20) NULL DEFAULT NULL COMMENT '操作人id',
-  `operator_platform` tinyint(2) NULL DEFAULT 1 COMMENT '1,app',
-  `login_facility` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录设备',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of log_app_pc
--- ----------------------------
-INSERT INTO `log_app_pc` VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL);
-
--- ----------------------------
--- Table structure for product_activity_take_user
--- ----------------------------
-DROP TABLE IF EXISTS `product_activity_take_user`;
-CREATE TABLE `product_activity_take_user`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `product_info_id` bigint(20) NULL DEFAULT NULL COMMENT '商品id',
-  `stock_user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id',
-  `win_prize_status` tinyint(1) NULL DEFAULT 0 COMMENT '0:未中奖 1:中奖',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  `get_status` tinyint(1) NULL DEFAULT 0 COMMENT '0:未领取 1:已领取',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品活动参与人员' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of product_activity_take_user
--- ----------------------------
-INSERT INTO `product_activity_take_user` VALUES (1, 1, 1, 0, NULL, '2019-05-08 17:48:25', NULL);
-
--- ----------------------------
--- Table structure for product_info
--- ----------------------------
-DROP TABLE IF EXISTS `product_info`;
-CREATE TABLE `product_info`  (
-  `id` bigint(11) NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '产品名字',
-  `cover_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '产品封面图',
-  `banner_img` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '产品轮播图',
-  `info_img` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '产品详情',
-  `product_explain` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '产品说明',
-  `product_parameter` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '产品参数',
-  `inventory_num` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '产品库存',
-  `sales_volume` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '产品销量',
-  `real_sales_volume` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '产品真实销量',
-  `sell_price` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '售卖价格',
-  `stock_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '产品售卖币种',
-  `product_partition_type_id` bigint(20) NULL DEFAULT NULL COMMENT '产品分区id',
-  `is_delete` tinyint(1) NULL DEFAULT 0 COMMENT '0:未删除 1:删除',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  `is_activity` tinyint(1) NULL DEFAULT 0 COMMENT '0:不是活动商品 1:是活动商品',
-  `prize_countdown` datetime(0) NULL DEFAULT NULL COMMENT '开奖倒计时',
-  `apply_num` bigint(11) NULL DEFAULT 0 COMMENT '报名人数',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '产品种类表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of product_info
--- ----------------------------
-INSERT INTO `product_info` VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, 0.00000000, 0.00000000, 0.00000000, 0.00000000, NULL, NULL, 0, NULL, '2019-05-08 17:48:57', 0, NULL, 0);
-
--- ----------------------------
--- Table structure for product_partition_type
--- ----------------------------
-DROP TABLE IF EXISTS `product_partition_type`;
-CREATE TABLE `product_partition_type`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `partition_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分区名字',
-  `details` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分区详情',
-  `is_delete` tinyint(1) NULL DEFAULT 0 COMMENT '0:未删除 1:删除',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '产品分区' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of product_partition_type
--- ----------------------------
-INSERT INTO `product_partition_type` VALUES (1, '精品专区', NULL, 0, NULL, '2019-05-08 11:09:17');
-INSERT INTO `product_partition_type` VALUES (2, '优选热销', NULL, 0, NULL, '2019-05-08 11:09:35');
-
--- ----------------------------
--- Table structure for product_specification_type
--- ----------------------------
-DROP TABLE IF EXISTS `product_specification_type`;
-CREATE TABLE `product_specification_type`  (
-  `id` bigint(11) NOT NULL AUTO_INCREMENT,
-  `colour` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '颜色（白色,黑色）',
-  `model_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '型号（大码,标准）',
-  `product_info_id` bigint(11) NULL DEFAULT NULL COMMENT '商品id',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `product_info_id`(`product_info_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '产品规格列表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of product_specification_type
--- ----------------------------
-INSERT INTO `product_specification_type` VALUES (1, '白色,黑色', '大码,标准', 1, '2019-05-08 15:38:32', '2019-05-08 15:45:33');
-
--- ----------------------------
--- Table structure for stock_code
--- ----------------------------
-DROP TABLE IF EXISTS `stock_code`;
-CREATE TABLE `stock_code`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `stock_code` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '币种编码',
-  `stock_code_name` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '币种名字',
-  `details` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '币种备注信息',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `timestamp` timestamp(0) NULL DEFAULT NULL,
-  `stock_code_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '币种图片',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `stock_code`(`stock_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统币种' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of stock_code
--- ----------------------------
-INSERT INTO `stock_code` VALUES (1, 'TC', '商城币', NULL, NULL, NULL, NULL);
-INSERT INTO `stock_code` VALUES (2, 'ETH', '以太坊', NULL, NULL, NULL, NULL);
-INSERT INTO `stock_code` VALUES (3, 'SDT', '速达币', NULL, NULL, NULL, NULL);
-
--- ----------------------------
 -- Table structure for stock_user
 -- ----------------------------
 DROP TABLE IF EXISTS `stock_user`;
@@ -4586,211 +4017,23 @@ CREATE TABLE `stock_user`  (
   `user_uid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录帐号',
   `tel` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号',
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱|帐号',
-  `pswd` char(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码，使用md5加密',
+  `pswd` char(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码，使用md5加密',
   `trade_pwd` char(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '交易密码',
   `device_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '设备号',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `last_login_time` datetime(0) NULL DEFAULT NULL COMMENT '最后登录时间',
-  `invitation_code` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邀请码',
-  `agent_id` bigint(20) NULL DEFAULT NULL COMMENT '上级代理id',
-  `inspector_id` bigint(20) NULL DEFAULT NULL COMMENT '审核者ID',
-  `inspect_auth_reason` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '审核原因',
-  `inspect_auth_time` datetime(0) NULL DEFAULT NULL COMMENT '审核时间',
-  `inspect_auth_status` tinyint(3) UNSIGNED NULL DEFAULT 1 COMMENT '1:未认证 2:待审核 3:已认证 4:审核未通过',
-  `is_real` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT ' 0:模拟用户 false 1:真实用户 true',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `last_login_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
   `is_disable` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '0:未禁用 1：禁用',
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '0:未删除 1:删除',
-  `is_staff` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '是否是经纪人 1:是，0:否',
-  `is_shop` tinyint(1) NULL DEFAULT 0 COMMENT '是否是商家 0：false 不是商家  1：true 是商家',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  `invitation_id` bigint(20) NULL DEFAULT 0 COMMENT '上级经纪人id',
-  `invitation_path` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '推荐邀请关系树',
-  `staff_inspect_reason` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '申请经济人拒绝原因',
-  `staff_inspect_time` datetime(0) NULL DEFAULT NULL COMMENT '经济人审核时间',
-  `staff_apply_status` tinyint(3) NULL DEFAULT 1 COMMENT '经纪人申请状态1.未申请 2.已申请(待审核）3.同意 4.拒绝',
-  `shop_inspect_reason` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '申请商家拒绝原因',
-  `shop_inspect_time` datetime(0) NULL DEFAULT NULL COMMENT '商家审核时间',
-  `shop_inspect_status` tinyint(3) NULL DEFAULT 1 COMMENT '商家申请状态1.未申请 2.已申请(待审核）3.同意 4.拒绝 5.已解绑',
-  `shop_frost_fund` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '成为商家冻结保证金',
-  `concession_ratio` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '佣金比例',
-  `user_charge_rate` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '用户单独设置手续费比例',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `head_url` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
+  `open_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信唯一id',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `account_unique_index`(`user_uid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 177 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '手机用户表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 382 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '手机用户表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of stock_user
 -- ----------------------------
-INSERT INTO `stock_user` VALUES (1, NULL, 'zzy', NULL, '1', '1', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 1, 0, '2019-04-24 14:41:27', 0, NULL, NULL, NULL, 1, NULL, NULL, 1, 0.00000000, 0.00000000, 0.00000000, NULL);
-
--- ----------------------------
--- Table structure for stock_user_capital_fund
--- ----------------------------
-DROP TABLE IF EXISTS `stock_user_capital_fund`;
-CREATE TABLE `stock_user_capital_fund`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `stock_user_id` bigint(20) NOT NULL COMMENT '用户id',
-  `stock_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '币种编码',
-  `stock_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_croatian_ci NULL DEFAULT NULL COMMENT '币种名字',
-  `usable_fund` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '可用',
-  `in_all_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '总充值金额',
-  `out_all_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '总提现金额',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `unique_id_code`(`stock_user_id`, `stock_code`) USING BTREE,
-  INDEX `stock_user_id`(`stock_user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1451 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '个人资产' ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of stock_user_capital_fund
--- ----------------------------
-INSERT INTO `stock_user_capital_fund` VALUES (1, 1, 'TC', NULL, 30.00000000, 0.00000000, 0.00000000, NULL, '2019-05-08 10:42:08');
-
--- ----------------------------
--- Table structure for stock_user_charge
--- ----------------------------
-DROP TABLE IF EXISTS `stock_user_charge`;
-CREATE TABLE `stock_user_charge`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '付款金币获取数量',
-  `swift_no` char(26) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '流水号: 四位项目简称 + yyyyMMddHHmmSS + 4位随机数 + 账号后4位',
-  `stock_user_id` bigint(20) NULL DEFAULT NULL COMMENT '手机用户id',
-  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '真实姓名',
-  `tel` char(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号',
-  `pay_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '付款金额',
-  `pay_gold` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '付款金币数量',
-  `real_pay_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '真实金额',
-  `real_pay_gold` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '真实金币',
-  `charge_type` tinyint(3) UNSIGNED NULL DEFAULT 1 COMMENT '出入金类型 1:入金，2:出金',
-  `pay_type` tinyint(3) UNSIGNED NULL DEFAULT 1 COMMENT '支付类型：1在线2人工充值',
-  `withdraw_status` tinyint(3) UNSIGNED NULL DEFAULT 1 COMMENT '支付状态:1:未支付，2：支付成功 3：支付失败 4:处理中',
-  `inspector_id` bigint(20) NULL DEFAULT NULL COMMENT '审核者ID',
-  `inspect_reason` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '审核原因/备注',
-  `inspect_time` datetime(0) NULL DEFAULT NULL COMMENT '审核/确认时间',
-  `inspect_status` tinyint(3) UNSIGNED NULL DEFAULT 0 COMMENT '审核状态 0:待审核 1:已审核 2:拒绝 3:审核中',
-  `poundage` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '手续费',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '1:删除，0:未删除',
-  `tranId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '三方支付平台的流水号',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户出入金表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for stock_user_concession
--- ----------------------------
-DROP TABLE IF EXISTS `stock_user_concession`;
-CREATE TABLE `stock_user_concession`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `stock_user_id` int(11) NULL DEFAULT 0 COMMENT '手机用户id',
-  `stock_user_up_id` int(11) NULL DEFAULT 0 COMMENT '手机用户上级id',
-  `user_id` int(11) NULL DEFAULT 0 COMMENT '代理id',
-  `yy_id` int(11) NULL DEFAULT 0 COMMENT '运营中心（会员单位id）',
-  `entrust_num` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '委托单号',
-  `stock_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '股票代码',
-  `stock_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '股票名字',
-  `entrust_count` int(11) NULL DEFAULT 0 COMMENT '交易股数',
-  `hand_num` int(11) NULL DEFAULT 0 COMMENT '交易手数',
-  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
-  `account` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户账号',
-  `user_return_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '手机用户返佣金额',
-  `user_return_ratio` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '手机用户返佣比例',
-  `yy_return_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '运营中心返佣金额',
-  `yy_return_ratio` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '运营中心佣金比例',
-  `usd_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '实际手续费',
-  `create_time` varchar(21) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建时间',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  `is_return` tinyint(1) NULL DEFAULT 0 COMMENT '佣金是否已返(1:是，0:否)',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '佣金记录表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for stock_user_info
--- ----------------------------
-DROP TABLE IF EXISTS `stock_user_info`;
-CREATE TABLE `stock_user_info`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `stock_user_id` bigint(20) NULL DEFAULT NULL COMMENT '手机用户id',
-  `bank_card_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '银行卡号',
-  `bank_card_union_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '银联号',
-  `bank_card_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '银行卡类型',
-  `bank_card_type_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '银行卡类型编码',
-  `bank_card_open_bank` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '开户行',
-  `bank_card_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '银行卡图片',
-  `bank_card_expired_time` datetime(0) NULL DEFAULT NULL COMMENT '银行卡过期时间',
-  `province` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省',
-  `city` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市',
-  `county` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '县',
-  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '详细地点',
-  `id_card_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证号',
-  `id_card_front_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证正面照',
-  `id_card_back_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证背面照',
-  `id_card_start_time` datetime(0) NULL DEFAULT NULL COMMENT '身份证有效期开始时间',
-  `id_card_end_time` datetime(0) NULL DEFAULT NULL COMMENT '身份证有效期结束时间',
-  `selfie_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '自拍照',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '1:删除，0:未删除',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
-  `sex` tinyint(3) UNSIGNED NULL DEFAULT NULL COMMENT '性别 0:男 ，1女',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `stock_user_id_unique_index`(`stock_user_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '手机用户信息表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for stock_user_money_detail
--- ----------------------------
-DROP TABLE IF EXISTS `stock_user_money_detail`;
-CREATE TABLE `stock_user_money_detail`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `stock_user_id` bigint(20) NULL DEFAULT NULL COMMENT '手机用户id',
-  `stock_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '币种类型',
-  `money` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '发生金额',
-  `money_before` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '发生前金额',
-  `money_after` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '发生后金额',
-  `detail` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `type` tinyint(3) UNSIGNED NULL DEFAULT 1,
-  `type_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '来源表id',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '1:删除，0:未删除',
-  `timestamp` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  `water_type` tinyint(2) NULL DEFAULT 2 COMMENT '1:后台操作，2:正常流水',
-  `income` tinyint(1) NULL DEFAULT NULL COMMENT '0：支出 1：收入',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `stock_user_id_index`(`stock_user_id`, `stock_code`, `type`, `type_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19892 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户资金明细表' ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of stock_user_money_detail
--- ----------------------------
-INSERT INTO `stock_user_money_detail` VALUES (19891, 1, 'TC', 20.00000000, 10.00000000, 30.00000000, '111', 1, NULL, '2019-05-08 10:42:10', 0, '2019-05-08 10:42:09', 1, NULL);
-
--- ----------------------------
--- Table structure for turnplate_prize_1
--- ----------------------------
-DROP TABLE IF EXISTS `turnplate_prize_1`;
-CREATE TABLE `turnplate_prize_1`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `stock_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'TC' COMMENT '币种编码 SDT ，TC，ETH，',
-  `prize_num` decimal(20, 8) NULL DEFAULT 0.00000000 COMMENT '奖品数量',
-  `prize_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '商城币' COMMENT '奖品名称',
-  `ratio` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '奖品比例',
-  `prize_img_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '奖品图片url',
-  `is_deleted` tinyint(1) NULL DEFAULT 0 COMMENT '0：未删除 1：已删除',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `timestamp` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '大转盘奖品1' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of turnplate_prize_1
--- ----------------------------
-INSERT INTO `turnplate_prize_1` VALUES (9, 'ETH', 0.10000000, '50ETH', 10.00000000, '---', 0, NULL, '2019-05-07 14:39:26');
-INSERT INTO `turnplate_prize_1` VALUES (10, 'TC', 0.00000000, '商城币', 0.00000000, NULL, 0, NULL, '2019-05-07 11:28:26');
-INSERT INTO `turnplate_prize_1` VALUES (11, 'TC', 0.00000000, '商城币', 0.00000000, NULL, 0, NULL, '2019-05-07 11:28:29');
-INSERT INTO `turnplate_prize_1` VALUES (12, 'TC', 0.00000000, '商城币', 0.00000000, NULL, 0, NULL, '2019-05-07 11:28:29');
-INSERT INTO `turnplate_prize_1` VALUES (13, 'TC', 0.00000000, '商城币', 0.00000000, NULL, 0, NULL, '2019-05-07 11:28:30');
-INSERT INTO `turnplate_prize_1` VALUES (14, 'TC', 0.00000000, '商城币', 0.00000000, NULL, 0, NULL, '2019-05-07 11:28:31');
-INSERT INTO `turnplate_prize_1` VALUES (15, 'TC', 0.00000000, '商城币', 0.00000000, NULL, 0, NULL, '2019-05-07 11:28:33');
+INSERT INTO `stock_user` VALUES (381, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '2019-05-30 10:48:49', NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
