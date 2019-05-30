@@ -1,0 +1,119 @@
+server:
+  port: 8077
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://127.0.0.1:8080/eureka/
+#  instance:
+#    lease-expiration-duration-in-seconds: 90 #服务端在收到最后一次心跳之后等待的时间上限，单位为秒，超过则剔除（客户端告诉服务端按照此规则等待自己）
+#    lease-renewal-interval-in-seconds: 30 #定义服务续约任务（心跳）的调用间隔，单位：秒
+
+spring:
+  application:
+    name: SUDA-PLATFORM-WEB
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 5000
+    #password: 123456
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 100
+        min-idle: 20
+        max-wait: 100
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/charging_pile?useUnicode=true&amp&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  #配置文件传输
+  servlet:
+    multipart:
+      max-file-size: 20MB
+
+mybatis-plus:
+  # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/com.business.mapper/*Mapper.xml
+  # 如果是放在resource目录 classpath:/com.business.mapper/*Mapper.xml
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 0
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    #mp2.3+ 全局表前缀 mp_
+    #table-prefix: mp_
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    #数据库大写下划线转换
+    capital-mode: false
+  configuration:
+    #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    #配置JdbcTypeForNull, oracle数据库必须配置
+    jdbc-type-for-null: 'null'
+  type-aliases-package: com.shop.entity
+
+#pagehelper分页插件配置
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: countSql
+
+logging:
+  level:
+    com: info
+  file: log/catalina.out
+
+#系统我的公共配置
+my-configuration:
+      #图片上传路径
+      uploadPath: /home/project/file/
+      #图片访问路径
+      imagePath: /file/
+      #项目缓存存储时间
+      sessionTimeout: 7200
+      #阿里信息
+      accessKeyId:
+      accessKeySecret:
+      aliOssEndpoint:
+      aliOssBucketNameUser:
+      #验证码长度
+      codeLength: 6
+      #eth 节点地址
+      #ethNodesReqAddr: http://127.0.0.1:8545
+      #ethNodesReqAddr: https://mainnet.infura.io/3f727c7ce8434106809d5cc2463ff779
+      ethNodesReqAddr: https://ropsten.infura.io/3f727c7ce8434106809d5cc2463ff779
+
+
+
+
+
+

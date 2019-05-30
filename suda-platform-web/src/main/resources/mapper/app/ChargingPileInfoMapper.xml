@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.ChargingPileInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.ChargingPileInfo">
+        <id column="id" property="id" />
+        <result column="charging_stations_id" property="chargingStationsId" />
+        <result column="serial_number" property="serialNumber" />
+        <result column="parking_lot_no" property="parkingLotNo" />
+        <result column="rate_of_work" property="rateOfWork" />
+        <result column="ac_dc" property="acDc" />
+        <result column="has_a_gun_status" property="hasAGunStatus" />
+        <result column="open_start_time" property="openStartTime" />
+        <result column="open_end_time" property="openEndTime" />
+        <result column="price" property="price" />
+        <result column="service_charge" property="serviceCharge" />
+        <result column="create_time" property="createTime" />
+        <result column="timestamp" property="timestamp" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, charging_stations_id, serial_number, parking_lot_no, rate_of_work, ac_dc, has_a_gun_status, open_start_time, open_end_time, price, service_charge, create_time, timestamp, is_deleted
+    </sql>
+
+</mapper>

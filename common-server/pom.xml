@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.suda.charging_pile_cloud</groupId>
+        <artifactId>charging_pile_cloud</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>common-server</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.suda.charging_pile_cloud</groupId>
+            <artifactId>suda-common-constant</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+      <!--阿里支付SDK-->
+    <dependency>
+        <groupId>com.alipay.sdk</groupId>
+        <artifactId>alipay-sdk-java</artifactId>
+        <version>3.3.49.ALL</version>
+    </dependency>
+    <!--阿里云短信服务-->
+    <dependency>
+        <groupId>com.aliyun</groupId>
+        <artifactId>aliyun-java-sdk-core</artifactId>
+        <version>4.0.1</version>
+    </dependency>
+    <dependency>
+        <groupId>com.aliyun</groupId>
+        <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+        <version>1.1.0</version>
+    </dependency>
+    <dependency>
+        <groupId>com.aliyun</groupId>
+        <artifactId>aliyun-java-sdk-dm</artifactId>
+        <version>3.1.0</version>
+    </dependency>
+    <dependency>
+        <groupId>com.aliyun.oss</groupId>
+        <artifactId>aliyun-sdk-oss</artifactId>
+        <version>2.8.3</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.auth0</groupId>
+        <artifactId>java-jwt</artifactId>
+        <version>3.3.0</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-generator</artifactId>
+        <version>3.0.7.1</version>
+    </dependency>
+
+    <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>1.2.2</version>
+    </dependency>
+    <!--时间处理 -->
+    <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>2.9.9</version>
+    </dependency>
+        <!--使用邮箱api-->
+    <dependency>
+        <groupId>org.apache.openejb</groupId>
+        <artifactId>javaee-api</artifactId>
+        <version>5.0-1</version>
+        <scope>provided</scope>
+    </dependency>
+
+
+    <dependency>
+        <groupId>org.web3j</groupId>
+        <artifactId>core</artifactId>
+        <version>3.4.0</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.github.briandilley.jsonrpc4j</groupId>
+        <artifactId>jsonrpc4j</artifactId>
+        <version>1.1</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.google.zxing</groupId>
+        <artifactId>javase</artifactId>
+        <version>3.2.1</version>
+    </dependency>
+    <dependency>
+        <groupId>com.google.zxing</groupId>
+        <artifactId>core</artifactId>
+        <version>3.2.1</version>
+    </dependency>
+
+        <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

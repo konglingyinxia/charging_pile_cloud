@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.StockUserMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, nickname, username, user_uid, tel, email, pswd, trade_pwd, device_no, create_time, last_login_time,  head_url
+    </sql>
+    <update id="updateInviAndAccountByStockUserId">
+        update stock_user set invitation_code=#{invitationCode},user_uid=#{userUid} where id=#{id}
+    </update>
+    <update id="rewNewPwd">
+        update stock_user set pswd=#{pswd} where tel=#{tel}
+    </update>
+
+    <!--后台查询所有用户-->
+    <select id="selectAllStockUser" resultType="com.suda.platform.VO.stockuser.StockUserVO">
+        select stock_user.*,
+       ifnull((select sum(charge_total_money) from  charging_record  cr where
+        cr.stock_user_id=stock_user.id and cr.payment_status=1),0) as charge_total_money,
+        ifnull((select sum(charge_num) from  charging_record  cr where
+        cr.stock_user_id=stock_user.id and cr.payment_status=1),0) as charge_num,
+        ifnull((select count(id) from  charging_record  cr where
+        cr.stock_user_id=stock_user.id and cr.payment_status=1),0) as charge_count
+        from stock_user
+        <where>
+            <if test="tel !='' and tel !=null">
+                tel=#{tel}
+            </if>
+            <if test="email !='' and email !=null">
+                email=#{email}
+            </if>
+            <if test=" userUid !=null">
+                user_uid=#{userUid}
+            </if>
+            <if test=" id !=null">
+                id=#{id}
+            </if>
+        </where>
+
+    </select>
+
+    <!--查询app登录账号信息-->
+    <select id="selectByAccount" resultType="com.suda.platform.VO.stockuser.StockUserLoginVO">
+        select
+        *
+        from stock_user
+        <where>
+            is_deleted = 0
+            <if test="account != null">
+                and (user_uid = #{account,jdbcType=VARCHAR} or tel = #{account,jdbcType=VARCHAR} or email =
+                #{account,jdbcType=VARCHAR})
+            </if>
+        </where>
+    </select>
+
+    <!--用户注册保存 -->
+
+    <insert id="insertSelectiveDullUnion" parameterType="com.suda.platform.entity.StockUser" useGeneratedKeys="true"
+            keyProperty="id">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        insert into stock_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="tel != null">
+                tel,
+            </if>
+            <if test="pswd != null">
+                pswd,
+            </if>
+
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+
+            <if test="email != null">
+                email,
+            </if>
+
+        </trim>
+        select
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <if test="nickname != null">
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                #{tel,jdbcType=CHAR},
+            </if>
+            <if test="pswd != null">
+                #{pswd,jdbcType=CHAR},
+            </if>
+
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+
+            <if test="email != null">
+                #{email},
+            </if>
+
+        </trim>
+        from dual
+        <where>
+            <if test="(tel !=''and tel !=null) or(email !='' and email !=null)">
+                not EXISTS(select * from stock_user where
+                <if test="tel !=null and tel !=''">
+                    user_uid=#{tel} or tel =#{tel} or email
+                    =#{tel} )
+                </if>
+                <if test="email !=null and email !=''">
+                    user_uid=#{email} or tel =#{email} or email
+                    =#{email} )
+                </if>
+            </if>
+        </where>
+
+    </insert>
+
+
+</mapper>

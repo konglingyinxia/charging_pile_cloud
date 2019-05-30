@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.LogAdminAgentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.LogAdminAgent">
+        <id column="id" property="id" />
+        <result column="request_url" property="requestUrl" />
+        <result column="request_way" property="requestWay" />
+        <result column="ip" property="ip" />
+        <result column="method_url" property="methodUrl" />
+        <result column="method_name" property="methodName" />
+        <result column="request_param" property="requestParam" />
+        <result column="return_param" property="returnParam" />
+        <result column="time" property="time" />
+        <result column="create_time" property="createTime" />
+        <result column="operator_id" property="operatorId" />
+        <result column="operator_platform" property="operatorPlatform" />
+        <result column="login_facility" property="loginFacility" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, request_url, request_way, ip, method_url, method_name, request_param, return_param, time, create_time, operator_id, operator_platform, login_facility
+    </sql>
+    <!--获取logs日志-->
+    <select id="getAdminAgentLogs" parameterType="com.suda.platform.VO.log.LogAdminAgentVO" resultType="com.suda.platform.VO.log.LogAdminAgentVO">
+        select laa.* ,
+        au.account
+        from log_admin_agent laa
+        left join admin_user au on au.id = laa.operator_id
+        <where>
+            <if test="account !=null and account !=''">
+                au.account = #{account}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+</mapper>

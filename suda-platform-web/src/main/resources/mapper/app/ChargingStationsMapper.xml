@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.ChargingStationsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.ChargingStations">
+        <id column="id" property="id" />
+        <result column=" longitude" property=" longitude" />
+        <result column="dimensionality" property="dimensionality" />
+        <result column="station_name" property="stationName" />
+        <result column="station_details" property="stationDetails" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="county" property="county" />
+        <result column="address" property="address" />
+        <result column="price" property="price" />
+        <result column="parking_fee_details" property="parkingFeeDetails" />
+        <result column="have_parking_fee" property="haveParkingFee" />
+        <result column="open_start_time" property="openStartTime" />
+        <result column="open_end_time" property="openEndTime" />
+        <result column="cover_img" property="coverImg" />
+        <result column="banner_img" property="bannerImg" />
+        <result column="has_a_gun_status" property="hasAGunStatus" />
+        <result column="create_time" property="createTime" />
+        <result column="timestamp" property="timestamp" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="is_disable" property="isDisable" />
+        <result column="use_status" property="useStatus" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,  longitude, dimensionality, station_name, station_details, province, city, county, address, price, parking_fee_details, have_parking_fee, open_start_time, open_end_time, cover_img, banner_img, has_a_gun_status, create_time, timestamp, is_deleted, is_disable, use_status
+    </sql>
+
+</mapper>

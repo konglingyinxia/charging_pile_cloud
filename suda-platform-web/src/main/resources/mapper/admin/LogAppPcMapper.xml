@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.LogAppPcMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.LogAppPc">
+        <id column="id" property="id" />
+        <result column="request_url" property="requestUrl" />
+        <result column="request_way" property="requestWay" />
+        <result column="ip" property="ip" />
+        <result column="method_url" property="methodUrl" />
+        <result column="method_name" property="methodName" />
+        <result column="request_param" property="requestParam" />
+        <result column="return_param" property="returnParam" />
+        <result column="time" property="time" />
+        <result column="create_time" property="createTime" />
+        <result column="operator_id" property="operatorId" />
+        <result column="operator_platform" property="operatorPlatform" />
+        <result column="login_facility" property="loginFacility" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, request_url, request_way, ip, method_url, method_name, request_param, return_param, time, create_time, operator_id, operator_platform, login_facility
+    </sql>
+
+    <select id="getAdminAgentLogs" parameterType="com.suda.platform.VO.log.LogAppPcVO" resultType="com.suda.platform.VO.log.LogAppPcVO">
+        select lap.*,
+        su.nickname ,su.username ,su.user_uid,su.tel,su.email
+        from log_app_pc lap
+        left join stock_user su on su.id = lap.operator_id
+        <where>
+            <if test="tel !='' and tel !=null">
+                and su.tel=#{tel}
+            </if>
+            <if test="email !='' and email !=null">
+                and su.email=#{email}
+            </if>
+            <if test=" userUid !=null">
+                and  su.user_uid=#{userUid}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+</mapper>

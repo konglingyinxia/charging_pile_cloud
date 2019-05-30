@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.admin.mapper.StockUserInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.StockUserInfo">
+        <id column="id" property="id" />
+        <result column="stock_user_id" property="stockUserId" />
+        <result column="bank_card_no" property="bankCardNo" />
+        <result column="bank_card_union_no" property="bankCardUnionNo" />
+        <result column="bank_card_type" property="bankCardType" />
+        <result column="bank_card_type_code" property="bankCardTypeCode" />
+        <result column="bank_card_open_bank" property="bankCardOpenBank" />
+        <result column="bank_card_img" property="bankCardImg" />
+        <result column="bank_card_expired_time" property="bankCardExpiredTime" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="county" property="county" />
+        <result column="address" property="address" />
+        <result column="id_card_no" property="idCardNo" />
+        <result column="id_card_front_img" property="idCardFrontImg" />
+        <result column="id_card_back_img" property="idCardBackImg" />
+        <result column="id_card_start_time" property="idCardStartTime" />
+        <result column="id_card_end_time" property="idCardEndTime" />
+        <result column="selfie_img" property="selfieImg" />
+        <result column="create_time" property="createTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="timestamp" property="timestamp" />
+        <result column="username" property="username" />
+        <result column="sex" property="sex" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, stock_user_id, bank_card_no, bank_card_union_no, bank_card_type, bank_card_type_code, bank_card_open_bank, bank_card_img, bank_card_expired_time, province, city, county, address, id_card_no, id_card_front_img, id_card_back_img, id_card_start_time, id_card_end_time, selfie_img, create_time, is_deleted, timestamp, username, sex
+    </sql>
+
+</mapper>

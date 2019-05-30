@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.ChargingRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.ChargingRecord">
+        <id column="id" property="id" />
+        <result column="stock_user_id" property="stockUserId" />
+        <result column="charging_stations_id" property="chargingStationsId" />
+        <result column="charging_pile_info_id" property="chargingPileInfoId" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="county" property="county" />
+        <result column="address" property="address" />
+        <result column="price" property="price" />
+        <result column="service_charge" property="serviceCharge" />
+        <result column="create_time" property="createTime" />
+        <result column="timestamp" property="timestamp" />
+        <result column="charge_start_time" property="chargeStartTime" />
+        <result column="charge_end_time" property="chargeEndTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, stock_user_id, charging_stations_id, charging_pile_info_id, province, city, county, address, price, service_charge, create_time, timestamp, charge_start_time, charge_end_time
+    </sql>
+
+</mapper>

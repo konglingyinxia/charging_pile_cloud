@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.AdminUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.AdminUser">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="password" property="password" />
+        <result column="nickname" property="nickname" />
+        <result column="username" property="username" />
+        <result column="create_time" property="createTime" />
+        <result column="last_login_time" property="lastLoginTime" />
+        <result column="timestamp" property="timestamp" />
+        <result column="status" property="status" />
+        <result column="is_disable" property="isDisable" />
+        <result column="is_delete" property="isDelete" />
+        <result column="admin_parent_id" property="adminParentId" />
+        <result column="agent_parent_id" property="agentParentId" />
+        <result column="user_invite_code" property="userInviteCode" />
+        <result column="invitation_path" property="invitationPath" />
+        <result column="inspect_status" property="inspectStatus" />
+    </resultMap>
+
+    <!-- 管理员列表查询 -->
+    <resultMap id="BaseResultMapVO" type="com.suda.platform.VO.AdminUserVO">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="nickname" property="nickname" />
+        <result column="username" property="username" />
+        <result column="create_time" property="createTime" />
+        <result column="last_login_time" property="lastLoginTime" />
+        <result column="status" property="status" />
+        <result column="is_disable" property="isDisable" />
+        <result column="is_delete" property="isDelete" />
+        <result column="inspect_status" property="inspectStatus" />
+        <result column="role_id" property="roleId" />
+        <result column="role_name" property="roleName" />
+    </resultMap>
+    <!--管理员查询-->
+    <select id="selectByChoice" resultMap="BaseResultMapVO">
+      select au.* ,ar.id as role_id ,ar.role_name
+      from admin_user au
+      left join admin_user_role aur on au.id = aur.user_id
+      left join admin_role ar on ar.id = aur.role_id
+      <where>
+          au.id &gt;1
+          <if test="account !=null and account !=''">
+              and account =#{account}
+          </if>
+          <if test="username !=null and username !=''">
+              and username = #{username}
+          </if>
+      </where>
+    </select>
+
+</mapper>

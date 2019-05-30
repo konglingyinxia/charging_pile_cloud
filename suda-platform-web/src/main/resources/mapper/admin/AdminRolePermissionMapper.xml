@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.AdminRolePermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.AdminRolePermission">
+        <id column="id" property="id" />
+        <result column="role_id" property="roleId" />
+        <result column="permission_id" property="permissionId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, role_id, permission_id
+    </sql>
+    <!--批量插入-->
+    <insert id="insertLists">
+        insert into admin_role_permission (role_id, permission_id) values
+         <foreach collection="permissionIds" item="item" index="index" separator=",">
+            (#{roleId,jdbcType=BIGINT},
+             #{item})
+         </foreach>
+    </insert>
+
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.AdminPermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.AdminPermission">
+        <id column="id" property="id" />
+        <result column="menu_name" property="menuName" />
+        <result column="menu_url" property="menuUrl" />
+        <result column="menu_lev" property="menuLev" />
+        <result column="menu_class" property="menuClass" />
+        <result column="menu_type" property="menuType" />
+        <result column="parent_id" property="parentId" />
+        <result column="menu_order" property="menuOrder" />
+        <result column="create_time" property="createTime" />
+        <result column="timestamp" property="timestamp" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, menu_name, menu_url, menu_lev, menu_class, menu_type, parent_id, menu_order,create_time,timestamp
+    </sql>
+    <!--查询权限列别-->
+    <select id="selectPermissionsBy" resultType="com.suda.platform.entity.AdminPermission"
+            parameterType="com.suda.platform.VO.RolePermission.AdminPermissionVO">
+      select
+      id, menu_name, menu_url, menu_lev,  menu_type, parent_id, menu_order,create_time
+      from admin_permission
+      <where>
+          <if test="menuType !=null">
+              and menu_type = #{menuType}
+          </if>
+          <if test="menuLev !=null">
+              and menu_lev = #{menuLev}
+          </if>
+          <if test="parentId !=null">
+              and parent_id = #{parentId}
+          </if>
+      </where>
+      order by menu_order desc
+    </select>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap_MenuList" type="com.suda.platform.VO.RolePermission.AdminPermissionMenuList">
+        <id column="id" property="id" />
+        <result column="menu_name" property="menuName" />
+        <result column="menu_url" property="menuUrl" />
+        <result column="menu_lev" property="menuLev" />
+        <result column="menu_type" property="menuType" />
+        <result column="parent_id" property="parentId" />
+        <result column="menu_order" property="menuOrder" />
+        <result column="create_time" property="createTime" />
+        <collection property="menuTwos" ofType="com.suda.platform.VO.RolePermission.AdminPermissionMenuTwo">
+            <id column="id_two" property="id" />
+            <result column="menu_name_two" property="menuName" />
+            <result column="menu_url_two" property="menuUrl" />
+            <result column="menu_lev_two" property="menuLev" />
+            <result column="menu_type_two" property="menuType" />
+            <result column="parent_id_two" property="parentId" />
+            <result column="menu_order_two" property="menuOrder" />
+            <result column="create_time_two" property="createTime" />
+            <collection property="menuButtons" ofType="com.suda.platform.VO.RolePermission.AdminPermissionMenuButton">
+                <id column="id_but" property="id" />
+                <result column="menu_name_but" property="menuName" />
+                <result column="menu_url_but" property="menuUrl" />
+                <result column="menu_lev_but" property="menuLev" />
+                <result column="menu_type_but" property="menuType" />
+                <result column="parent_id_but" property="parentId" />
+                <result column="menu_order_but" property="menuOrder" />
+                <result column="create_time_but" property="createTime" />
+            </collection>
+        </collection>
+    </resultMap>
+
+    <!--整体查询组装权限-->
+    <select id="selectPermissionsByAll" resultMap="BaseResultMap_MenuList">
+          select
+           menu1.id,
+           menu1.menu_name,
+           menu1.menu_url,
+           menu1.menu_lev,
+           menu1.menu_type,
+           menu1.parent_id,
+           menu1.menu_order,
+           menu1.create_time,
+           menu2.id as id_two,
+           menu2.menu_name as menu_name_two,
+           menu2.menu_url as menu_url_two,
+           menu2.menu_lev as menu_lev_two,
+           menu2.menu_type as menu_type_two,
+           menu2.parent_id as parent_id_two,
+           menu2.menu_order as menu_order_two,
+           menu2.create_time as create_time_two,
+           menu3.id as id_but,
+           menu3.menu_name as menu_name_but,
+           menu3.menu_url as menu_url_but,
+           menu3.menu_lev as menu_lev_but,
+           menu3.menu_type as menu_type_but,
+           menu3.parent_id as parent_id_but,
+           menu3.menu_order as menu_order_but,
+           menu3.create_time as create_time_but
+          from admin_permission menu1
+          left join  admin_permission menu2 on menu1.id=menu2.parent_id
+          left join  admin_permission menu3 on menu2.id=menu3.parent_id
+          where menu1.menu_type = 1 and menu1.menu_lev =1
+          order by menu1.menu_order desc,menu2.menu_order desc ,menu3.menu_order desc
+    </select>
+
+</mapper>
