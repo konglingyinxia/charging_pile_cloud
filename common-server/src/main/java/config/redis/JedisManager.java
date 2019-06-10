@@ -3,7 +3,7 @@ package config.redis;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
@@ -17,12 +17,12 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 public class JedisManager {
 
     @Autowired
-    private LettuceConnectionFactory lettuceConnectionFactory;
+    private JedisConnectionFactory jedisConnectionFactory;
 
     public Jedis getJedis() {
         Jedis jedis = null;
         try {
-            jedis = (Jedis) lettuceConnectionFactory.getConnection().getNativeConnection();
+            jedis = (Jedis) jedisConnectionFactory.getConnection().getNativeConnection();
         } catch (JedisConnectionException e) {
             String message = StringUtils.trim(e.getMessage());
             if ("Could not get a resource from the pool".equalsIgnoreCase(message)) {
@@ -37,12 +37,12 @@ public class JedisManager {
         return jedis;
     }
 
-    public LettuceConnectionFactory getRedisConnectionFactory() {
-        return lettuceConnectionFactory;
+    public JedisConnectionFactory getRedisConnectionFactory() {
+        return jedisConnectionFactory;
     }
 
-    public void setRedisConnectionFactory(LettuceConnectionFactory redisConnectionFactory) {
-        this.lettuceConnectionFactory = redisConnectionFactory;
+    public void setRedisConnectionFactory(JedisConnectionFactory redisConnectionFactory) {
+        this.jedisConnectionFactory = redisConnectionFactory;
     }
 
     public void returnResource(Jedis jedis, boolean isBroken) {

@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisPassword;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * @author 卫星
@@ -21,21 +19,21 @@ public class RedisConfig {
     @Autowired
     RedisProperties redisProperties;
 
-   /* *//**
+   /**
      * 连接池配置信息
-     *//*
+     */
     @Bean
     public JedisPoolConfig jedisPoolConfig(){
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         //其他属性可以自行添加
         return jedisPoolConfig;
-    }*/
+    }
 
-  /*  *//**
+    /**
      * jedis连接工厂
      * @param jedisPoolConfig
      * @return
-     *//**//*
+     */
     @Bean
     public JedisConnectionFactory redisConnectionFactory(JedisPoolConfig jedisPoolConfig) {
         JedisConnectionFactory redisStandaloneConfiguration = new JedisConnectionFactory();
@@ -47,9 +45,9 @@ public class RedisConfig {
         redisStandaloneConfiguration.setPoolConfig(jedisPoolConfig);
         //通过构造器来构造jedis客户端配置
         return redisStandaloneConfiguration;
-    }*/
+    }
 
-    @Bean
+   /* @Bean
    public LettuceConnectionFactory lettuceConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(redisProperties.getHost());
@@ -61,5 +59,5 @@ public class RedisConfig {
                 lettuceClientConfigurationBuilder.build());
         return factory;
     }
-
+*/
 }

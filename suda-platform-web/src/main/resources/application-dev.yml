@@ -1,5 +1,5 @@
 server:
-  port: 8077
+  port: 7087
 #eureka:
 #  client:
 #    serviceUrl:

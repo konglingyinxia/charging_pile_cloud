@@ -5,7 +5,7 @@ import com.constant.RedisDbIndexConst;
 import com.constant.RedisKeysPrefix;
 import config.com.MyConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class RedisUtils {
     //注入jedis连接工厂对象
     //注入jedis连接工厂对象
     @Autowired
-    LettuceConnectionFactory lettuceConnectionFactory;
+    JedisConnectionFactory lettuceConnectionFactory;
 
     @Autowired
     MyConfiguration myConfiguration;
