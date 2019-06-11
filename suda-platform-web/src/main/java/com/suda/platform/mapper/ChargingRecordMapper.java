@@ -1,7 +1,10 @@
 package com.suda.platform.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.suda.platform.VO.chargeStation.ChargingRecordVO;
 import com.suda.platform.entity.ChargingRecord;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,11 @@ import com.suda.platform.entity.ChargingRecord;
  */
 public interface ChargingRecordMapper extends BaseMapper<ChargingRecord> {
 
+    /**
+     *
+     * 查询充电桩充电站交易记录
+     * @param vo
+     * @return
+     */
+    List<ChargingRecordVO> selectAllChargingRecords(ChargingRecordVO vo);
 }

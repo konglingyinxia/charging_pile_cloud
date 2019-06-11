@@ -28,7 +28,10 @@ public class ChargingStationsServiceImpl extends ServiceImpl<ChargingStationsMap
         PageUtil.page(pageUtil);
         List<ChargingStations> lists = baseMapper.selectList(new QueryWrapper<ChargingStations>()
         .eq(vo.getId() !=null,"id",vo.getId())
-        .like(vo.getStationName() !=null,"station_name",vo.getStationName()));
+                .between(vo.getStartDate()!=null && vo.getEndDate()!=null,
+                        "create_time",vo.getStartDate(),vo.getEndDate())
+        .like(vo.getStationName() !=null,"station_name",vo.getStationName())
+        .orderByDesc("create_time"));
         return new PageInfo<>(lists);
     }
 }

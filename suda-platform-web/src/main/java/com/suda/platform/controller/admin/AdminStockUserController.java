@@ -1,11 +1,14 @@
 package com.suda.platform.controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import com.suda.platform.VO.stockuser.AdminUpdateAssetVo;
 import com.suda.platform.VO.stockuser.StockUserVO;
 import com.suda.platform.entity.StockUser;
+import com.suda.platform.enums.finance.StockUserAssetsManEnum;
 import com.suda.platform.service.IStockUserService;
 import com.util.Respons.ResponseMsg;
 import com.util.Respons.ResponseUtil;
+import com.util.StringUtils;
 import com.util.pageinfoutil.PageUtil;
 import config.annotation.LogMenthodName;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -58,6 +63,25 @@ public class AdminStockUserController {
             return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
         }
         int res = stockUserService.updateDisableUser(stockUser);
+        return res > 0 ? ResponseUtil.getSuccessMap() : ResponseUtil.getNotNormalMap();
+    }
+
+    /**
+     * 后台充值扣款
+     */
+    @RequestMapping(value = "updateRecharge", method = RequestMethod.POST)
+    @ResponseBody
+    @LogMenthodName(name = "会员后台充值/扣款")
+    @ApiOperation(notes = "会员账户资产管理:id 用户id;币种 stockCode;操作(1-充值2-扣款) operation; money 充值金额;备注 remark", value = "会员账户资产管理")
+    public Map<String, Object> recharge(AdminUpdateAssetVo vo, HttpServletRequest request,
+                                        HttpServletResponse response) {
+        if (StringUtils.isBlank(vo.getId(), vo.getMoney(), vo.getStockCode(), vo.getRemark(), vo.getOperation())) {
+            return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
+        }
+        if(!StockUserAssetsManEnum.CODES.contains(vo.getOperation())){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
+        }
+        int res = stockUserService.updateWallet(vo);
         return res > 0 ? ResponseUtil.getSuccessMap() : ResponseUtil.getNotNormalMap();
     }
 

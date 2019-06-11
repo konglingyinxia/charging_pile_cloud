@@ -25,4 +25,35 @@
         id, stock_user_id, charging_stations_id, charging_pile_info_id, province, city, county, address, price, service_charge, create_time, timestamp, charge_start_time, charge_end_time
     </sql>
 
+    <select id="selectAllChargingRecords"
+            parameterType="com.suda.platform.VO.chargeStation.ChargingRecordVO"
+            resultType="com.suda.platform.VO.chargeStation.ChargingRecordVO">
+      select cr.* ,
+      su.nickname,su.username,su.tel,
+      cpi.serialNumber,
+      cs.stationName
+      from  charging_record cr
+      left join stock_user su on su.id = cr.stock_user_id
+      left join charging_pile_info cpi on cpi.id = cr.charging_pile_info_id
+      left join charging_stations cs on cs.id = cr.charging_stations_id
+      <where>
+        <if test="nickname !='' and nickname !=''">
+          and  su.nickname ='${nickname}%'
+        </if>
+          <if test="username !='' and username !=''">
+              and  su.username ='${username}%'
+          </if>
+          <if test="tel !='' and tel !=''">
+              and  su.tel ='${tel}%'
+          </if>
+          <if test="id !=null">
+              and  cr.id = #{id}
+          </if>
+          <if test="endDate !=null and startDate !=null">
+              and "create_time" BETWEEN #{startDate}  and #{endDate}
+          </if>
+      </where>
+        order by id desc
+    </select>
+
 </mapper>

@@ -2,6 +2,7 @@ package com.suda.platform.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
+import com.suda.platform.VO.stockuser.AdminUpdateAssetVo;
 import com.suda.platform.VO.stockuser.StockUserLoginVO;
 import com.suda.platform.VO.stockuser.StockUserSignInVO;
 import com.suda.platform.VO.stockuser.StockUserVO;
@@ -81,4 +82,13 @@ public interface IStockUserService extends IService<StockUser> {
      * @param pswd
      */
     void updatePswd(Long id, String pswd);
+
+
+    /**
+     * 后台会员充值扣款
+     * @param vo
+     * @return
+     */
+    int updateWallet(AdminUpdateAssetVo vo);
+
 }

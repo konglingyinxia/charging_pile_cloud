@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.StockUserMoneyDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.StockUserMoneyDetail">
+        <id column="id" property="id" />
+        <result column="stock_user_id" property="stockUserId" />
+        <result column="stock_code" property="stockCode" />
+        <result column="money" property="money" />
+        <result column="money_before" property="moneyBefore" />
+        <result column="money_after" property="moneyAfter" />
+        <result column="detail" property="detail" />
+        <result column="wallet_type" property="walletType" />
+        <result column="type" property="type" />
+        <result column="type_id" property="typeId" />
+        <result column="create_time" property="createTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="timestamp" property="timestamp" />
+        <result column="water_type" property="waterType" />
+        <result column="income" property="income" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, stock_user_id, stock_code, money, money_before, money_after, detail, type, type_id, create_time, is_deleted, timestamp, water_type, income
+    </sql>
+    <!--后台查询资产流水-->
+    <select id="getAdminMoneyDetails" parameterType="com.suda.platform.VO.finance.StockUserMoneyDetailVO"
+            resultType="com.suda.platform.VO.finance.StockUserMoneyDetailVO">
+        select
+        sumd. stock_code, sumd.money,
+        sumd.money_before,
+        sumd.money_after,
+        sumd.detail,
+        sumd.type,
+        sumd.create_time,
+        sumd.is_deleted,
+        sumd.water_type,
+        sumd.income,
+        su.nickname ,su.username ,su.user_uid,su.tel,su.email
+        ,su.create_time,su.last_login_time
+         from stock_user_money_detail sumd
+         left join stock_user su on su.id = sumd.stock_user_id
+        <where>
+            <if test="income!=null">
+                and  sumd.income = #{income}
+            </if>
+            <if test="waterType!=null">
+                and  sumd.water_type = #{waterType}
+            </if>
+            <if test="stockCode!=null">
+                and  sumd.stock_code = #{stockCode}
+            </if>
+            <if test="type!=null">
+                and  sumd.type = #{type}
+            </if>
+            <if test="tel !='' and tel !=null">
+                and su.tel=#{tel}
+            </if>
+            <if test="email !='' and email !=null">
+                and su.email=#{email}
+            </if>
+            <if test=" userUid !=null">
+                and   su.user_uid=#{userUid}
+            </if>
+        </where>
+        order by sumd.id desc
+    </select>
+    <select id="getAppMoneyDetails" parameterType="com.suda.platform.VO.finance.StockUserMoneyDetailAppVO" resultType="com.suda.platform.VO.finance.StockUserMoneyDetailAppVO">
+        select
+        sumd. stock_code, sumd.money,
+        sumd.money_before,
+        sumd.money_after,
+        sumd.detail,
+        sumd.type,
+        sumd.create_time,
+        sumd.income
+        from stock_user_money_detail sumd
+        <where>
+            <if test="income!=null">
+                and  sumd.income = #{income}
+            </if>
+            <if test="stockCode!=null">
+                and  sumd.stock_code = #{stockCode}
+            </if>
+            <if test="type!=null">
+                and  sumd.type = #{type}
+            </if>
+            <if test="stockUserId!=null">
+                and  sumd.stock_user_id = #{stockUserId}
+            </if>
+        </where>
+        order by sumd.id desc
+    </select>
+
+</mapper>

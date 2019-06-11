@@ -30,6 +30,9 @@ public enum  FinancialTypeMessageEnum {
     MESSAGE_16(16, "钱包划转，转出数量"),
     MESSAGE_17(17, "钱包划转，转出扣除手续费！"),
     MESSAGE_18(18, "钱包划转，转换币种数量！"),
+    MESSAGE_19(19, "转出审核拒绝返还！"),
+    MESSAGE_20(20, "转出审核拒绝返还手续费！"),
+
     ;
 
     private Integer code;

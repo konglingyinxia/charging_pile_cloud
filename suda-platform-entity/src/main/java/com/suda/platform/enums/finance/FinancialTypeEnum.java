@@ -14,6 +14,8 @@ public enum FinancialTypeEnum {
     TYPE_4(4, "手续费"),
     TYPE_5(5, "钱包转入"),
     TYPE_6(6, "钱包划转"),
+    TYPE_7(7, "CTC申诉"),
+    TYPE_8(8, "转币审核"),
     ;
     private Integer code;
     private String message;

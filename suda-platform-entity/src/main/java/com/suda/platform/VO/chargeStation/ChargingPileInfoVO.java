@@ -1,4 +1,4 @@
-package com.suda.platform.entity;
+package com.suda.platform.VO.chargeStation;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -30,7 +30,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="ChargingPileInfo对象", description="充电桩")
-public class ChargingPileInfo extends Model<ChargingPileInfo> {
+public class ChargingPileInfoVO extends Model<ChargingPileInfoVO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -89,15 +89,16 @@ public class ChargingPileInfo extends Model<ChargingPileInfo> {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-    @TableField("timestamp")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date timestamp;
 
 
     @ApiModelProperty(value = "0未使用 1：正在使用")
     @TableField("use_status")
     private Boolean useStatus;
+    /**
+     * 开始时间  结束时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startDate, endDate;
 
 
     @Override

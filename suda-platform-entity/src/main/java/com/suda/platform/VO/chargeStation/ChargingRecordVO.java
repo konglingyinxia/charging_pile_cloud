@@ -1,4 +1,4 @@
-package com.suda.platform.entity;
+package com.suda.platform.VO.chargeStation;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -30,7 +30,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="ChargingRecord对象", description="充电记录")
-public class ChargingRecord extends Model<ChargingRecord> {
+public class ChargingRecordVO extends Model<ChargingRecordVO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -107,6 +107,40 @@ public class ChargingRecord extends Model<ChargingRecord> {
     @TableField("charge_num")
     @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal chargeNum;
+
+
+
+    @ApiModelProperty(value = "充电站名字")
+    @TableField("station_name")
+    private String stationName;
+
+
+    @ApiModelProperty(value = "编号")
+    @TableField("serial_number")
+    private String serialNumber;
+
+    /**
+     * 开始时间  结束时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(exist = false)
+    private Date startDate, endDate;
+
+
+
+    /*用户信息*/
+    @ApiModelProperty(value = "用户昵称")
+    @TableField("nickname")
+    private String nickname;
+
+    @ApiModelProperty(value = "真实姓名")
+    @TableField("username")
+    private String username;
+
+
+    @ApiModelProperty(value = "手机号")
+    @TableField("tel")
+    private String tel;
 
 
     @Override

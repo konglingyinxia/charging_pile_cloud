@@ -3,18 +3,26 @@ package com.suda.platform.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageInfo;
+import com.suda.platform.VO.stockuser.AdminUpdateAssetVo;
 import com.suda.platform.VO.stockuser.StockUserLoginVO;
 import com.suda.platform.VO.stockuser.StockUserSignInVO;
 import com.suda.platform.VO.stockuser.StockUserVO;
 import com.suda.platform.entity.StockUser;
+import com.suda.platform.entity.StockUserCapitalFund;
+import com.suda.platform.enums.finance.FinancialTypeEnum;
+import com.suda.platform.enums.finance.WaterTypeEnum;
 import com.suda.platform.mapper.StockUserMapper;
+import com.suda.platform.service.IStockUserCapitalFundService;
+import com.suda.platform.service.IStockUserMoneyDetailService;
 import com.suda.platform.service.IStockUserService;
+import com.util.Respons.ResponseMsg;
 import com.util.pageinfoutil.PageUtil;
 import config.advice.CommonException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -31,6 +39,10 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
 
     @Autowired
     private StockUserMapper stockUserMapper;
+    @Autowired
+    private IStockUserCapitalFundService stockUserCapitalFundService;
+    @Autowired
+    private IStockUserMoneyDetailService stockUserMoneyDetailService;
 
 
     /**
@@ -136,4 +148,66 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
         user.setPswd(pswd);
         stockUserMapper.updateById(user);
     }
+
+    /**
+     * 会员后台充值扣款管理
+     *
+     * @param vo
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = {})
+    public int updateWallet(AdminUpdateAssetVo vo) {
+        String stockCode = vo.getStockCode();
+        Long id = vo.getId();
+        Byte operation = vo.getOperation();
+        BigDecimal money = vo.getMoney();
+
+        int status=0;
+        StockUserCapitalFund stockUserCapitalFund = stockUserCapitalFundService.upAndSelectFund(id, stockCode);
+        switch (operation.intValue()) {
+            //充值
+            case 1:
+                //更新账户资产
+                int i =  stockUserCapitalFundService.updateRechargeByCodeId(stockCode,id,money);
+                //资产流水
+                if(i>0){
+                    stockUserMoneyDetailService.addUserMoneyDetail(
+                            id,
+                            money,
+                            stockUserCapitalFund.getUsableFund(),
+                            WaterTypeEnum.STATUS_1.getCode(),
+                            FinancialTypeEnum.TYPE_1,vo.getRemark(),
+                            null,
+                            stockCode);
+                }
+                status =i;
+                break;
+            //扣款
+            case 2:
+                BigDecimal usableFund = stockUserCapitalFund.getUsableFund();
+                if(money.compareTo(usableFund)>0){
+                    throw new CommonException(String.format(ResponseMsg.DEAL_COIN_LITTER,stockCode));
+                }
+                //更新账户资产
+                int j =  stockUserCapitalFundService.updateRechargeByCodeId(stockCode,id,money);
+                //资产流水
+                if(j>0) {
+                    stockUserMoneyDetailService.addUserMoneyDetail(
+                            id,
+                            money.multiply(new BigDecimal(-1)),
+                            stockUserCapitalFund.getUsableFund(),
+                            WaterTypeEnum.STATUS_1.getCode(),
+                            FinancialTypeEnum.TYPE_1, vo.getRemark(),
+                            null,
+                            stockCode);
+                }
+                status =j;
+                break;
+            default:
+                throw new CommonException(ResponseMsg.ADMIN_MANAGE_RECHARGE_OPERATION);
+        }
+        return status;
+    }
+
 }

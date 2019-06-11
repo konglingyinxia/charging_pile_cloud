@@ -1,7 +1,6 @@
 package com.suda.platform.controller.common;
 
 import com.suda.platform.VO.StatusVo;
-import com.suda.platform.enums.PayWayPayTypeEnum;
 import com.suda.platform.enums.TelCodeTypeEnum;
 import com.suda.platform.enums.version.AppVersionEnum;
 import com.util.Respons.ResponseUtil;
@@ -46,22 +45,6 @@ public class CommonStatusController {
         }
         return ResponseUtil.getSuccessMap(list);
     }
-
-
-    @RequestMapping(value = "getPayWayPayType", method = RequestMethod.GET)
-    @ResponseBody
-    @ApiOperation(value = "用户支付方式类型")
-    public Map<String, Object> getPayWayPayType() {
-        List<StatusVo> list = new ArrayList<>();
-        for (PayWayPayTypeEnum o : PayWayPayTypeEnum.values()) {
-            StatusVo vo = new StatusVo();
-            vo.setCode(o.getCode().intValue());
-            vo.setName(o.getMessage());
-            list.add(vo);
-        }
-        return ResponseUtil.getSuccessMap(list);
-    }
-
 
 
     /**

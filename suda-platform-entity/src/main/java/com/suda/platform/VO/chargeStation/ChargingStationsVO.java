@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.suda.platform.format.CustomBigDecimalSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -36,13 +38,15 @@ public class ChargingStationsVO extends Model<ChargingStationsVO> {
 
     @ApiModelProperty(value = "经度")
     @TableField(" longitude")
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal  longitude;
 
     @ApiModelProperty(value = "维度")
     @TableField("dimensionality")
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal dimensionality;
 
-    @ApiModelProperty(value = "充电桩名字")
+    @ApiModelProperty(value = "充电站名字")
     @TableField("station_name")
     private String stationName;
 
