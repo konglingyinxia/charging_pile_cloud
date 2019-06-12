@@ -97,7 +97,7 @@ public class AdminUserComtroller {
     @RequestMapping(value = "/editUserRole", method = RequestMethod.POST)
     @LogMenthodName(name = "更改管理员角色")
     @ResponseBody
-    public Map<String, Object> editUserRole(AdminUserVO adminUserVO) throws UnsupportedEncodingException {
+    public Map<String, Object> editUserRole(AdminUserVO adminUserVO)  {
         if(adminUserVO.getId()==null
                 || adminUserVO.getId() ==1
                 || adminUserVO.getRoleId() ==null){

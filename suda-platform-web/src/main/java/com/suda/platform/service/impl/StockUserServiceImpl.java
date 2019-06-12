@@ -10,9 +10,12 @@ import com.suda.platform.VO.stockuser.StockUserVO;
 import com.suda.platform.entity.StockUser;
 import com.suda.platform.entity.StockUserCapitalFund;
 import com.suda.platform.enums.finance.FinancialTypeEnum;
+import com.suda.platform.enums.finance.PayTypeEnum;
 import com.suda.platform.enums.finance.WaterTypeEnum;
+import com.suda.platform.enums.finance.WithdrawStatusEnum;
 import com.suda.platform.mapper.StockUserMapper;
 import com.suda.platform.service.IStockUserCapitalFundService;
+import com.suda.platform.service.IStockUserChargeService;
 import com.suda.platform.service.IStockUserMoneyDetailService;
 import com.suda.platform.service.IStockUserService;
 import com.util.Respons.ResponseMsg;
@@ -43,6 +46,8 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
     private IStockUserCapitalFundService stockUserCapitalFundService;
     @Autowired
     private IStockUserMoneyDetailService stockUserMoneyDetailService;
+    @Autowired
+    private IStockUserChargeService stockUserChargeService;
 
 
     /**
@@ -206,6 +211,10 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
                 break;
             default:
                 throw new CommonException(ResponseMsg.ADMIN_MANAGE_RECHARGE_OPERATION);
+        }
+        if(status !=0){
+            //添加充值记录
+            stockUserChargeService.addChargeRecord(vo.getAgentUserId(),id, money,stockCode, PayTypeEnum.STATUS_2, WithdrawStatusEnum.STATUS_2);
         }
         return status;
     }

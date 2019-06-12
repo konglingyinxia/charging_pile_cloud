@@ -2,11 +2,11 @@ package com.suda.platform.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.collect.Lists;
 import com.suda.platform.entity.StockUserCapitalFund;
 import com.suda.platform.mapper.StockUserCapitalFundMapper;
 import com.suda.platform.service.ICommonService;
 import com.suda.platform.service.IStockUserCapitalFundService;
+import com.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * <p>
@@ -81,11 +80,10 @@ public class StockUserCapitalFundServiceImpl extends ServiceImpl<StockUserCapita
      */
     @Override
     @Transactional(rollbackFor = {})
-    public List<StockUserCapitalFund> getStockUserCapitalFundS(Long id, String stockCode) {
-        List<StockUserCapitalFund> funds = Lists.newArrayList();
+    public StockUserCapitalFund getStockUserCapitalFundS(Long id, String stockCode) {
         StockUserCapitalFund stockUserCapitalFund = baseMapper.selectOne(new QueryWrapper<StockUserCapitalFund>()
-                .eq("stock_user_id",id).eq("stock_code",stockCode));
-        funds.add(stockUserCapitalFund);
-        return funds;
+                .eq("stock_user_id",id).eq(StringUtils.isNotBlank(stockCode),"stock_code",stockCode));
+
+        return stockUserCapitalFund;
     }
 }

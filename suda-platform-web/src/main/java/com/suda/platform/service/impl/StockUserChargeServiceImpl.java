@@ -2,9 +2,16 @@ package com.suda.platform.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.suda.platform.entity.StockUserCharge;
+import com.suda.platform.enums.finance.PayTypeEnum;
+import com.suda.platform.enums.finance.WithdrawStatusEnum;
 import com.suda.platform.mapper.StockUserChargeMapper;
 import com.suda.platform.service.IStockUserChargeService;
+import com.util.DealDateUtil;
+import com.util.StringUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -17,4 +24,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class StockUserChargeServiceImpl extends ServiceImpl<StockUserChargeMapper, StockUserCharge> implements IStockUserChargeService {
 
+    /**
+     * 充值记录入口
+     * @param agentUserId 代理id
+     * @param stockUserId 充值用户id
+     * @param money 冲入金额
+     * @param stockCode //充值卡号
+     * @param typeEnum //充值方式
+     * @param withdrawStatus //支付状态
+     */
+    @Override
+    @Async
+    public void addChargeRecord(Long agentUserId, Long stockUserId, BigDecimal money, String stockCode, PayTypeEnum typeEnum, WithdrawStatusEnum withdrawStatus) {
+        StockUserCharge userCharge = new StockUserCharge();
+        userCharge.setAgentUserId(agentUserId);
+        userCharge.setCreateTime(DealDateUtil.getNowDate());
+        userCharge.setFee(money);
+        userCharge.setPayType(typeEnum.getCode());
+        userCharge.setStockCode(stockCode);
+        userCharge.setStockUserId(stockUserId);
+        userCharge.setSwiftNo(stockUserId+System.currentTimeMillis() + StringUtils.getRandom(9));
+        userCharge.setWithdrawStatus(withdrawStatus.getCode().intValue());
+        baseMapper.insert(userCharge);
+    }
 }

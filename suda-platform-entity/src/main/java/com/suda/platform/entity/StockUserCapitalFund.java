@@ -51,11 +51,6 @@ public class StockUserCapitalFund extends Model<StockUserCapitalFund> {
     @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal inAllFee;
 
-    @ApiModelProperty(value = "总提现金额")
-    @TableField("out_all_fee")
-    @JsonSerialize(using = CustomBigDecimalSerializer.class)
-    private BigDecimal outAllFee;
-
     @TableField("create_time")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -69,14 +64,6 @@ public class StockUserCapitalFund extends Model<StockUserCapitalFund> {
      */
     @TableField("agent_user_id")
     private Long agentUserId;
-
-    @TableField(exist = false)
-    @ApiModelProperty(value = "人民币金额")
-    private String cnyPrice="6.816";
-    @TableField(exist = false)
-    private String change="0";
-    @TableField(exist = false)
-    private String changeRate="0%";
 
     public StockUserCapitalFund() {
     }
@@ -106,16 +93,6 @@ public class StockUserCapitalFund extends Model<StockUserCapitalFund> {
         return inAllFee;
     }
 
-    public void setInAllFee(BigDecimal inAllFee) {
-        this.inAllFee = inAllFee;
-    }
-    public BigDecimal getOutAllFee() {
-        return outAllFee;
-    }
-
-    public void setOutAllFee(BigDecimal outAllFee) {
-        this.outAllFee = outAllFee;
-    }
     public Date getCreateTime() {
         return createTime;
     }
@@ -143,7 +120,6 @@ public class StockUserCapitalFund extends Model<StockUserCapitalFund> {
         ", stockUserId=" + stockUserId +
         ", usableFund=" + usableFund +
         ", inAllFee=" + inAllFee +
-        ", outAllFee=" + outAllFee +
         ", createTime=" + createTime +
         ", timestamp=" + timestamp +
         "}";

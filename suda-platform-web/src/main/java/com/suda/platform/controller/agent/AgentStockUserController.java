@@ -1,4 +1,4 @@
-package com.suda.platform.controller.admin;
+package com.suda.platform.controller.agent;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
@@ -27,15 +27,15 @@ import java.util.Map;
 
 /**
  *
- * 系统会员管理
+ * 代理商 会员管理
  * @author kongling
  * @package com.suda.server.service.admin.controller
  * @date 2019-04-20  16:47
  * @project niuwan_cloud
  */
 @RestController
-@RequestMapping(value = "admin/stockUser",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class AdminStockUserController {
+@RequestMapping(value = "agent/stockUser",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+public class AgentStockUserController {
 
     @Autowired
     private IStockUserService stockUserService;
@@ -80,9 +80,10 @@ public class AdminStockUserController {
     @ApiOperation(notes = "会员账户资产管理:id 用户id;卡号 stockCode;操作(1-充值2-扣款) operation; money 充值金额;备注 remark", value = "会员账户资产管理")
     public Map<String, Object> recharge(AdminUpdateAssetVo vo, HttpServletRequest request,
                                         HttpServletResponse response) {
-        if (StringUtils.isBlank(vo.getId(), vo.getMoney(), vo.getStockCode(), vo.getRemark(), vo.getOperation())) {
+        if (StringUtils.isBlank(vo.getId(), vo.getMoney(), vo.getStockCode(), vo.getRemark(), vo.getOperation(),vo.getAgentUserId())) {
             return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
         }
+
         StockUserCapitalFund fund = stockUserCapitalFundService.getOne(new QueryWrapper<StockUserCapitalFund>()
         .eq("stock_user_id",vo.getId()));
         if(fund !=null){
@@ -90,26 +91,9 @@ public class AdminStockUserController {
                 return ResponseUtil.getNotNormalMap("充值人的卡号错误");
             }
         }
-        vo.setAgentUserId(0L);
         int res = stockUserService.updateWallet(vo);
         return res > 0 ? ResponseUtil.getSuccessMap() : ResponseUtil.getNotNormalMap();
     }
 
-    /**
-     * 我的资产
-     *
-     * @param stockUserId
-     * @param stockCode
-     * @return
-     */
-    @RequestMapping(value = "/getMyStockUserFunds",method ={RequestMethod.POST,RequestMethod.GET} )
-    @ResponseBody
-    public Map<String, Object> getStockUserFunds(Long stockUserId , String stockCode) {
-        if (stockUserId == null) {
-            return ResponseUtil.getNotNormalMap(ResponseMsg.ID_IS_EMPTY);
-        }
-        StockUserCapitalFund funds = stockUserCapitalFundService.getStockUserCapitalFundS(stockUserId,stockCode);
-        return ResponseUtil.getSuccessMap(funds);
-    }
 
 }

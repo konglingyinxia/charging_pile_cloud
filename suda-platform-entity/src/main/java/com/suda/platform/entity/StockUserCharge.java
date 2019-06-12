@@ -70,7 +70,7 @@ public class StockUserCharge extends Model<StockUserCharge> {
 
     @ApiModelProperty(value = "支付类型：1.微信 2.线下")
     @TableField("pay_type")
-    private Integer payType;
+    private Byte payType;
 
     @ApiModelProperty(value = "充值代理商ID")
     @TableField("agent_user_id")

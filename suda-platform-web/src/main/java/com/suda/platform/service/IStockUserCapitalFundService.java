@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.suda.platform.entity.StockUserCapitalFund;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * <p>
@@ -41,7 +40,7 @@ public interface IStockUserCapitalFundService extends IService<StockUserCapitalF
      * @param stockCode
      * @return
      */
-    List<StockUserCapitalFund> getStockUserCapitalFundS(Long id, String stockCode);
+    StockUserCapitalFund getStockUserCapitalFundS(Long id, String stockCode);
 
 
 }
