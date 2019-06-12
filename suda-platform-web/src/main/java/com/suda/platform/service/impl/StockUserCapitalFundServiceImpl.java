@@ -39,10 +39,11 @@ public class StockUserCapitalFundServiceImpl extends ServiceImpl<StockUserCapita
      * 查询用户该币种资产 不存在则更新
      * @param id
      * @param stockCode
+     * @param agentUserId
      * @return
      */
     @Override
-    public StockUserCapitalFund upAndSelectFund(Long id, String stockCode) {
+    public StockUserCapitalFund upAndSelectFund(Long id, String stockCode, Long agentUserId) {
         StockUserCapitalFund stockUserCapitalFund = baseMapper.selectOne(new QueryWrapper<StockUserCapitalFund>()
         .eq("stock_user_id",id).eq("stock_code",stockCode));
         if(stockUserCapitalFund ==null){
@@ -51,6 +52,7 @@ public class StockUserCapitalFundServiceImpl extends ServiceImpl<StockUserCapita
             stockUserCapitalFund.setStockUserId(id);
             stockUserCapitalFund.setStockCode(stockCode);
             stockUserCapitalFund.setUsableFund(BigDecimal.ZERO);
+            stockUserCapitalFund.setAgentUserId(agentUserId);
             baseMapper.insert(stockUserCapitalFund);
         }
         return stockUserCapitalFund;
@@ -81,8 +83,9 @@ public class StockUserCapitalFundServiceImpl extends ServiceImpl<StockUserCapita
     @Transactional(rollbackFor = {})
     public List<StockUserCapitalFund> getStockUserCapitalFundS(Long id, String stockCode) {
         List<StockUserCapitalFund> funds = Lists.newArrayList();
-        StockUserCapitalFund fund = upAndSelectFund(id, stockCode);
-        funds.add(fund);
+        StockUserCapitalFund stockUserCapitalFund = baseMapper.selectOne(new QueryWrapper<StockUserCapitalFund>()
+                .eq("stock_user_id",id).eq("stock_code",stockCode));
+        funds.add(stockUserCapitalFund);
         return funds;
     }
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.StockUserChargeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.StockUserCharge">
+        <id column="id" property="id" />
+        <result column="swift_no" property="swiftNo" />
+        <result column="stock_user_id" property="stockUserId" />
+        <result column="stock_code" property="stockCode" />
+        <result column="fee" property="fee" />
+        <result column="withdraw_status" property="withdrawStatus" />
+        <result column="create_time" property="createTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="timestamp" property="timestamp" />
+        <result column="tran_id" property="tranId" />
+        <result column="pay_type" property="payType" />
+        <result column="agent_user_id" property="agentUserId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, swift_no, stock_user_id, stock_code, fee, withdraw_status, create_time, is_deleted, timestamp, tran_id, pay_type, agent_user_id
+    </sql>
+
+</mapper>

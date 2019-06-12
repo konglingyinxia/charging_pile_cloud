@@ -1,10 +1,13 @@
 package com.suda.platform.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.stockuser.AdminUpdateAssetVo;
 import com.suda.platform.VO.stockuser.StockUserVO;
 import com.suda.platform.entity.StockUser;
+import com.suda.platform.entity.StockUserCapitalFund;
 import com.suda.platform.enums.finance.StockUserAssetsManEnum;
+import com.suda.platform.service.IStockUserCapitalFundService;
 import com.suda.platform.service.IStockUserService;
 import com.util.Respons.ResponseMsg;
 import com.util.Respons.ResponseUtil;
@@ -37,6 +40,9 @@ public class AdminStockUserController {
 
     @Autowired
     private IStockUserService stockUserService;
+
+    @Autowired
+    private IStockUserCapitalFundService stockUserCapitalFundService;
     /**
      * 查询所有用户
      */
@@ -72,7 +78,7 @@ public class AdminStockUserController {
     @RequestMapping(value = "updateRecharge", method = RequestMethod.POST)
     @ResponseBody
     @LogMenthodName(name = "会员后台充值/扣款")
-    @ApiOperation(notes = "会员账户资产管理:id 用户id;币种 stockCode;操作(1-充值2-扣款) operation; money 充值金额;备注 remark", value = "会员账户资产管理")
+    @ApiOperation(notes = "会员账户资产管理:id 用户id;卡号 stockCode;操作(1-充值2-扣款) operation; money 充值金额;备注 remark", value = "会员账户资产管理")
     public Map<String, Object> recharge(AdminUpdateAssetVo vo, HttpServletRequest request,
                                         HttpServletResponse response) {
         if (StringUtils.isBlank(vo.getId(), vo.getMoney(), vo.getStockCode(), vo.getRemark(), vo.getOperation())) {
@@ -80,6 +86,13 @@ public class AdminStockUserController {
         }
         if(!StockUserAssetsManEnum.CODES.contains(vo.getOperation())){
             return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
+        }
+        StockUserCapitalFund fund = stockUserCapitalFundService.getOne(new QueryWrapper<StockUserCapitalFund>()
+        .eq("stock_user_id",vo.getId()));
+        if(fund !=null){
+            if(vo.getStockCode().equalsIgnoreCase(fund.getStockCode())){
+                return ResponseUtil.getNotNormalMap("充值人的卡号错误");
+            }
         }
         int res = stockUserService.updateWallet(vo);
         return res > 0 ? ResponseUtil.getSuccessMap() : ResponseUtil.getNotNormalMap();

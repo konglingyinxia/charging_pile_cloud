@@ -20,9 +20,10 @@ public interface IStockUserCapitalFundService extends IService<StockUserCapitalF
      * 查询账户币种资产不存在更新
      * @param id
      * @param stockCode
+     * @param agentUserId
      * @return
      */
-    StockUserCapitalFund upAndSelectFund(Long id, String stockCode);
+    StockUserCapitalFund upAndSelectFund(Long id, String stockCode, Long agentUserId);
 
     /**
      * 更新账户资产

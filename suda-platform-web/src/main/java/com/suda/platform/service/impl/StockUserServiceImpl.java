@@ -164,7 +164,7 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
         BigDecimal money = vo.getMoney();
 
         int status=0;
-        StockUserCapitalFund stockUserCapitalFund = stockUserCapitalFundService.upAndSelectFund(id, stockCode);
+        StockUserCapitalFund stockUserCapitalFund = stockUserCapitalFundService.upAndSelectFund(id, stockCode,vo.getAgentUserId());
         switch (operation.intValue()) {
             //充值
             case 1:

@@ -27,6 +27,12 @@ public class AdminUpdateAssetVo {
      */
     private String remark;
 
+    /**
+     * agent_user_id
+     * 代理商id
+     */
+    private Long agentUserId;
+
     public Long getId() {
         return id;
     }
@@ -66,5 +72,13 @@ public class AdminUpdateAssetVo {
 
     public void setOperation(Byte operation) {
         this.operation = operation;
+    }
+
+    public Long getAgentUserId() {
+        return agentUserId;
+    }
+
+    public void setAgentUserId(Long agentUserId) {
+        this.agentUserId = agentUserId;
     }
 }

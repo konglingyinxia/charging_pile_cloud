@@ -63,6 +63,12 @@ public class StockUserCapitalFund extends Model<StockUserCapitalFund> {
 
     @TableField("timestamp")
     private Date timestamp;
+    /**
+     * agent_user_id
+     * 代理商id
+     */
+    @TableField("agent_user_id")
+    private Long agentUserId;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "人民币金额")
