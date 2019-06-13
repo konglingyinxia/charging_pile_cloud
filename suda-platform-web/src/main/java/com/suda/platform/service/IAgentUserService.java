@@ -1,7 +1,10 @@
 package com.suda.platform.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
+import com.suda.platform.VO.agentuser.AgentUserVO;
 import com.suda.platform.entity.AgentUser;
+import com.util.pageinfoutil.PageUtil;
 
 /**
  * <p>
@@ -14,4 +17,13 @@ import com.suda.platform.entity.AgentUser;
 public interface IAgentUserService extends IService<AgentUser> {
 
     AgentUser selectByAccountLogin(String account, String password);
+
+    /**
+     * 查询代理商
+     *
+     * @param vo
+     * @param pageUtil
+     * @return
+     */
+    PageInfo<AgentUserVO> selectByChoice(AgentUserVO vo, PageUtil pageUtil);
 }

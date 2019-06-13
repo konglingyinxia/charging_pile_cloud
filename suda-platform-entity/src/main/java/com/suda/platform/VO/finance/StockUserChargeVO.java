@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.suda.platform.format.CustomBigDecimalSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -48,6 +51,7 @@ public class StockUserChargeVO extends Model<StockUserChargeVO> {
 
     @ApiModelProperty(value = "人民币金额")
     @TableField("fee")
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal fee;
 
     @ApiModelProperty(value = "支付状态:1:未支付，2：支付成功 3：支付失败 4:处理中")
@@ -56,6 +60,8 @@ public class StockUserChargeVO extends Model<StockUserChargeVO> {
 
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     @ApiModelProperty(value = "1:删除，0:未删除")
@@ -63,6 +69,8 @@ public class StockUserChargeVO extends Model<StockUserChargeVO> {
     private Boolean isDeleted;
 
     @TableField("timestamp")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date timestamp;
 
     @ApiModelProperty(value = "三方支付平台的流水号")
