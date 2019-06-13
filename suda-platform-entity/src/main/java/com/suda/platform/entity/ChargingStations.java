@@ -47,7 +47,7 @@ public class ChargingStations extends Model<ChargingStations> {
     @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal dimensionality;
 
-    @ApiModelProperty(value = "充电桩名字")
+    @ApiModelProperty(value = "充电站名字")
     @TableField("station_name")
     private String stationName;
 

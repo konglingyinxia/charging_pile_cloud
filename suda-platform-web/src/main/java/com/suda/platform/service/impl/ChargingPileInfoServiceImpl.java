@@ -28,6 +28,7 @@ public class ChargingPileInfoServiceImpl extends ServiceImpl<ChargingPileInfoMap
         PageUtil.page(pageUtil);
         List<ChargingPileInfo> lists = baseMapper.selectList(new QueryWrapper<ChargingPileInfo>()
                 .eq(vo.getId() !=null,"id",vo.getId())
+                .eq("is_deleted",0)
                 .eq(vo.getChargingStationsId()!=null,"charging_stations_id",vo.getChargingStationsId())
                 .eq(vo.getAcDc()!=null,"ac_dc",vo.getAcDc())
                 .between(vo.getStartDate()!=null && vo.getEndDate()!=null,

@@ -87,7 +87,7 @@ public class AgentStockUserController {
         StockUserCapitalFund fund = stockUserCapitalFundService.getOne(new QueryWrapper<StockUserCapitalFund>()
         .eq("stock_user_id",vo.getId()));
         if(fund !=null){
-            if(vo.getStockCode().equalsIgnoreCase(fund.getStockCode())){
+            if(!vo.getStockCode().equalsIgnoreCase(fund.getStockCode())){
                 return ResponseUtil.getNotNormalMap("充值人的卡号错误");
             }
         }

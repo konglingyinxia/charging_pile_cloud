@@ -49,6 +49,9 @@
           <if test="id !=null">
               and  cr.id = #{id}
           </if>
+          <if test="stockUserId !=null">
+              and  cr.stock_user_id = #{stockUserId}
+          </if>
           <if test="endDate !=null and startDate !=null">
               and "create_time" BETWEEN #{startDate}  and #{endDate}
           </if>

@@ -1,5 +1,7 @@
 package com.suda.platform.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.chargeStation.ChargingPileInfoVO;
 import com.suda.platform.VO.chargeStation.ChargingStationsVO;
@@ -8,6 +10,7 @@ import com.suda.platform.entity.ChargingStations;
 import com.suda.platform.service.IChargingPileInfoService;
 import com.suda.platform.service.IChargingStationsService;
 import com.util.DealDateUtil;
+import com.util.Respons.ResponseMsg;
 import com.util.Respons.ResponseUtil;
 import com.util.pageinfoutil.PageUtil;
 import config.annotation.LogMenthodName;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,6 +66,31 @@ public class AdminChargeStationController {
     }
 
     /**
+     * 删除充电站
+     */
+    @RequestMapping(value = "/delStations")
+    @ResponseBody
+    @LogMenthodName(name = "删除充电站")
+    public Map<String,Object> delStations(ChargingStations vo){
+        if(vo.getId()==null){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.ID_IS_EMPTY);
+        }
+        //查询是该充电站下是否有充电桩
+        List<Object> pileInfos = chargingPileInfoService.listObjs(new QueryWrapper<ChargingPileInfo>()
+        .eq("is_deleted",0)
+        .eq("charging_stations_id",vo.getId()));
+        if(!pileInfos.isEmpty()){
+            return ResponseUtil.getNotNormalMap("该充电站下有未删除的充电桩");
+        }
+        chargingStationsService.update(new UpdateWrapper<ChargingStations>()
+        .set("is_deleted",1)
+        .eq("id",vo.getId()));
+        return ResponseUtil.getSuccessMap();
+    }
+
+
+
+    /**
      * 查看所有充电站下的充电桩
      */
     @RequestMapping(value = "/selectAllChargingPileInfos")
@@ -72,11 +101,11 @@ public class AdminChargeStationController {
     }
 
     /**
-     * 编辑和添加充电站
+     * 编辑和添加充电桩
      */
     @RequestMapping(value = "/addAndEditChargingPileInfo")
     @ResponseBody
-    @LogMenthodName(name = " 编辑/添加充电站")
+    @LogMenthodName(name = " 编辑/添加充电桩")
     public Map<String,Object> addAndEditChargingPileInfo(ChargingPileInfo vo){
         if(vo.getId()==null){
             if(vo.getChargingStationsId()==null){
@@ -95,6 +124,27 @@ public class AdminChargeStationController {
         return ResponseUtil.getSuccessMap();
     }
 
+
+    /**
+     * 删除充电桩
+     */
+    @RequestMapping(value = "/delChargingPileInfo")
+    @ResponseBody
+    @LogMenthodName(name = "删除充电桩")
+    public Map<String,Object> delChargingPileInfo(ChargingPileInfo vo){
+        if(vo.getId()==null){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.ID_IS_EMPTY);
+        }
+        //查询是该充电站下是否有充电桩
+        ChargingPileInfo pileInfo = chargingPileInfoService.getById(vo.getId());
+        if(pileInfo ==null|| pileInfo.getUseStatus()){
+            return ResponseUtil.getNotNormalMap("充电桩不存在或正在使用");
+        }
+        chargingPileInfoService.update(new UpdateWrapper<ChargingPileInfo>()
+                .set("is_deleted",1)
+                .eq("id",vo.getId()));
+        return ResponseUtil.getSuccessMap();
+    }
 
 
 }
