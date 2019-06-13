@@ -44,6 +44,26 @@ public class UserCacheUtil {
 
 
     /**
+     * 存储后台用户登录信息
+     * @param id
+     * @param token
+     */
+    public  void storeAgentUserLoginInfo(Long id, String token) {
+        if (StringUtils.isNotBlank(token)) {
+            //存储用户登录状态
+            String onlineFlag = generateAgentOnlineKey(id.toString());
+            JedisCache.setStr(onlineFlag, token);
+            JedisCache.expire(onlineFlag, myConfiguration.getSessionTimeout());
+        }
+    }
+
+    public static String generateAgentOnlineKey(String str) {
+        return AGENT_USER_CACHE_KEY + str;
+    }
+
+
+
+    /**
      * 存储app用户登录信息
      * @param id
      * @param token

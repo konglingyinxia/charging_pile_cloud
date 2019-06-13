@@ -1,8 +1,8 @@
 package com.suda.platform.controller.agent;
 
 import com.alibaba.fastjson.JSONObject;
-import com.suda.platform.entity.AdminUser;
-import com.suda.platform.service.IAdminUserService;
+import com.suda.platform.entity.AgentUser;
+import com.suda.platform.service.IAgentUserService;
 import com.util.Respons.ResponseUtil;
 import com.util.auth.AuthSign;
 import com.util.cache.UserCacheUtil;
@@ -28,7 +28,7 @@ import java.util.Map;
 @RequestMapping(value = "agent/user",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AgentUserComtroller {
     @Autowired
-    private IAdminUserService adminUserService;
+    private IAgentUserService agentUserService;
     @Autowired
     private  UserCacheUtil  userCacheUtil;
 
@@ -43,20 +43,20 @@ public class AgentUserComtroller {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> doLogin(String account, String password, HttpServletRequest req) throws UnsupportedEncodingException {
-        AdminUser adminUserVO = adminUserService .selectByAccountLogin(account,password);
-        Long id=adminUserVO.getId();
+        AgentUser agentUserVO = agentUserService .selectByAccountLogin(account,password);
+        Long id=agentUserVO.getId();
         /**
          * 生成token 存储
          */
-        String token = AuthSign.tokenSign(id, JSONObject.parseObject(JSONObject.toJSONString(adminUserVO)));
+        String token = AuthSign.tokenSign(id, JSONObject.parseObject(JSONObject.toJSONString(agentUserVO)));
 
         /**
          * 设置sessionId
          */
-        userCacheUtil.storeAdminUserLoginInfo(id,token);
-        adminUserVO.setSessionId(token);
-        adminUserVO.setPassword(null);
-        return ResponseUtil.getSuccessMap(adminUserVO);
+        userCacheUtil.storeAgentUserLoginInfo(id,token);
+        agentUserVO.setSessionId(token);
+        agentUserVO.setPassword(null);
+        return ResponseUtil.getSuccessMap(agentUserVO);
     }
 
 

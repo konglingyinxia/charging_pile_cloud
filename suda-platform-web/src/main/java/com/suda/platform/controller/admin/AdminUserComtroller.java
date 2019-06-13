@@ -3,6 +3,7 @@ package com.suda.platform.controller.admin;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.AdminUserVO;
+import com.suda.platform.VO.adminuser.AdminUserPwdVO;
 import com.suda.platform.entity.AdminUser;
 import com.suda.platform.service.IAdminUserService;
 import com.util.Respons.ResponseMsg;
@@ -107,5 +108,31 @@ public class AdminUserComtroller {
         return ResponseUtil.getSuccessMap();
     }
 
-
+    /**
+     * 更改登陆账户账户密码
+     */
+    @RequestMapping(value = "/updateAdminPassword", method = RequestMethod.POST)
+    @LogMenthodName(name = "更改账户密码")
+    @ResponseBody
+    public Map<String, Object> updateAdminPassword(AdminUserPwdVO adminUserVO) throws UnsupportedEncodingException {
+        if(adminUserVO.getId()==null
+        ){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
+        }
+        AdminUser adminUserSel = adminUserService.getById(adminUserVO.getId());
+        if(adminUserSel == null){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.NOUSER);
+        }
+        if(adminUserSel.getPassword().equalsIgnoreCase(adminUserVO.getNewPassword())){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.OLD_NEW_PASSWORD_NOT_EQUAL);
+        }
+        if(!adminUserSel.getPassword().equalsIgnoreCase(adminUserVO.getOldPassword())){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.OLD_PASSWORD_IS_ERROR);
+        }
+        AdminUser adminUser = new AdminUser();
+        adminUser.setPassword(adminUserVO.getNewPassword());
+        adminUser.setId(adminUserVO.getId());
+        adminUserService.updateById(adminUser);
+        return ResponseUtil.getSuccessMap();
+    }
 }

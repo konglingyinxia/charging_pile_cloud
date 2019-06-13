@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.admin.mapper.AgentUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.AgentUser">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="password" property="password" />
+        <result column="nickname" property="nickname" />
+        <result column="username" property="username" />
+        <result column="create_time" property="createTime" />
+        <result column="last_login_time" property="lastLoginTime" />
+        <result column="timestamp" property="timestamp" />
+        <result column="status" property="status" />
+        <result column="is_disable" property="isDisable" />
+        <result column="is_delete" property="isDelete" />
+        <result column="admin_parent_id" property="adminParentId" />
+        <result column="agent_parent_id" property="agentParentId" />
+        <result column="user_invite_code" property="userInviteCode" />
+        <result column="invitation_path" property="invitationPath" />
+        <result column="inspect_status" property="inspectStatus" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, account, password, nickname, username, create_time, last_login_time, timestamp, status, is_disable, is_delete, admin_parent_id, agent_parent_id, user_invite_code, invitation_path, inspect_status
+    </sql>
+
+</mapper>

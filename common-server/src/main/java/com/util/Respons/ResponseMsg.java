@@ -129,21 +129,7 @@ public class ResponseMsg {
     public static  String ADMIN_MANAGE_NO_STOCK="平台没有该币种，请检查币种编码是否正确！";
     public static  String ADMIN_MANAGE_RECHARGE_OPERATION="没有该类型操作！";
 
-    /***********************普通商品管理***************************/
-    public static  String ADMIN_MANAGE_NO_PRODUCT_ID="商品id没有传入！";
-    public static  String ADMIN_MANAGE_NO_PRODUCT="没有该商品！";
-    public static  String ADMIN_MANAGE_PRODUCT_IS_ACTIVE="该商品是活动商品！";
 
-    /***********************抽奖商品管理***************************/
-    public static  String DRAW_PRIZE_NO_EXIST="该商品不是活动商品！";
-    public static  String DRAW_PRIZE_APPLY_FAIL="抽奖商品报名失败,稍后重试！";
-    public static  String DRAW_PRIZE_DATE_OUT="该商品已经开奖，不能报名！";
-    public static  String DRAW_PRIZE_USER_HAVE_TAKE="该用户已经参与该商品抽奖！";
-    public static  String DRAW_PRIZE_GET_PRODUCT_FAIL="领取抽奖商品失败！";
-    public static  String DRAW_PRIZE_GET_PRODUCT_HAVE="该奖品已经领取！";
-    public static  String DRAW_PRIZE_ACTIVE_NO_EXIST="参与记录异常！";
-    /***********************大转盘*******************************/
-    public static  String TURNPLATE_DRAW_PRIZE_FAIL="抽奖失败，请稍后重试！";
 
     /*********************** 短信发送 ********************************/
     public static  String SMS_NO_TIME_MINUTE_1="请等60s后在发送！";
@@ -151,29 +137,11 @@ public class ResponseMsg {
     /************************支付方式**********************************/
     public static  String PAY_WAY_TYPE_NO="没有该支付类型！";
 
-    //============================认证交易相关=============
-    public static String NO_DEAL_NO_AUTH_FINISH = "实名认证未完成，暂不能交易";
+    //===================修改密码===============================
+    public static String OLD_NEW_PASSWORD_NOT_EQUAL="新密码与原密码不能相同";
+    public static String OLD_PASSWORD_IS_ERROR="原密码错误";
 
-    public static String NO_DEAL_NOW_CODE = "该币种已不能交易";
 
-    public static String GET_USER_INFO_FAIL = "获取用户信息失败，稍后重试";
 
-    public static String BILL_NO_CANCEL_NO_DELETE = "订单未撤销，不能删除！";
-
-    public static String NO_EDIT_RATE_NO_EQUAL = "服务费比例发生变化，请重新发单";
-    public static String DEAL_NUM_NO_LESS_THAN_ZERO = "交易数量不能小于等于0";
-
-    //============================地址管理===================
-    public static String ADDR_HAS_EXIST = "该地址已经存在！";
-    public static String NO_HAS_CODE = "没有该币种！";
-    public static String ADDR_IS_NO_VALID = "该地址为无效地址";
-    public static String DELETE_FAIL = "地址删除失败，请检查是否是有效地址";
-    public static String CREATE_ADDR_FAIL = "创建地址失败，稍后重试";
-
-    //====================转账 划转==================================
-    public static String TRANSFER_NUMBER_NOT_ENOUGH  = "转出%s数量不足！";
-    public static String TRANSFER_NOT_TO_SELF = "自己不能转给自己！";
-    public static String TRANSFER_RATIO_NOT_EXIST = "划转汇率不正确，请联系管理员确认！";
-    public static String TRANSFER_NOT_EQ_CODE = "相等币种之间不能划转！";
 
 }
