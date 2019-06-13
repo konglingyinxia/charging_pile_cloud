@@ -2,6 +2,7 @@ package com.suda.platform.controller.common;
 
 import com.suda.platform.VO.StatusVo;
 import com.suda.platform.enums.TelCodeTypeEnum;
+import com.suda.platform.enums.finance.FinancialTypeEnum;
 import com.suda.platform.enums.version.AppVersionEnum;
 import com.util.Respons.ResponseUtil;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +29,22 @@ import java.util.Map;
 @RequestMapping(value = "common/status",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class CommonStatusController {
 
+    /**
+     * 获取财务类型
+     */
+    @RequestMapping(value = "getFinancialTypes", method = RequestMethod.GET)
+    @ResponseBody
+    @ApiOperation(value = "获取财务类型")
+    public Map<String, Object> getFinancialTypes() {
+        List<StatusVo> list = new ArrayList<>();
+        for (FinancialTypeEnum o : FinancialTypeEnum.values()) {
+            StatusVo vo = new StatusVo();
+            vo.setCode(o.getCode());
+            vo.setName(o.getMessage());
+            list.add(vo);
+        }
+        return ResponseUtil.getSuccessMap(list);
+    }
 
     /**
      * 获取短信类别TelCodeTypeEnum

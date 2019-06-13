@@ -1,6 +1,8 @@
 package com.suda.platform.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageInfo;
+import com.suda.platform.VO.finance.StockUserChargeVO;
 import com.suda.platform.entity.StockUserCharge;
 import com.suda.platform.enums.finance.PayTypeEnum;
 import com.suda.platform.enums.finance.WithdrawStatusEnum;
@@ -8,10 +10,13 @@ import com.suda.platform.mapper.StockUserChargeMapper;
 import com.suda.platform.service.IStockUserChargeService;
 import com.util.DealDateUtil;
 import com.util.StringUtils;
+import com.util.pageinfoutil.PageUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -24,6 +29,8 @@ import java.math.BigDecimal;
 @Service
 public class StockUserChargeServiceImpl extends ServiceImpl<StockUserChargeMapper, StockUserCharge> implements IStockUserChargeService {
 
+    @Autowired
+    private StockUserChargeMapper stockUserChargeMapper;
     /**
      * 充值记录入口
      * @param agentUserId 代理id
@@ -46,5 +53,19 @@ public class StockUserChargeServiceImpl extends ServiceImpl<StockUserChargeMappe
         userCharge.setSwiftNo(stockUserId+System.currentTimeMillis() + StringUtils.getRandom(9));
         userCharge.setWithdrawStatus(withdrawStatus.getCode().intValue());
         baseMapper.insert(userCharge);
+    }
+
+    /**
+     *
+     * @param coinCharge
+     * @param pageUtil
+     * @return
+     */
+
+    @Override
+    public PageInfo<StockUserChargeVO> getAdminStockUserCoinCharges(StockUserChargeVO coinCharge, PageUtil pageUtil) {
+        PageUtil.page(pageUtil);
+        List<StockUserChargeVO> lists = stockUserChargeMapper.getAdminStockUserCoinCharges(coinCharge);
+        return new PageInfo<>(lists);
     }
 }

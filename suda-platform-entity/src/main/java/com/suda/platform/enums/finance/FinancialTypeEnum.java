@@ -9,13 +9,9 @@ import java.util.Map;
  */
 public enum FinancialTypeEnum {
     TYPE_1(1, "平台充值"),
-    TYPE_2(2, "CTC交易"),
-    TYPE_3(3, "钱包转出"),
-    TYPE_4(4, "手续费"),
-    TYPE_5(5, "钱包转入"),
-    TYPE_6(6, "钱包划转"),
-    TYPE_7(7, "CTC申诉"),
-    TYPE_8(8, "转币审核"),
+    TYPE_2(2, "微信充值"),
+    TYPE_3(3, "充电消费"),
+
     ;
     private Integer code;
     private String message;

@@ -1,7 +1,10 @@
 package com.suda.platform.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.suda.platform.VO.finance.StockUserChargeVO;
 import com.suda.platform.entity.StockUserCharge;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,11 @@ import com.suda.platform.entity.StockUserCharge;
  */
 public interface StockUserChargeMapper extends BaseMapper<StockUserCharge> {
 
+    /**
+     * 查询用户充值记录
+     *
+     * @param coinCharge
+     * @return
+     */
+    List<StockUserChargeVO> getAdminStockUserCoinCharges(StockUserChargeVO coinCharge);
 }

@@ -101,9 +101,6 @@ public class StockUserMoneyDetailVO extends Model<StockUserMoneyDetailVO> {
     @TableField("tel")
     private String tel;
 
-    @ApiModelProperty(value = "邮箱|帐号")
-    @TableField("email")
-    private String email;
 
 
 }

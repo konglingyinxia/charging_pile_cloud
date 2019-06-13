@@ -22,5 +22,45 @@
     <sql id="Base_Column_List">
         id, swift_no, stock_user_id, stock_code, fee, withdraw_status, create_time, is_deleted, timestamp, tran_id, pay_type, agent_user_id
     </sql>
+    <select id="getAdminStockUserCoinCharges"
+            parameterType="com.suda.platform.VO.finance.StockUserChargeVO"
+            resultType="com.suda.platform.VO.finance.StockUserChargeVO">
+        select
+        succ.*,
+        su.nickname ,su.username ,su.user_uid,su.tel
+        from stock_user_charge succ
+        left join stock_user su on su.id = succ.stock_user_id
+        <where>
+
+            <if test="stockCode !=null and stockCode !=''">
+                and succ.stock_code = #{stockCode}
+            </if>
+            <if test="id !=null">
+                and succ.id = #{id}
+            </if>
+            <if test="agentUserId !=null">
+                and succ.agent_user_id = #{agentUserId}
+            </if>
+            <if test="stockUserId !=null">
+                and succ.stock_user_id=#{stockUserId}
+            </if>
+            <if test="tel !='' and tel !=null">
+                and su.tel=#{tel}
+            </if>
+            <if test=" userUid !=null">
+                and   su.user_uid=#{userUid}
+            </if>
+            <if test=" username !=null and username !=''">
+                and   su.username=#{username}
+            </if>
+            <if test=" nickname !=null and nickname !=''">
+                and   su.nickname=#{nickname}
+            </if>
+            <if test="startDate != null and startDate !='' and endDate != null and endDate != ''">
+                AND (succ.create_time BETWEEN #{startDate} and #{endDate})
+            </if>
+        </where>
+        order  by id desc
+    </select>
 
 </mapper>

@@ -1,9 +1,12 @@
 package com.suda.platform.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
+import com.suda.platform.VO.finance.StockUserChargeVO;
 import com.suda.platform.entity.StockUserCharge;
 import com.suda.platform.enums.finance.PayTypeEnum;
 import com.suda.platform.enums.finance.WithdrawStatusEnum;
+import com.util.pageinfoutil.PageUtil;
 
 import java.math.BigDecimal;
 
@@ -27,4 +30,13 @@ public interface IStockUserChargeService extends IService<StockUserCharge> {
      * @param withdrawStatus //支付状态
      */
     void addChargeRecord(Long agentUserId, Long stockUserId, BigDecimal money, String stockCode, PayTypeEnum typeEnum, WithdrawStatusEnum withdrawStatus);
+
+    /**
+     * 查询用户充值充值记录
+     *
+     * @param coinCharge
+     * @param pageUtil
+     * @return
+     */
+    PageInfo<StockUserChargeVO> getAdminStockUserCoinCharges(StockUserChargeVO coinCharge, PageUtil pageUtil);
 }
