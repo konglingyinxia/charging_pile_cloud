@@ -30,21 +30,21 @@
             resultType="com.suda.platform.VO.chargeStation.ChargingRecordVO">
       select cr.* ,
       su.nickname,su.username,su.tel,
-      cpi.serialNumber,
-      cs.stationName
+      cpi.serial_number,
+      cs.station_name
       from  charging_record cr
       left join stock_user su on su.id = cr.stock_user_id
       left join charging_pile_info cpi on cpi.id = cr.charging_pile_info_id
       left join charging_stations cs on cs.id = cr.charging_stations_id
       <where>
-        <if test="nickname !='' and nickname !=''">
-          and  su.nickname ='${nickname}%'
+        <if test="nickname !='' and nickname !=null">
+          and  su.nickname like'${nickname}%'
         </if>
-          <if test="username !='' and username !=''">
-              and  su.username ='${username}%'
+          <if test="username !=null and username !=''">
+              and  su.username like'${username}%'
           </if>
-          <if test="tel !='' and tel !=''">
-              and  su.tel ='${tel}%'
+          <if test="tel !=null and tel !=''">
+              and  su.tel like '${tel}%'
           </if>
           <if test="id !=null">
               and  cr.id = #{id}
