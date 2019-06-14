@@ -1,5 +1,7 @@
 package com.suda.platform.service.impl;
 
+import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
+import com.Account;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageInfo;
@@ -18,9 +20,11 @@ import com.suda.platform.service.IStockUserCapitalFundService;
 import com.suda.platform.service.IStockUserChargeService;
 import com.suda.platform.service.IStockUserMoneyDetailService;
 import com.suda.platform.service.IStockUserService;
+import com.util.DealDateUtil;
 import com.util.Respons.ResponseMsg;
 import com.util.pageinfoutil.PageUtil;
 import config.advice.CommonException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -217,6 +221,33 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
             stockUserChargeService.addChargeRecord(vo.getAgentUserId(),id, money,stockCode, PayTypeEnum.STATUS_2, WithdrawStatusEnum.STATUS_2);
         }
         return status;
+    }
+
+    /**
+     * 微信小程序登陆
+     * 绑定微信OpenID
+     * @param sessionResult
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = {})
+    public StockUserLoginVO wxLogin(WxMaJscode2SessionResult sessionResult) {
+        StockUser stockUser = stockUserMapper.selectOne(new QueryWrapper<StockUser>()
+        .eq("open_id",sessionResult.getOpenid()));
+        if(stockUser ==null){
+            stockUser = new StockUser();
+            stockUser.setOpenId(sessionResult.getOpenid());
+            stockUser.setCreateTime(DealDateUtil.getNowDate());
+           Integer insert = stockUserMapper.insertSelectiveDullUnion(stockUser);
+            if (insert == 0) {
+                throw new CommonException(ResponseMsg.USER_HAS_EXIST);
+            }
+            stockUser.setUserUid(Account.getUserUid(stockUser.getId()));
+            stockUserMapper.updateById(stockUser);
+        }
+        StockUserLoginVO loginVO = new StockUserLoginVO();
+        BeanUtils.copyProperties(stockUser,loginVO);
+        return loginVO;
     }
 
 }

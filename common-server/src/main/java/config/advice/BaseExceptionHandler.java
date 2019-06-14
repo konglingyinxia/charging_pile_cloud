@@ -1,6 +1,8 @@
 package config.advice;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,6 +29,9 @@ public class BaseExceptionHandler {
             return RequestException(e.getMessage());
         }else if(e instanceof HttpRequestMethodNotSupportedException){
             return RequestException(e.getMessage());
+        }else if(e instanceof WxErrorException){
+            JSONObject jsonObject = JSONObject.parseObject(e.getMessage());
+            return RequestException(jsonObject.getString("errmsg"));
         }
         return getExceptionMap();
     }

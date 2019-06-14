@@ -1,5 +1,6 @@
 package com.suda.platform.service;
 
+import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.stockuser.AdminUpdateAssetVo;
@@ -91,4 +92,11 @@ public interface IStockUserService extends IService<StockUser> {
      */
     int updateWallet(AdminUpdateAssetVo vo);
 
+    /**
+     * 微信小程序登陆
+     * 绑定微信OpenID
+     * @param sessionResult
+     * @return
+     */
+    StockUserLoginVO wxLogin(WxMaJscode2SessionResult sessionResult);
 }

@@ -1,5 +1,6 @@
 package com.suda.platform.VO.stockuser;
 
+import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -31,13 +32,6 @@ public class StockUserLoginVO extends Model<StockUserLoginVO> {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "用户昵称")
-    @TableField("nickname")
-    private String nickname;
-
-    @ApiModelProperty(value = "真实姓名")
-    @TableField("username")
-    private String username;
 
     @ApiModelProperty(value = "登录帐号")
     @TableField("user_uid")
@@ -47,24 +41,11 @@ public class StockUserLoginVO extends Model<StockUserLoginVO> {
     @TableField("tel")
     private String tel;
 
-    @ApiModelProperty(value = "邮箱|帐号")
-    @TableField("email")
-    private String email;
-
-    @ApiModelProperty(value = "设备号")
-    @TableField("device_no")
-    private String deviceNo;
-
-    @ApiModelProperty(value = "头像")
-    @TableField("head_url")
-    private String headUrl;
-
-    @ApiModelProperty(value = "密码，使用md5加密")
-    @TableField("pswd")
-    private String pswd;
-
     @TableField(exist = false)
     private String sessionId;
+    @TableField(exist = false)
+    private WxMaJscode2SessionResult  sessionResult;
+
 
 
 

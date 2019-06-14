@@ -1,19 +1,24 @@
 package com.suda.platform.controller.app;
 
+import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.suda.platform.VO.stockuser.StockUserLoginVO;
 import com.suda.platform.VO.stockuser.StockUserSignInVO;
 import com.suda.platform.entity.StockUser;
 import com.suda.platform.entity.StockUserInfo;
 import com.suda.platform.service.ICommonService;
 import com.suda.platform.service.IStockUserService;
+import com.util.DealDateUtil;
 import com.util.Respons.ResponseMsg;
 import com.util.Respons.ResponseUtil;
 import com.util.auth.AuthSign;
 import com.util.cache.UserCacheUtil;
 import config.advice.CommonException;
+import config.wx.WxMaConfiguration;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -51,7 +56,7 @@ public class AppUserController  {
     @ApiOperation(notes = "用户注册 ：account:传为手机号；pswd:密码(md5加密)；code:验证码；invitationCode:邀请码 ", value = "用户注册")
     @ResponseBody
     public Map<String, Object> telRegister(StockUserSignInVO vo) throws IOException {
-        if(com.util.StringUtils.isBlank(vo.getAccount(),vo.getCode(),vo.getPswd())){
+        if(com.util.StringUtils.isBlank(vo.getAccount(),vo.getCode())){
             return  ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
         }
         StockUserLoginVO  loginVO =  stockUserService.selectByAccount(vo.getAccount());
@@ -68,10 +73,25 @@ public class AppUserController  {
     }
 
     @RequestMapping(value = "bindPhone", method = RequestMethod.POST)
-    @ApiOperation(notes = "用户手机号绑定 ：id:用户id ;account:手机号；code:验证码", value = "用户手机号绑定")
+    @ApiOperation(notes = "用户手机号绑定 ：openId:用户微信openId ;account:手机号；code:验证码", value = "用户手机号绑定")
     @ResponseBody
-    public Map<String, Object> bindPhone(StockUser user, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public Map<String, Object> bindPhone(StockUserSignInVO vo, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        StockUserLoginVO  loginVO =  stockUserService.selectByAccount(vo.getAccount());
+        if(loginVO !=null){
+            return  ResponseUtil.getNotNormalMap(ResponseMsg.USER_HAS_EXIST);
+        }
+        try {
+            commonService.checkTelToken(vo.getAccount(), vo.getCode());
+        }catch (Exception e){
+            return  ResponseUtil.getNotNormalMap(e.getMessage());
+        }
+       boolean success= stockUserService.update(new UpdateWrapper<StockUser>()
+        .set("tel",vo.getAccount())
+        .eq("open_id",vo.getOpenId()));
+        if(success){
+          return   ResponseUtil.getSuccessMap();
+        }
         return ResponseUtil.getNotNormalMap();
     }
 
@@ -177,9 +197,7 @@ public class AppUserController  {
         if(loginVO ==null){
             return  ResponseUtil.getNotNormalMap(ResponseMsg.NOUSER);
         }
-        if(!loginVO.getPswd().equalsIgnoreCase(vo.getPswd())){
-            return  ResponseUtil.getNotNormalMap(ResponseMsg.LOGINFAIL);
-        }
+
         /**
          * 生成token 存储
          */
@@ -190,7 +208,39 @@ public class AppUserController  {
          */
         userCacheUtil.storeAppStockUserLoginInfo(loginVO.getId(),token);
         loginVO.setSessionId(token);
-        loginVO.setPswd(null);
         return ResponseUtil.getSuccessMap(loginVO);
     }
+
+    /**
+     * 用户获取openId (小程序登陆)
+     */
+    @RequestMapping(value = "wxOpenId", method = {RequestMethod.POST,RequestMethod.GET})
+    @ApiOperation(notes = "用户登录 ：account账号； code:微信code", value = "用户登录")
+    @ResponseBody
+    public Map<String, Object> wxOpenId(StockUserSignInVO vo, HttpServletRequest req,
+                                         HttpServletResponse res) throws WxErrorException, UnsupportedEncodingException {
+        if(com.util.StringUtils.isBlank(vo.getCode())){
+            return  ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
+        }
+        WxMaJscode2SessionResult sessionResult = WxMaConfiguration.getWxMaService().jsCode2SessionInfo(vo.getCode());
+        StockUserLoginVO  loginVO =  stockUserService.wxLogin(sessionResult);
+        stockUserService.update(new UpdateWrapper<StockUser>()
+        .set("last_login_time", DealDateUtil.getNowDate()));
+        userCacheUtil.storeAppStockUserWxLoginInfo(sessionResult.getOpenid(),JSONObject.toJSONString(sessionResult));
+        /**
+         * 生成token 存储
+         */
+        String token = AuthSign.tokenSign(loginVO.getId(), JSONObject.parseObject(JSONObject.toJSONString(loginVO)));
+
+        /**
+         * 设置sessionId
+         */
+        userCacheUtil.storeAppStockUserLoginInfo(loginVO.getId(),token);
+        loginVO.setSessionId(token);
+        loginVO.setSessionResult(sessionResult);
+        return ResponseUtil.getSuccessMap(loginVO);
+    }
+
+
+
 }

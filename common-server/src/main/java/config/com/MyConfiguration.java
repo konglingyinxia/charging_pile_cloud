@@ -28,17 +28,17 @@ public class MyConfiguration {
      * LTAI2KhhGGvbXzUZ
      * 阿里key
      */
-    private String  accessKeyId="LTAImOWJOk8m1LO7";
+    private String  accessKeyId="";
     /**
      * n7islklEHqVefD4DR6oNp3Kz5h6CWj
      * 阿里密钥
      */
-    private String  accessKeySecret="hUd5EmRbjp8HX6czYSSwkebyDsvs1z";
+    private String  accessKeySecret="";
      //  ######阿里云文件上传oss##########
     /**
      * 地域节点
      */
-    private String  aliOssEndpoint="sudakeji.oss-cn-hongkong.aliyuncs.com";
+    private String  aliOssEndpoint="";
     /**
      * 文件名字
      */
@@ -51,6 +51,17 @@ public class MyConfiguration {
      * 以太坊请求节点地址
      */
     private String  ethNodesReqAddr="https://mainnet.infura.io/3f727c7ce8434106809d5cc2463ff779";
+
+    //=========================微信配置==============================
+    /**
+     * 微信appId
+     */
+    private String wxAppId="";
+    /**
+     * 微信密钥
+     */
+    private  String wxAppSecret="";
+
 
     public String getUploadPath() {
         return uploadPath;

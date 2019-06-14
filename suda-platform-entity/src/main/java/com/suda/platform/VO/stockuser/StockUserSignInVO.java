@@ -18,9 +18,6 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class StockUserSignInVO {
-    @ApiModelProperty(value = "邀请码")
-    @TableField("invitation_code")
-    private String invitationCode;
 
     @ApiModelProperty(value = "密码，使用md5加密")
     @TableField("pswd")
@@ -29,13 +26,17 @@ public class StockUserSignInVO {
     @ApiModelProperty(value = "账号")
     @TableField("account")
     private String account;
-    @ApiModelProperty(value = "验证码")
+    @ApiModelProperty(value = "验证码（微信code码）")
     @TableField(exist = false)
     private  String code;
 
     @ApiModelProperty(value = "交易密码")
     @TableField("trade_pwd")
     private String tradePwd;
+
+    @ApiModelProperty(value = "微信唯一id")
+    @TableField("open_id")
+    private String openId;
 
 
 }

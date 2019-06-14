@@ -23,7 +23,7 @@ public class CommonConstant {
     /**
      * 项目名
      */
-    public static String project = "SUDA";
+    public static String project = "XX";
 
     /**
      * 邀请码起始值

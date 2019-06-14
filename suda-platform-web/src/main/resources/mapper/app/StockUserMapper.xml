@@ -87,6 +87,9 @@
             <if test="email != null">
                 email,
             </if>
+            <if test="openId != null">
+                open_id,
+            </if>
 
         </trim>
         select
@@ -114,19 +117,24 @@
             <if test="email != null">
                 #{email},
             </if>
+            <if test="openId != null">
+                #{openId},
+            </if>
 
         </trim>
         from dual
         <where>
-            <if test="(tel !=''and tel !=null) or(email !='' and email !=null)">
+            <if test="(tel !=''and tel !=null) or(email !='' and email !=null) or (openId !='' and openId !=null)">
                 not EXISTS(select * from stock_user where
                 <if test="tel !=null and tel !=''">
-                    user_uid=#{tel} or tel =#{tel} or email
-                    =#{tel} )
+                   tel =#{tel})
                 </if>
                 <if test="email !=null and email !=''">
-                    user_uid=#{email} or tel =#{email} or email
+                     email
                     =#{email} )
+                </if>
+                <if test="openId !=null and openId !=''">
+                    open_id=#{openId})
                 </if>
             </if>
         </where>
