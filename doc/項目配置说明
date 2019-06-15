@@ -7,3 +7,26 @@
    zipkin 链路 ：    http://192.168.1.100:9999
    eureka 注册中心:  http://192.168.1.100:8888
 
+
+
+
+
+
+
+
+
+
+
+
+
+ 参考资料：
+ 经纬度查询：
+ select *,
+       (2 * 6378.137 *
+       ASIN(SQRT(POW(SIN(PI() * (121.450526 - lat) / 360), 2) +
+       COS(PI() * 30.904735 / 180) *
+       COS(lat * PI() / 180) *
+       POW(SIN(PI() * (30.904735 - lng) / 360), 2)))) as juli
+       from tr_parking_space
+       order by juli asc 
+

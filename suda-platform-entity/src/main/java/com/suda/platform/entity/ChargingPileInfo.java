@@ -99,7 +99,9 @@ public class ChargingPileInfo extends Model<ChargingPileInfo> {
     @TableField("use_status")
     private Boolean useStatus;
 
-
+    @ApiModelProperty(value = "0 未离线 1：离线")
+    @TableField("off_line_is")
+    private Boolean offLineIs;
     @Override
     protected Serializable pkVal() {
         return this.id;

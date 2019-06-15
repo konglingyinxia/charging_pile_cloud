@@ -32,5 +32,62 @@
     <sql id="Base_Column_List">
         id,  longitude, dimensionality, station_name, station_details, province, city, county, address, price, parking_fee_details, have_parking_fee, open_start_time, open_end_time, cover_img, banner_img, has_a_gun_status, create_time, timestamp, is_deleted, is_disable, use_status
     </sql>
+    <!--app查询位置充电站-->
+    <select id="selectAppChargingStations"
+            parameterType="com.suda.platform.VO.chargeStation.ChargingStationSelAppVO"
+            resultType="com.suda.platform.VO.chargeStation.ChargingStationsAppVO">
+      select * from( select *,
+        ifnull((select count(id) from charging_pile_info cpi where cpi.charging_stations_id = charging_stations.id
+        and cpi.ac_dc=1 and cpi.off_line_is=0),0) as ac_online_num,
+        ifnull((select count(id) from charging_pile_info cpi where cpi.charging_stations_id = charging_stations.id
+        and cpi.ac_dc=1 and cpi.off_line_is=1),0) as ac_offline_num,
+        ifnull((select count(id) from charging_pile_info cpi where cpi.charging_stations_id = charging_stations.id
+        and cpi.ac_dc=2 and cpi.off_line_is=0),0) as dc_online_num,
+        ifnull((select count(id) from charging_pile_info cpi where cpi.charging_stations_id = charging_stations.id
+        and cpi.ac_dc=2 and cpi.off_line_is=1),0) as dc_offline_num
+        <if test="longitude !=null and dimensionality !=null">
+            ,(
+            6378.137 * ACOS(
+            COS(RADIANS(#{dimensionality})) * COS(RADIANS(dimensionality)) * COS(
+            RADIANS(longitude) - RADIANS(#{longitude})
+            ) + SIN(RADIANS(#{dimensionality})) * SIN(RADIANS(dimensionality))
+            )
+            ) AS distance
+        </if>
+        from charging_stations) as chargingStation
+        <where>
+          <if test="stationName !=null and stationName !=''">
+              and (chargingStation.station_name like '${stationName}%'
+              or chargingStation.station_details like '${stationName}%')
+          </if>
+          <if test="province !=null and province !=''">
+              and chargingStation.province like '${province}%'
+          </if>
+            <if test="city !=null and city !=''">
+                and chargingStation.city like '${city}%'
+            </if>
+            <if test="county !=null and county !=''">
+                and chargingStation.county like '${county}%'
+            </if>
+            <if test="haveParkingFee !=null">
+                and chargingStation.have_parking_fee = #{haveParkingFee}
+            </if>
+            <if test="openStartTime !=null and openEndTime !=null">
+                and (chargingStation.open_start_time &gt;#{openStartTime} and chargingStation.open_end_time &lt;#{openEndTime})
+            </if>
+            <if test="hasAGunStatus !=null">
+                and chargingStation.has_a_gun_status = #{hasAGunStatus}
+            </if>
+            <if test="longitude !=null and dimensionality !=null">
+                <if test="startDistance !=null and endDistance !=null">
+                    and (chargingStation.distance&gt;= #{startDistance} and chargingStation.distance&lt;= #{endDistance} )
+                </if>
+            </if>
+        </where>
+        <if test="longitude !=null and dimensionality !=null">
+            order by chargingStation.distance asc
+        </if>
+
+    </select>
 
 </mapper>
