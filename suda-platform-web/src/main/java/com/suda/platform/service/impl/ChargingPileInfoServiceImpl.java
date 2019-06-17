@@ -31,6 +31,7 @@ public class ChargingPileInfoServiceImpl extends ServiceImpl<ChargingPileInfoMap
                 .eq("is_deleted",0)
                 .eq(vo.getChargingStationsId()!=null,"charging_stations_id",vo.getChargingStationsId())
                 .eq(vo.getAcDc()!=null,"ac_dc",vo.getAcDc())
+                .eq(vo.getSerialNumber()!=null,"serial_number",vo.getSerialNumber())
                 .between(vo.getStartDate()!=null && vo.getEndDate()!=null,
                         "create_time",vo.getStartDate(),vo.getEndDate())
                 .orderByDesc("create_time"));

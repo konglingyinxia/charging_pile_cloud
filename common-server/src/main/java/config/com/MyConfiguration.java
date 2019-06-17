@@ -52,16 +52,6 @@ public class MyConfiguration {
      */
     private String  ethNodesReqAddr="https://mainnet.infura.io/3f727c7ce8434106809d5cc2463ff779";
 
-    //=========================微信配置==============================
-    /**
-     * 微信appId
-     */
-    private String wxAppId="";
-    /**
-     * 微信密钥
-     */
-    private  String wxAppSecret="";
-
 
     public String getUploadPath() {
         return uploadPath;
