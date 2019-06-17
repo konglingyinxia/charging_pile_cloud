@@ -139,6 +139,13 @@ public class ChargingStationsAppVO extends Model<ChargingStationsAppVO> {
     private BigDecimal acOfflineNum;
 
     /**
+     * 直流数量
+     */
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
+    @TableField("ac_num")
+    private BigDecimal acNum;
+
+    /**
      * 交流在线
      */
     @JsonSerialize(using = CustomBigDecimalSerializer.class)
@@ -150,7 +157,12 @@ public class ChargingStationsAppVO extends Model<ChargingStationsAppVO> {
     @JsonSerialize(using = CustomBigDecimalSerializer.class)
     @TableField("dc_offline_num")
     private BigDecimal dcOfflineNum;
-
+    /**
+     * 交流数量
+     */
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
+    @TableField("dc_num")
+    private BigDecimal dcNum;
 
 
 

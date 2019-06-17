@@ -42,9 +42,13 @@
         ifnull((select count(id) from charging_pile_info cpi where cpi.charging_stations_id = charging_stations.id
         and cpi.ac_dc=1 and cpi.off_line_is=1),0) as ac_offline_num,
         ifnull((select count(id) from charging_pile_info cpi where cpi.charging_stations_id = charging_stations.id
+        and cpi.ac_dc=1),0) as ac_num,
+        ifnull((select count(id) from charging_pile_info cpi where cpi.charging_stations_id = charging_stations.id
         and cpi.ac_dc=2 and cpi.off_line_is=0),0) as dc_online_num,
         ifnull((select count(id) from charging_pile_info cpi where cpi.charging_stations_id = charging_stations.id
         and cpi.ac_dc=2 and cpi.off_line_is=1),0) as dc_offline_num
+        ifnull((select count(id) from charging_pile_info cpi where cpi.charging_stations_id = charging_stations.id
+        and cpi.ac_dc=2),0) as dc_num
         <if test="longitude !=null and dimensionality !=null">
             ,(
             6378.137 * ACOS(
@@ -56,6 +60,7 @@
         </if>
         from charging_stations) as chargingStation
         <where>
+        is_deleted=0
           <if test="stationName !=null and stationName !=''">
               and (chargingStation.station_name like '${stationName}%'
               or chargingStation.station_details like '${stationName}%')
