@@ -22,6 +22,7 @@ import com.suda.platform.service.IStockUserMoneyDetailService;
 import com.suda.platform.service.IStockUserService;
 import com.util.DealDateUtil;
 import com.util.Respons.ResponseMsg;
+import com.util.StringUtils;
 import com.util.pageinfoutil.PageUtil;
 import config.advice.CommonException;
 import org.springframework.beans.BeanUtils;
@@ -218,7 +219,8 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
         }
         if(status !=0){
             //添加充值记录
-            stockUserChargeService.addChargeRecord(vo.getAgentUserId(),id, money,stockCode, PayTypeEnum.STATUS_2, WithdrawStatusEnum.STATUS_2);
+            String order =id+System.currentTimeMillis() + StringUtils.getRandom(9);
+            stockUserChargeService.addChargeRecord(vo.getAgentUserId(),id, money,stockCode, PayTypeEnum.STATUS_2, WithdrawStatusEnum.STATUS_2, order);
         }
         return status;
     }

@@ -54,9 +54,9 @@ public class WxMaConfiguration {
         payConfig.setAppId(StringUtils.trimToNull(wxPayProperties.getAppId()));
         payConfig.setMchId(StringUtils.trimToNull(wxPayProperties.getMchId()));
         payConfig.setMchKey(StringUtils.trimToNull(wxPayProperties.getMchKey()));
-        payConfig.setSubAppId(StringUtils.trimToNull(wxPayProperties.getSubAppId()));
-        payConfig.setSubMchId(StringUtils.trimToNull(wxPayProperties.getSubMchId()));
-        payConfig.setKeyPath(StringUtils.trimToNull(wxPayProperties.getKeyPath()));
+        payConfig.setSignType("MD5");
+        payConfig.setNotifyUrl(StringUtils.trimToNull(wxPayProperties.getNotifyUrl()));
+       // payConfig.setKeyPath(StringUtils.trimToNull(wxPayProperties.getKeyPath()));
 
         // 可以指定是否使用沙箱环境
         payConfig.setUseSandboxEnv(false);

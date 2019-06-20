@@ -44,7 +44,7 @@ public class StockUserCapitalFundServiceImpl extends ServiceImpl<StockUserCapita
     @Override
     public StockUserCapitalFund upAndSelectFund(Long id, String stockCode, Long agentUserId) {
         StockUserCapitalFund stockUserCapitalFund = baseMapper.selectOne(new QueryWrapper<StockUserCapitalFund>()
-        .eq("stock_user_id",id).eq("stock_code",stockCode));
+        .eq(id!=null,"stock_user_id",id).eq(stockCode!=null,"stock_code",stockCode));
         if(stockUserCapitalFund ==null){
             stockUserCapitalFund = new StockUserCapitalFund();
             stockUserCapitalFund.setCreateTime(new Date());
@@ -70,6 +70,18 @@ public class StockUserCapitalFundServiceImpl extends ServiceImpl<StockUserCapita
     public int updateRechargeByCodeId(String stockCode, Long stockUserId, BigDecimal money) {
      int  num =   stockUserCapitalFundMapper.updateRechargeByCodeId(stockCode ,stockUserId ,money) ;
      return  num;
+    }
+
+    /**
+     * 根据记录id 更新资产
+     * @param id
+     * @param money
+     * @return
+     */
+    @Override
+    public int updateRechargeByCodeId(Long id, BigDecimal money) {
+        int  num = stockUserCapitalFundMapper.updateRechargeById(id ,money)  ;
+        return num;
     }
 
     /**

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * @author kongling
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "wx.pay")
+@Component
 public class WxPayProperties {
     /**
      * 设置微信公众号或者小程序等的appid
@@ -55,6 +57,10 @@ public class WxPayProperties {
      * 微信密钥
      */
     private  String wxAppSecret="";
+    /**
+     * 商户支付回调地址
+     */
+    private String notifyUrl="";
 
     @Override
     public String toString() {

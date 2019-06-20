@@ -24,4 +24,13 @@ public interface StockUserCapitalFundMapper extends BaseMapper<StockUserCapitalF
      * @return
      */
     int updateRechargeByCodeId(@Param("stockCode") String stockCode, @Param("stockUserId") Long stockUserId, @Param("money") BigDecimal money);
+
+    /**
+     * 根据记录id更新资产
+     *
+     * @param id
+     * @param money
+     * @return
+     */
+    int updateRechargeById(@Param("id") Long id, @Param("money") BigDecimal money);
 }

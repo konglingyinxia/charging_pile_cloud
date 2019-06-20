@@ -1,8 +1,10 @@
 package com.suda.platform.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.finance.StockUserChargeVO;
+import com.suda.platform.entity.StockUser;
 import com.suda.platform.entity.StockUserCharge;
 import com.suda.platform.enums.finance.PayTypeEnum;
 import com.suda.platform.enums.finance.WithdrawStatusEnum;
@@ -28,8 +30,9 @@ public interface IStockUserChargeService extends IService<StockUserCharge> {
      * @param stockCode //充值卡号
      * @param typeEnum //充值方式
      * @param withdrawStatus //支付状态
+     * @param order //订单号
      */
-    void addChargeRecord(Long agentUserId, Long stockUserId, BigDecimal money, String stockCode, PayTypeEnum typeEnum, WithdrawStatusEnum withdrawStatus);
+    void addChargeRecord(Long agentUserId, Long stockUserId, BigDecimal money, String stockCode, PayTypeEnum typeEnum, WithdrawStatusEnum withdrawStatus, String order);
 
     /**
      * 查询用户充值充值记录
@@ -39,4 +42,19 @@ public interface IStockUserChargeService extends IService<StockUserCharge> {
      * @return
      */
     PageInfo<StockUserChargeVO> getAdminStockUserCoinCharges(StockUserChargeVO coinCharge, PageUtil pageUtil);
+
+    /**
+     * 用户充值创建订单
+     * @param stockUser
+     * @param charge
+     * @return
+     */
+    Object createUserCharge(StockUser stockUser, StockUserCharge charge) throws WxPayException;
+
+    /**
+     * 付款成功
+     *
+     * @param stockUserCharge
+     */
+    void withdrawStatusSuccess(StockUserCharge stockUserCharge);
 }

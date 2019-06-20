@@ -103,7 +103,7 @@ my-configuration:
       accessKeySecret:
       aliOssEndpoint:
       aliOssBucketNameUser:
-      #验证码长度
+      #验证码长
       codeLength: 6
       #eth 节点地址
       #ethNodesReqAddr: http://127.0.0.1:8545
@@ -114,15 +114,20 @@ my-configuration:
 #      wxAppSecret: eb9f58251cbaf2bc9c109b496997faec
 wx:
   pay:
-    appId: #微信公众号或者小程序等的appid
-    mchId: #微信支付商户号
-    mchKey: #微信支付商户密钥
+    #微信公众号或者小程序等的appid
+    appId: wxf43b372de3c765b0
+    #微信支付商户号
+    mchId: 1539902211
+    #微信支付商户密钥
+    mchKey: xcpitf5fi2etzl2rxtm5nbxdugggsnan
     subAppId: #服务商模式下的子商户公众账号ID
     subMchId: #服务商模式下的子商户号
     keyPath: # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
+    #微信支付回调
+    notifyUrl: http://127.0.0.1:7087/app/operation/wxBack
     # 小程序
-    wxAppId: wx6f6bd382d150b073
-    wxAppSecret: 6c3e073c7669c12c2834690c685621ca
+    wxAppId: wxf43b372de3c765b0
+    wxAppSecret: 39e865f60ad7260555a007e8b382c1cf
 
 
 

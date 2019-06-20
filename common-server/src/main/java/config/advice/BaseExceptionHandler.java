@@ -1,6 +1,7 @@
 package config.advice;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.binarywang.wxpay.exception.WxPayException;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -27,11 +28,13 @@ public class BaseExceptionHandler {
         log.error("日志记录错误:\n{}", ExceptionUtils.getStackTrace(e));
         if (e instanceof CommonException) {
             return RequestException(e.getMessage());
-        }else if(e instanceof HttpRequestMethodNotSupportedException){
-            return RequestException(e.getMessage());
         }else if(e instanceof WxErrorException){
             JSONObject jsonObject = JSONObject.parseObject(e.getMessage());
             return RequestException(jsonObject.getString("errmsg"));
+        }else if(e instanceof WxPayException){
+            return RequestException(((WxPayException) e).getXmlString());
+        }else if(e instanceof HttpRequestMethodNotSupportedException){
+            return RequestException(e.getMessage());
         }
         return getExceptionMap();
     }

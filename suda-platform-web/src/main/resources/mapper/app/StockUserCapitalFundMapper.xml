@@ -9,7 +9,6 @@
         <result column="stock_code" property="stockCode" />
         <result column="usable_fund" property="usableFund" />
         <result column="in_all_fee" property="inAllFee" />
-        <result column="out_all_fee" property="outAllFee" />
         <result column="create_time" property="createTime" />
         <result column="timestamp" property="timestamp" />
     </resultMap>
@@ -19,6 +18,17 @@
         TRUNCATE(usable_fund +
                  #{money} , 8)
         WHERE stock_user_id = #{stockUserId} AND stock_code = #{stockCode}
+            and TRUNCATE(usable_fund +
+                 #{money} , 8)>=0
+
+    </update>
+    <!--根据记录id 更新资产-->
+    <update id="updateRechargeById">
+        UPDATE stock_user_capital_fund
+        SET usable_fund =
+        TRUNCATE(usable_fund +
+                 #{money} , 8)
+        WHERE stock_user_id = #{id}
             and TRUNCATE(usable_fund +
                  #{money} , 8)>=0
 

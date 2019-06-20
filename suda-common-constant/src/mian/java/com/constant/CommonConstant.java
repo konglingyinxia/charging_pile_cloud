@@ -13,7 +13,7 @@ public class CommonConstant {
     /**
      * 平台整体小数位保留数
      */
-    public static Integer DECIMAL_PLACE = 4;
+    public static Integer DECIMAL_PLACE = 2;
 
     /**
      * 其他币种的保留小数位

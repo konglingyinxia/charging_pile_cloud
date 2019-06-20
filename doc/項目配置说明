@@ -30,3 +30,7 @@
        from tr_parking_space
        order by juli asc 
 
+# 测试证书生成：
+keytool -genkey -alias tomcat -keypass yourpass1 -keyalg RSA -keysize 2048 -validity 3650 -keystore D:/keystore.keystore -storepass yourpass2
+
+
