@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.chargeStation.ChargingStationSelAppVO;
 import com.suda.platform.VO.chargeStation.ChargingStationsAppVO;
+import com.suda.platform.VO.chargeStation.ChargingStationsCountVO;
 import com.suda.platform.VO.chargeStation.ChargingStationsVO;
 import com.suda.platform.entity.ChargingStations;
 import com.util.pageinfoutil.PageUtil;
@@ -34,4 +35,13 @@ public interface IChargingStationsService extends IService<ChargingStations> {
      * @return
      */
     PageInfo<ChargingStationsAppVO> selectAppChargingStations(ChargingStationSelAppVO vo, PageUtil pageUtil);
+
+    /**
+     * 充电站统计
+     *
+     * @param vo
+     * @param pageUtil
+     * @return
+     */
+    PageInfo<ChargingStationsCountVO> chargingStationsCount(ChargingStationsCountVO vo, PageUtil pageUtil);
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.chargeStation.ChargingPileInfoVO;
+import com.suda.platform.VO.chargeStation.ChargingStationsCountVO;
 import com.suda.platform.VO.chargeStation.ChargingStationsVO;
 import com.suda.platform.entity.ChargingPileInfo;
 import com.suda.platform.entity.ChargingStations;
@@ -145,6 +146,20 @@ public class AdminChargeStationController {
                 .eq("id",vo.getId()));
         return ResponseUtil.getSuccessMap();
     }
+
+
+    /**
+     * 充电站统计
+     */
+    @RequestMapping(value = "/chargingStationsCount")
+    @ResponseBody
+    public Map<String,Object> chargingStationsCount(ChargingStationsCountVO vo, PageUtil pageUtil){
+        PageInfo<ChargingStationsCountVO> list = chargingStationsService.chargingStationsCount(vo,  pageUtil);
+        return ResponseUtil.getSuccessMap(list);
+    }
+
+
+
 
 
 }

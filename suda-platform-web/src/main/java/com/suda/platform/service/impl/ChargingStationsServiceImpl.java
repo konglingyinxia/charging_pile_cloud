@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.chargeStation.ChargingStationSelAppVO;
 import com.suda.platform.VO.chargeStation.ChargingStationsAppVO;
+import com.suda.platform.VO.chargeStation.ChargingStationsCountVO;
 import com.suda.platform.VO.chargeStation.ChargingStationsVO;
 import com.suda.platform.entity.ChargingStations;
 import com.suda.platform.mapper.ChargingStationsMapper;
@@ -52,5 +53,19 @@ public class ChargingStationsServiceImpl extends ServiceImpl<ChargingStationsMap
         PageUtil.page(pageUtil);
         List<ChargingStationsAppVO> stationsAppVOS = chargingStationsMapper.selectAppChargingStations(vo);
         return new PageInfo<>(stationsAppVOS);
+    }
+
+    /**
+     * 充电站统计
+     *
+     * @param vo
+     * @param pageUtil
+     * @return
+     */
+    @Override
+    public PageInfo<ChargingStationsCountVO> chargingStationsCount(ChargingStationsCountVO vo, PageUtil pageUtil) {
+        PageUtil.page(pageUtil);
+        List<ChargingStationsCountVO> vos = chargingStationsMapper.selectStationsCount(vo);
+        return new PageInfo<>(vos);
     }
 }

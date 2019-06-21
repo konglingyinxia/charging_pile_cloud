@@ -3,6 +3,7 @@ package com.suda.platform.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.suda.platform.VO.chargeStation.ChargingStationSelAppVO;
 import com.suda.platform.VO.chargeStation.ChargingStationsAppVO;
+import com.suda.platform.VO.chargeStation.ChargingStationsCountVO;
 import com.suda.platform.entity.ChargingStations;
 
 import java.util.List;
@@ -23,4 +24,12 @@ public interface ChargingStationsMapper extends BaseMapper<ChargingStations> {
      * @return
      */
     List<ChargingStationsAppVO> selectAppChargingStations(ChargingStationSelAppVO vo);
+
+    /**
+     * 充电站统计
+     *
+     * @param vo
+     * @return
+     */
+    List<ChargingStationsCountVO> selectStationsCount(ChargingStationsCountVO vo);
 }

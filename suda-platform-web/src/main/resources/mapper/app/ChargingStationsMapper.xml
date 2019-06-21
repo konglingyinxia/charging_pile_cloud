@@ -94,5 +94,26 @@
         </if>
 
     </select>
+    <!--充电站统计-->
+    <select id="selectStationsCount"
+            parameterType="com.suda.platform.VO.chargeStation.ChargingStationsCountVO"
+            resultType="com.suda.platform.VO.chargeStation.ChargingStationsCountVO">
+        select cs.id,cs.station_name,
+        (select count(id) from charging_pile_info cpi where cpi.charging_stations_id=cs.id
+        and date(cpi.create_time)=date(now())) as stationDayOrder,
+
+        (select count(id) from charging_pile_info cpi where cpi.charging_stations_id=cs.id
+        and  DATE_FORMAT( create_time, '%Y%m' ) = DATE_FORMAT( CURDATE() , '%Y%m' )) as stationMonthOrder
+        from charging_stations cs
+        <where>
+            <if test="id!=null">
+                and cs.id =#{id}
+            </if>
+            <if test="stationName">
+                and cs.station_name like '${stationName}%'
+            </if>
+        </where>
+        order by id desc
+    </select>
 
 </mapper>
