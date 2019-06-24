@@ -14,5 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "app/charging",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AppChargingController {
+    /**
+     * 开启放电
+     */
+
+
+
+    /**
+     * 结束充电
+     */
+
 
 }
