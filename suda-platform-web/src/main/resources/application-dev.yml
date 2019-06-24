@@ -93,7 +93,7 @@ logging:
 #系统我的公共配置
 my-configuration:
       #图片上传路径
-      uploadPath: /home/project/file/
+      uploadPath: D:/home/static/file/
       #图片访问路径
       imagePath: /file/
       #项目缓存存储时间
@@ -109,9 +109,9 @@ my-configuration:
       #ethNodesReqAddr: http://127.0.0.1:8545
       #ethNodesReqAddr: https://mainnet.infura.io/3f727c7ce8434106809d5cc2463ff779
       ethNodesReqAddr: https://ropsten.infura.io/3f727c7ce8434106809d5cc2463ff779
-      # 微信配置 测试
-#      wxAppId: wx7c515621ffdbe849
-#      wxAppSecret: eb9f58251cbaf2bc9c109b496997faec
+      #静态资源目录
+      staticPageUrl: D:/home/static/
+
 wx:
   pay:
     #微信公众号或者小程序等的appid

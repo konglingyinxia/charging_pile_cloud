@@ -62,7 +62,7 @@ public class FileUpload {
             tempFile.createNewFile();
         }
         file.transferTo(tempFile);
-        return "/" + imgPath + tempFile.getName();
+        return imgPath + tempFile.getName();
     }
 
     /**

@@ -1,8 +1,11 @@
 package com.suda.platform.common.interceptors;
 
+import config.com.MyConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -10,6 +13,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurerAdapter {
+    @Autowired
+    MyConfiguration myConfiguration;
+
     @Bean
     public SudaPlatformInterceptor appinterceptor() {
         return new SudaPlatformInterceptor();
@@ -28,6 +34,13 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
                "/v2/**"
             };
          registry.addInterceptor(  appinterceptor()).addPathPatterns("/**").excludePathPatterns(excludePathPatterns);
+
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("file:"+myConfiguration.getStaticPageUrl());
+        super.addResourceHandlers(registry);
     }
 
 

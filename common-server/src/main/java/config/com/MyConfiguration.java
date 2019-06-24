@@ -3,6 +3,7 @@ package config.com;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * @author 卫星
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix="my-configuration")
 @Data
+@Component
 public class MyConfiguration {
 
     //上传路径
@@ -53,6 +55,9 @@ public class MyConfiguration {
     private String  ethNodesReqAddr="https://mainnet.infura.io/3f727c7ce8434106809d5cc2463ff779";
 
 
+    //==========================静态资源目录==================================================
+
+    private  String staticPageUrl ="";
     public String getUploadPath() {
         return uploadPath;
     }
