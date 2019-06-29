@@ -33,7 +33,7 @@ public class AgentUserServiceImpl extends ServiceImpl<AgentUserMapper, AgentUser
         AgentUser  vo = baseMapper.selectOne(new QueryWrapper<AgentUser>()
                 .eq("account",account)
                 .eq("password",password)
-        .eq("is_delete",0));
+        .eq("is_deleted",0));
         if(vo==null){
             throw new CommonException("用户账号或密码错误");
         }

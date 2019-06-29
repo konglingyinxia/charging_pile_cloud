@@ -3,7 +3,9 @@ package com.suda.platform.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.chargeStation.ChargingRecordVO;
+import com.suda.platform.entity.ChargingPileInfo;
 import com.suda.platform.entity.ChargingRecord;
+import com.suda.platform.entity.ChargingStations;
 import com.util.pageinfoutil.PageUtil;
 
 /**
@@ -23,4 +25,14 @@ public interface IChargingRecordService extends IService<ChargingRecord> {
      * @return
      */
     PageInfo<ChargingRecordVO> selectAllChargingRecords(ChargingRecordVO vo, PageUtil pageUtil);
+
+    /**
+     * 插入充电记录
+     *  @param stockUserId
+     * @param pileInfo
+     * @param stations
+     */
+    ChargingRecord insertChargingRecord(Long stockUserId, ChargingPileInfo pileInfo, ChargingStations stations);
+
+    void endCharge(ChargingRecord record);
 }

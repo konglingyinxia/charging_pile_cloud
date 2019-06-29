@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suda.platform.mapper.ComConfigAreaMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suda.platform.entity.ComConfigArea">
+        <id column="id" property="id" />
+        <result column="area_name" property="areaName" />
+        <result column="area_code" property="areaCode" />
+        <result column="area_short" property="areaShort" />
+        <result column="area_is_hot" property="areaIsHot" />
+        <result column="area_sequence" property="areaSequence" />
+        <result column="area_parent_id" property="areaParentId" />
+        <result column="letter" property="letter" />
+        <result column="init_date" property="initDate" />
+        <result column="init_addr" property="initAddr" />
+    </resultMap>
+
+    <resultMap id="BaseResultMap_AreaVO" type="com.suda.platform.VO.ComConfigAreaVO">
+        <id column="proId" property="id" />
+        <result  column="province" property="province"></result>
+        <collection property="citys" ofType="com.suda.platform.VO.CityVO" >
+            <id column="cityId" property="id"/>
+            <result column="cityName" property="city"/>
+            <collection property="countys" ofType="com.suda.platform.VO.CountyVO">
+                <id column="countyId" property="id"/>
+                <result column="countyName" property="county"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectByAreaParentId" resultMap="BaseResultMap_AreaVO">
+      select
+       area1.id as proId ,area1.area_name as province,
+       area2.id as cityId,area2.area_name as cityName ,
+       area3.id as countyId  ,area3.area_name as countyName
+      from com_config_area area1
+      left join com_config_area area2  on area1.id = area2.area_parent_id
+      left join com_config_area area3  on area2.id = area3.area_parent_id
+      where area1.area_parent_id=0
+
+    </select>
+
+</mapper>

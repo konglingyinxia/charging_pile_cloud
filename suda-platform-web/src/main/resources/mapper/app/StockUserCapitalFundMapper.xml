@@ -18,8 +18,7 @@
         TRUNCATE(usable_fund +
                  #{money} , 8)
         WHERE stock_user_id = #{stockUserId} AND stock_code = #{stockCode}
-            and TRUNCATE(usable_fund +
-                 #{money} , 8)>=0
+
 
     </update>
     <!--根据记录id 更新资产-->
@@ -29,9 +28,6 @@
         TRUNCATE(usable_fund +
                  #{money} , 8)
         WHERE stock_user_id = #{id}
-            and TRUNCATE(usable_fund +
-                 #{money} , 8)>=0
-
     </update>
 
 </mapper>

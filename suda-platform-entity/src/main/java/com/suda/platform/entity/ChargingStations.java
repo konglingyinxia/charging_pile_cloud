@@ -127,6 +127,10 @@ public class ChargingStations extends Model<ChargingStations> {
     @TableField("is_disable")
     private Boolean isDisable;
 
+    @ApiModelProperty(value = "编号（分组id 长度 5）")
+    @TableField("gr_serial_number")
+    private String grSerialNumber;
+
     @Override
     protected Serializable pkVal() {
         return this.id;

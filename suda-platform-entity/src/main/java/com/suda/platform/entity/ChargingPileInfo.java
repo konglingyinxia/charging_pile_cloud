@@ -9,8 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.suda.platform.format.CustomBigDecimalSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -30,6 +29,9 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="ChargingPileInfo对象", description="充电桩")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ChargingPileInfo extends Model<ChargingPileInfo> {
 
     private static final long serialVersionUID = 1L;
@@ -41,7 +43,7 @@ public class ChargingPileInfo extends Model<ChargingPileInfo> {
     @TableField("charging_stations_id")
     private Long chargingStationsId;
 
-    @ApiModelProperty(value = "编号")
+    @ApiModelProperty(value = "编号（长度 5）")
     @TableField("serial_number")
     private String serialNumber;
 

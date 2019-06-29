@@ -9,8 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.suda.platform.format.CustomBigDecimalSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -30,6 +29,9 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="ChargingRecord对象", description="充电记录")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ChargingRecord extends Model<ChargingRecord> {
 
     private static final long serialVersionUID = 1L;
@@ -107,6 +109,17 @@ public class ChargingRecord extends Model<ChargingRecord> {
     @TableField("charge_num")
     @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal chargeNum;
+
+    @ApiModelProperty(value = "付款状态（0 false:未付款 1 true:已付款）")
+    @TableField("payment_status")
+    private Boolean paymentStatus;
+
+
+    @ApiModelProperty(value = "充电状态 0:未充电 1:充电中 2:充电结束")
+    @TableField("charge_status")
+    private Integer chargeStatus;
+
+
 
 
     @Override
