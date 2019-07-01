@@ -1,5 +1,6 @@
 package com.suda.platform.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageInfo;
@@ -12,12 +13,10 @@ import com.suda.platform.enums.finance.FinancialTypeEnum;
 import com.suda.platform.enums.finance.FinancialTypeMessageEnum;
 import com.suda.platform.enums.finance.WaterTypeEnum;
 import com.suda.platform.mapper.ChargingRecordMapper;
-import com.suda.platform.service.IChargingPileInfoService;
-import com.suda.platform.service.IChargingRecordService;
-import com.suda.platform.service.IStockUserCapitalFundService;
-import com.suda.platform.service.IStockUserMoneyDetailService;
+import com.suda.platform.service.*;
 import com.util.DealDateUtil;
 import com.util.pageinfoutil.PageUtil;
+import config.advice.CommonException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +44,8 @@ public class ChargingRecordServiceImpl extends ServiceImpl<ChargingRecordMapper,
     private IStockUserCapitalFundService stockUserCapitalFundService;
     @Autowired
     private IStockUserMoneyDetailService stockUserMoneyDetailService;
+    @Autowired
+    private IChargingStationsService chargingStationsService;
 
     @Override
     public PageInfo<ChargingRecordVO> selectAllChargingRecords(ChargingRecordVO vo, PageUtil pageUtil) {
@@ -54,6 +55,7 @@ public class ChargingRecordServiceImpl extends ServiceImpl<ChargingRecordMapper,
     }
 
     /**
+     *  开启放电，插入充电记录
      * 插入充电记录
      * @param stockUserId
      * @param pileInfo
@@ -86,6 +88,11 @@ public class ChargingRecordServiceImpl extends ServiceImpl<ChargingRecordMapper,
         return record;
     }
 
+    /**
+     * 停止放电
+     *
+     * @param record
+     */
     @Override
     @Transactional(rollbackFor = {})
     public void endCharge(ChargingRecord record) {
@@ -131,5 +138,44 @@ public class ChargingRecordServiceImpl extends ServiceImpl<ChargingRecordMapper,
         chargingPileInfoService.update(new UpdateWrapper<ChargingPileInfo>()
                 .set("use_status",0)
                 .eq("id",record.getChargingPileInfoId()));
+    }
+
+    /**
+     * 更新充电金额
+     *
+     * @param pileNum
+     * @param chargeNumStr
+     * @param stockCode
+     */
+    @Override
+    @Transactional(rollbackFor = {})
+    public void updateChargeMoney(String pileNum, String chargeNumStr, String stockCode) {
+        //查询充电桩
+        ChargingPileInfo pileInfo = chargingPileInfoService.getOne(new QueryWrapper<ChargingPileInfo>()
+        .eq("serial_number",pileNum)
+        .eq("is_deleted",0));
+        if(pileInfo==null){
+            throw new CommonException("充电桩错误！");
+        }
+        if(!pileInfo.getUseStatus()){
+            throw new CommonException("充电桩未被使用，不能充电！");
+        }
+        //查询充电记录
+        ChargingRecord record = chargingRecordMapper.selectOne(new QueryWrapper<ChargingRecord>()
+        .eq("charging_pile_info_id",pileInfo.getId())
+        .ne("charge_status",2));
+        if(record==null){
+            throw new CommonException("本次充电已经结束！");
+        }
+        BigDecimal chargeNum =new BigDecimal(chargeNumStr).divide(new BigDecimal(10),1);
+        //更新充电金额
+      int i =  chargingRecordMapper.update(null,new UpdateWrapper<ChargingRecord>()
+        .set("charge_total_money",chargeNum)
+                .set("charge_status",1)
+        .eq("id",record.getId())
+        .ne("charge_status",2));
+      if(i==0){
+          throw new CommonException("本次充电已经结束！");
+      }
     }
 }

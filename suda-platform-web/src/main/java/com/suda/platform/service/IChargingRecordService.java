@@ -35,4 +35,14 @@ public interface IChargingRecordService extends IService<ChargingRecord> {
     ChargingRecord insertChargingRecord(Long stockUserId, ChargingPileInfo pileInfo, ChargingStations stations);
 
     void endCharge(ChargingRecord record);
+
+    /**
+     * 充电更新金额
+     *
+     * @param pileNum
+     * @param chargeNumStr
+     * @param stockCode
+     */
+    void updateChargeMoney(String pileNum, String chargeNumStr, String stockCode);
+
 }

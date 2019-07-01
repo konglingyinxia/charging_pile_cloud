@@ -55,6 +55,7 @@ public class AppUserController  {
     @RequestMapping(value = "register", method = RequestMethod.POST)
     @ApiOperation(notes = "用户注册 ：account:传为手机号；pswd:密码(md5加密)；code:验证码；invitationCode:邀请码 ", value = "用户注册")
     @ResponseBody
+    @Deprecated
     public Map<String, Object> telRegister(StockUserSignInVO vo) throws IOException {
         if(com.util.StringUtils.isBlank(vo.getAccount(),vo.getCode())){
             return  ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
@@ -114,6 +115,7 @@ public class AppUserController  {
             "\n code:验证码 ", value = "重置密码")
     @RequestMapping(value = "rewNewPwd", method = RequestMethod.POST)
     @ResponseBody
+    @Deprecated
     public Map<String, Object> rewNewPwd(StockUserSignInVO vo, HttpServletRequest request, HttpServletResponse response) {
 
         if(com.util.StringUtils.isBlank(vo.getAccount(),vo.getCode(),vo.getPswd())){
@@ -140,6 +142,7 @@ public class AppUserController  {
     @RequestMapping(value = "registerEmail", method = RequestMethod.POST)
     @ApiOperation(notes = "用户邮箱注册 ：email:账号；pswd:密码(md5加密)；code:验证码；invitationCode:邀请码 ", value = "用户邮箱注册")
     @ResponseBody
+    @Deprecated
     public Map<String, Object> registerEmail(StockUser user) throws IOException {
         if (StringUtils.isBlank(user.getEmail())) {
             throw new CommonException(ResponseMsg.MISS_PARAM);
@@ -150,6 +153,7 @@ public class AppUserController  {
     @RequestMapping(value = "bindEmail", method = RequestMethod.POST)
     @ApiOperation(notes = "用户邮箱绑定 ：id:用户id ;email:绑定邮箱；code:验证码", value = "用户邮箱绑定")
     @ResponseBody
+    @Deprecated
     public Map<String, Object> bindEmail(StockUser user, StockUserInfo userInfo, HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (StringUtils.isBlank(user.getEmail()) || null == user.getId()) {
             throw new CommonException(ResponseMsg.MISS_PARAM);
@@ -166,6 +170,7 @@ public class AppUserController  {
             "\n code:验证码 ", value = "邮箱重置密码")
     @RequestMapping(value = "rewEmailNewPwd", method = RequestMethod.POST)
     @ResponseBody
+    @Deprecated
     public Map<String, Object> rewEmailNewPwd(StockUser user, HttpServletRequest request, HttpServletResponse response) {
 
         if (StringUtils.isBlank(user.getEmail())) {
@@ -178,6 +183,7 @@ public class AppUserController  {
     @RequestMapping(value = "checkEmailTel", method = RequestMethod.POST)
     @ApiOperation(notes = "验证邮箱和手机号 ：id:用户id ;account:邮箱和手机号；code:验证码", value = "验证邮箱和手机号")
     @ResponseBody
+    @Deprecated
     public Map<String, Object> checkEmailTel(StockUser user, StockUserInfo userInfo, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         return ResponseUtil.getSuccessMap();
@@ -188,6 +194,7 @@ public class AppUserController  {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ApiOperation(notes = "用户登录 ：account账号；  pswd密码", value = "用户登录")
     @ResponseBody
+    @Deprecated
     public Map<String, Object> userLogin(StockUserSignInVO vo, HttpServletRequest req,
                                          HttpServletResponse res) throws UnsupportedEncodingException {
         if(com.util.StringUtils.isBlank(vo.getAccount(),vo.getPswd())){
@@ -212,7 +219,7 @@ public class AppUserController  {
     }
 
     /**
-     * 用户获取openId (小程序登陆)
+     * 用户获取openId (小程序登陆授权)
      */
     @RequestMapping(value = "wxOpenId", method = {RequestMethod.POST,RequestMethod.GET})
     @ApiOperation(notes = "用户登录 ：account账号； code:微信code", value = "用户登录")

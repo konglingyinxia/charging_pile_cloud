@@ -26,12 +26,12 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
             //TODO 配置不需要拦截的路径 APP PC 都配置
             //配置 不需要拦截的包和请求
              String[]excludePathPatterns=new String[]{
-               "/stockUser/login",
-               "/stockUser/insertUser",
-               "/swagger-ui.html",
-               "/swagger-resources/**",
-               "/webjars/**",
-               "/v2/**"
+               "/app/uart1/**",
+                     "/app/chargeStation/**",
+                     "/app/comConfig/**",
+                     "/app/sms/**",
+                     "/app/user/**"
+
             };
          registry.addInterceptor(  appinterceptor()).addPathPatterns("/**").excludePathPatterns(excludePathPatterns);
 

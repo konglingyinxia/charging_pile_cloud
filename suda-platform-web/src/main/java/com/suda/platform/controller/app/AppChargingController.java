@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.suda.platform.entity.ChargingPileInfo;
 import com.suda.platform.entity.ChargingRecord;
 import com.suda.platform.entity.ChargingStations;
+import com.suda.platform.entity.StockUserCapitalFund;
 import com.suda.platform.service.IChargingPileInfoService;
 import com.suda.platform.service.IChargingRecordService;
 import com.suda.platform.service.IChargingStationsService;
+import com.suda.platform.service.IStockUserCapitalFundService;
 import com.util.Respons.ResponseMsg;
 import com.util.Respons.ResponseUtil;
 import com.util.StringUtils;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -37,19 +40,29 @@ public class AppChargingController {
     private IChargingStationsService chargingStationsService;
     @Autowired
     private IChargingPileInfoService chargingPileInfoService;
+    @Autowired
+    private IStockUserCapitalFundService stockUserCapitalFundService;
 
     /**
      * 开启放电 查询充电桩
      */
-    @RequestMapping(value = "/openCharge", method = RequestMethod.GET)
+    @RequestMapping(value = "/openCharge", method = RequestMethod.POST)
     @ResponseBody
     @LogMenthodName(name = "开启充电")
     public Map<String, Object> getService(ChargingRecord record, ChargingPileInfo pileInfo) {
         if(record.getStockUserId()==null || StringUtils.isBlank(pileInfo.getSerialNumber())){
             return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
         }
+        StockUserCapitalFund stockUserCapitalFund = stockUserCapitalFundService.getStockUserCapitalFundS(record.getStockUserId(),null);
+        if(stockUserCapitalFund ==null){
+            return ResponseUtil.getNotNormalMap("还未办卡，不能使用充电桩！");
+        }
+        if(stockUserCapitalFund.getUsableFund().compareTo(BigDecimal.ZERO)<=0){
+            return ResponseUtil.getNotNormalMap("请先充交卡费后，再使用充电桩！");
+        }
         List<ChargingPileInfo> pileInfos = chargingPileInfoService.list(new QueryWrapper<ChargingPileInfo>()
-        .eq("serial_number",pileInfo.getSerialNumber()));
+        .eq("serial_number",pileInfo.getSerialNumber())
+        .eq("is_deleted",0));
         if(pileInfos.size()==0){
             return ResponseUtil.getNotNormalMap("充电桩编号错误！");
         }
@@ -77,7 +90,7 @@ public class AppChargingController {
     /**
      * 结束充电
      */
-    @RequestMapping(value = "/endCharge", method = RequestMethod.GET)
+    @RequestMapping(value = "/endCharge", method = RequestMethod.POST)
     @ResponseBody
     @LogMenthodName(name = "结束充电")
     public Map<String, Object> endCharge(ChargingRecord record) {

@@ -95,7 +95,6 @@ public class StockUserCapitalFundServiceImpl extends ServiceImpl<StockUserCapita
     public StockUserCapitalFund getStockUserCapitalFundS(Long id, String stockCode) {
         StockUserCapitalFund stockUserCapitalFund = baseMapper.selectOne(new QueryWrapper<StockUserCapitalFund>()
                 .eq("stock_user_id",id).eq(StringUtils.isNotBlank(stockCode),"stock_code",stockCode));
-
         return stockUserCapitalFund;
     }
 }
