@@ -51,9 +51,10 @@ public class ChargingPileInfo extends Model<ChargingPileInfo> {
     @TableField("parking_lot_no")
     private String parkingLotNo;
 
-    @ApiModelProperty(value = "功率")
+    @ApiModelProperty(value = "功率 KW")
     @TableField("rate_of_work")
-    private String rateOfWork;
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
+    private BigDecimal rateOfWork;
 
     @ApiModelProperty(value = "1:直流 2:交流")
     @TableField("ac_dc")

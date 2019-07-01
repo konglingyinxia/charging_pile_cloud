@@ -1,6 +1,8 @@
 package com.suda.platform.controller.app;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Sets;
 import com.suda.platform.VO.chargeStation.ChargingPileInfoVO;
 import com.suda.platform.VO.chargeStation.ChargingStationSelAppVO;
 import com.suda.platform.VO.chargeStation.ChargingStationsAppVO;
@@ -9,12 +11,14 @@ import com.suda.platform.service.IChargingPileInfoService;
 import com.suda.platform.service.IChargingStationsService;
 import com.util.Respons.ResponseUtil;
 import com.util.pageinfoutil.PageUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,6 +43,15 @@ public class AppChargeStationController {
     @RequestMapping(value = "/selectAppChargingStations")
     @ResponseBody
     public Map<String,Object> selectAppChargingStations(ChargingStationSelAppVO vo, PageUtil pageUtil){
+        if(vo.getStartPower()!=null && vo.getEndPower() !=null){
+            List<Object> idList = chargingPileInfoService.listObjs(new QueryWrapper<ChargingPileInfo>()
+            .between("rate_of_work",vo.getStartPower(),vo.getEndPower()).select("charging_stations_id"));
+            String ids= StringUtils.join(Sets.newHashSet(idList),",");
+            if(StringUtils.isBlank(ids)){
+                ids = "0";
+            }
+            vo.setChargingStationsIds(ids);
+        }
         PageInfo<ChargingStationsAppVO> list = chargingStationsService.selectAppChargingStations(vo,  pageUtil);
         return ResponseUtil.getSuccessMap(list);
     }

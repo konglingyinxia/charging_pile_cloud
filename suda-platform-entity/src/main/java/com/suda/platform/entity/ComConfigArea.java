@@ -5,11 +5,16 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.suda.platform.format.CustomBigDecimalSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -20,6 +25,9 @@ import java.util.Date;
  * @author 张龙飞
  * @since 2019-04-16
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
 @ApiModel(value="ComConfigArea对象", description="区域字典")
 public class ComConfigArea extends Model<ComConfigArea> {
 
@@ -67,95 +75,15 @@ public class ComConfigArea extends Model<ComConfigArea> {
     @TableField("init_addr")
     private String initAddr;
 
-    public Integer getId() {
-        return id;
-    }
+    @ApiModelProperty(value = "经度")
+    @TableField(" longitude")
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
+    private BigDecimal longitude;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getAreaName() {
-        return areaName;
-    }
+    @ApiModelProperty(value = "维度")
+    @TableField("dimensionality")
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
+    private BigDecimal dimensionality;
 
-    public void setAreaName(String areaName) {
-        this.areaName = areaName;
-    }
-    public String getAreaCode() {
-        return areaCode;
-    }
 
-    public void setAreaCode(String areaCode) {
-        this.areaCode = areaCode;
-    }
-    public String getAreaShort() {
-        return areaShort;
-    }
-
-    public void setAreaShort(String areaShort) {
-        this.areaShort = areaShort;
-    }
-    public String getAreaIsHot() {
-        return areaIsHot;
-    }
-
-    public void setAreaIsHot(String areaIsHot) {
-        this.areaIsHot = areaIsHot;
-    }
-    public Integer getAreaSequence() {
-        return areaSequence;
-    }
-
-    public void setAreaSequence(Integer areaSequence) {
-        this.areaSequence = areaSequence;
-    }
-    public Integer getAreaParentId() {
-        return areaParentId;
-    }
-
-    public void setAreaParentId(Integer areaParentId) {
-        this.areaParentId = areaParentId;
-    }
-    public String getLetter() {
-        return letter;
-    }
-
-    public void setLetter(String letter) {
-        this.letter = letter;
-    }
-    public Date getInitDate() {
-        return initDate;
-    }
-
-    public void setInitDate(Date initDate) {
-        this.initDate = initDate;
-    }
-    public String getInitAddr() {
-        return initAddr;
-    }
-
-    public void setInitAddr(String initAddr) {
-        this.initAddr = initAddr;
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
-
-    @Override
-    public String toString() {
-        return "ComConfigArea{" +
-        "id=" + id +
-        ", areaName=" + areaName +
-        ", areaCode=" + areaCode +
-        ", areaShort=" + areaShort +
-        ", areaIsHot=" + areaIsHot +
-        ", areaSequence=" + areaSequence +
-        ", areaParentId=" + areaParentId +
-        ", letter=" + letter +
-        ", initDate=" + initDate +
-        ", initAddr=" + initAddr +
-        "}";
-    }
 }

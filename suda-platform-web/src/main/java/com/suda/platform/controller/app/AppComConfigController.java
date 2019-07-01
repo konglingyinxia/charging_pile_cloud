@@ -34,8 +34,21 @@ public class AppComConfigController {
      */
     @RequestMapping(value = "/getArea", method = RequestMethod.GET)
     @ResponseBody
+    @Deprecated
     public Map<String, Object> getService(Integer areaParentId) {
         List<ComConfigAreaVO> lists = comConfigServiceService.selectByAreaParentId(areaParentId);
+        return ResponseUtil.getSuccessMap(lists);
+    }
+
+    /**
+     * 获取区域信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getAreaLatLog", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getAreaLatLog(Integer areaParentId) {
+        List<?> lists = comConfigServiceService.selectAreaLatLog(areaParentId);
         return ResponseUtil.getSuccessMap(lists);
     }
 

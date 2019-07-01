@@ -84,4 +84,16 @@ public class ChargingStationSelAppVO {
     @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal endDistance;
 
+
+    //功率 power
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
+    private BigDecimal startPower;
+
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
+    private BigDecimal endPower;
+
+    @ApiModelProperty(value = "充电站ids")
+    @TableField("charging_stations_ids")
+    private String chargingStationsIds;
+
 }
