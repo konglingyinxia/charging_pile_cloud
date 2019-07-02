@@ -105,6 +105,7 @@
             则项目访问路径为：http://ip:端口/index.html
         3、可在 /home/project/staticFile/ 下创建多个项目的静态资源文件目录，
             访问路径为：http://ip:端口/静态资源文件目录/index.html
+    6、使用 nginx 转发项目 ，在nginx 里配置 https  访问
 
 #### 使用说明
 
