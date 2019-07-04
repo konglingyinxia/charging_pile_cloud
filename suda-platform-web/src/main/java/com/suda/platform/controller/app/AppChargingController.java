@@ -75,9 +75,6 @@ public class AppChargingController {
         if(pileInfo.getOffLineIs()){
             return ResponseUtil.getNotNormalMap("该充电桩处于离线状态！");
         }
-        if(pileInfo.getServiceCharge().compareTo(stockUserCapitalFund.getUsableFund())>=0){
-            return ResponseUtil.getNotNormalMap("钱包余额不足！");
-        }
         //查询充电站是否禁用
         ChargingStations stations  = chargingStationsService.getById(pileInfo.getChargingStationsId());
         if(stations==null){

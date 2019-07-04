@@ -129,7 +129,7 @@ public class ChargingRecordServiceImpl extends ServiceImpl<ChargingRecordMapper,
             String  stockCode =stockUserCapitalFund.getStockCode();
             BigDecimal usableFund = stockUserCapitalFund.getUsableFund();
             BigDecimal money = record.getChargeNum().multiply(record.getPrice());
-            BigDecimal serviceFee = record.getServiceCharge();
+            BigDecimal serviceFee = record.getServiceCharge().multiply(record.getChargeNum());
             chargeTotalMoney = money.add(serviceFee);
             BigDecimal moneyB = money.add(serviceFee).multiply(new BigDecimal(-1));
             //更新账户资产
@@ -195,7 +195,7 @@ public class ChargingRecordServiceImpl extends ServiceImpl<ChargingRecordMapper,
 
         StockUserCapitalFund fund = stockUserCapitalFundService.upAndSelectFund(record.getStockUserId(),WalletTypeEnum.STATUS_2.getCode(),0L);
         //本次充电费用
-        BigDecimal  nowChargeFee = chargeNum.multiply(pileInfo.getPrice()).add(pileInfo.getServiceCharge());
+        BigDecimal  nowChargeFee = chargeNum.multiply(pileInfo.getPrice()).add(chargeNum.multiply(pileInfo.getServiceCharge()));
         if(fund.getUsableFund().compareTo(nowChargeFee)<0){
             commonEndCharge(record,WalletTypeEnum.STATUS_1.getCode());
             return "0";
@@ -238,7 +238,7 @@ public class ChargingRecordServiceImpl extends ServiceImpl<ChargingRecordMapper,
         //充电度数
         BigDecimal chargeNum =new BigDecimal(chargeNumStr).divide(new BigDecimal(10),1);
         //本次充电费用
-        BigDecimal  nowChargeFee = chargeNum.multiply(pileInfo.getPrice()).add(pileInfo.getServiceCharge());
+        BigDecimal  nowChargeFee = chargeNum.multiply(pileInfo.getPrice()).add(chargeNum.multiply(pileInfo.getServiceCharge()));
         if(fund.getUsableFund().compareTo(nowChargeFee)<0){
             //查询充电记录
             ChargingRecord record = chargingRecordMapper.selectOne(new QueryWrapper<ChargingRecord>()
