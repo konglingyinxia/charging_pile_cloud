@@ -9,8 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.suda.platform.format.CustomBigDecimalSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,7 +19,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 充电记录
+ *  实时 充电记录
  * </p>
  *
  * @author kongling
@@ -30,7 +29,10 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="ChargingRecord对象", description="充电记录")
-public class ChargingRecordVO extends Model<ChargingRecordVO> {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class RealTimeChargRecordVO extends Model<RealTimeChargRecordVO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,51 +42,6 @@ public class ChargingRecordVO extends Model<ChargingRecordVO> {
     @ApiModelProperty(value = "充电用户id")
     @TableField("stock_user_id")
     private Long stockUserId;
-
-    @ApiModelProperty(value = "充电站id")
-    @TableField("charging_stations_id")
-    private Long chargingStationsId;
-
-    @ApiModelProperty(value = "充电桩id")
-    @TableField("charging_pile_info_id")
-    private Long chargingPileInfoId;
-
-    @ApiModelProperty(value = "省")
-    @TableField("province")
-    private String province;
-
-    @ApiModelProperty(value = "市")
-    @TableField("city")
-    private String city;
-
-    @ApiModelProperty(value = "县")
-    @TableField("county")
-    private String county;
-
-    @ApiModelProperty(value = "详细地点")
-    @TableField("address")
-    private String address;
-
-    @ApiModelProperty(value = "价格单位元")
-    @TableField("price")
-    @JsonSerialize(using = CustomBigDecimalSerializer.class)
-    private BigDecimal price;
-
-    @ApiModelProperty(value = "服务费 价格单位元度")
-    @TableField("service_charge")
-    @JsonSerialize(using = CustomBigDecimalSerializer.class)
-    private BigDecimal serviceCharge;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField("create_time")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
-
-    @TableField("timestamp")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date timestamp;
 
     @ApiModelProperty(value = "充电开始时间")
     @TableField("charge_start_time")
@@ -122,28 +79,10 @@ public class ChargingRecordVO extends Model<ChargingRecordVO> {
     @TableField("serial_number")
     private String serialNumber;
 
-    /**
-     * 开始时间  结束时间
-     */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(exist = false)
-    private Date startDate, endDate;
-
-
-
-    /*用户信息*/
-    @ApiModelProperty(value = "用户昵称")
-    @TableField("nickname")
-    private String nickname;
-
-    @ApiModelProperty(value = "真实姓名")
-    @TableField("username")
-    private String username;
-
-
-    @ApiModelProperty(value = "手机号")
-    @TableField("tel")
-    private String tel;
+    @ApiModelProperty(value = "功率")
+    @TableField("rate_of_work")
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
+    private BigDecimal rateOfWork;
 
 
     @Override

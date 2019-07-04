@@ -1,6 +1,8 @@
 package com.suda.platform.controller.app;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.suda.platform.VO.chargeStation.ChargingRecordVO;
+import com.suda.platform.VO.chargeStation.RealTimeChargRecordVO;
 import com.suda.platform.entity.ChargingPileInfo;
 import com.suda.platform.entity.ChargingRecord;
 import com.suda.platform.entity.ChargingStations;
@@ -14,6 +16,7 @@ import com.util.Respons.ResponseMsg;
 import com.util.Respons.ResponseUtil;
 import com.util.StringUtils;
 import config.annotation.LogMenthodName;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -106,6 +109,34 @@ public class AppChargingController {
             chargingRecordService.endCharge(record,WalletTypeEnum.STATUS_2.getCode());
         }
         return ResponseUtil.getSuccessMap();
+    }
+
+
+    /**
+     * 充电记录实时接口
+     */
+    @RequestMapping(value = "/realTimeChargingRecord")
+    @ResponseBody
+    public Map<String,Object> realTimeChargingRecord(ChargingRecordVO vo){
+        if(vo.getId()==null){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.ID_IS_EMPTY);
+        }
+        ChargingRecord  record = chargingRecordService.getById(vo.getId());
+        RealTimeChargRecordVO realTimeVO =null;
+        if(record!=null){
+           realTimeVO =RealTimeChargRecordVO.builder().build();
+            BeanUtils.copyProperties(record,realTimeVO);
+            ChargingPileInfo pileInfo = chargingPileInfoService.getById(record.getChargingPileInfoId());
+            ChargingStations stations = chargingStationsService.getById(record.getChargingStationsId());
+
+            realTimeVO.setRateOfWork(pileInfo.getRateOfWork());
+            realTimeVO.setSerialNumber(pileInfo.getSerialNumber());
+            realTimeVO.setStationName(stations.getStationName());
+            realTimeVO.setChargeTotalMoney(record.getChargeNum().multiply(record.getPrice()));
+            return ResponseUtil.getSuccessMap(realTimeVO);
+        }else {
+            return ResponseUtil.getNotNormalMap("记录不存在");
+        }
     }
 
 }

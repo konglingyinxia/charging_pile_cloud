@@ -3,7 +3,9 @@ package com.suda.platform.controller.app;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.chargeStation.ChargingRecordVO;
 import com.suda.platform.VO.finance.StockUserChargeVO;
+import com.suda.platform.service.IChargingPileInfoService;
 import com.suda.platform.service.IChargingRecordService;
+import com.suda.platform.service.IChargingStationsService;
 import com.suda.platform.service.IStockUserChargeService;
 import com.util.Respons.ResponseMsg;
 import com.util.Respons.ResponseUtil;
@@ -34,6 +36,10 @@ public class AppStockUserRecordController {
     private IChargingRecordService chargingRecordService;
     @Autowired
     private IStockUserChargeService stockUserChargeService;
+    @Autowired
+    private IChargingPileInfoService chargingPileInfoService;
+    @Autowired
+    private IChargingStationsService chargingStationsService;
 
     /**
      * 用户充电记录
