@@ -25,15 +25,6 @@ public interface IStockUserCapitalFundService extends IService<StockUserCapitalF
     StockUserCapitalFund upAndSelectFund(Long id, String stockCode, Long agentUserId);
 
     /**
-     * 更新账户资产
-     * @param stockCode
-     * @param stockUserId
-     * @param money
-     * @return
-     */
-    int updateRechargeByCodeId(String stockCode, Long stockUserId, BigDecimal money);
-
-    /**
      * 根据记录id更新用户资产
      * @param id
      * @param money
@@ -49,6 +40,4 @@ public interface IStockUserCapitalFundService extends IService<StockUserCapitalF
      * @return
      */
     StockUserCapitalFund getStockUserCapitalFundS(Long id, String stockCode);
-
-
 }

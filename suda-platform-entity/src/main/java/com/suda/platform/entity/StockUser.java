@@ -7,8 +7,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,6 +26,9 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="StockUser对象", description="手机用户表")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class StockUser extends Model<StockUser> {
 
     private static final long serialVersionUID = 1L;
@@ -99,6 +101,13 @@ public class StockUser extends Model<StockUser> {
     @TableField("open_id")
     private String openId;
 
+    @ApiModelProperty(value = "添加代理商id")
+    @TableField("agent_user_id")
+    private Long agentUserId;
+
+    @ApiModelProperty(value = "用户类型 1：小程序用户  2：ic卡用户")
+    @TableField("user_type")
+    private Integer userType;
 
     @Override
     protected Serializable pkVal() {

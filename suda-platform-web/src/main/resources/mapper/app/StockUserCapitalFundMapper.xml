@@ -12,22 +12,13 @@
         <result column="create_time" property="createTime" />
         <result column="timestamp" property="timestamp" />
     </resultMap>
-    <update id="updateRechargeByCodeId">
-      UPDATE stock_user_capital_fund
-        SET usable_fund =
-        TRUNCATE(usable_fund +
-                 #{money} , 8)
-        WHERE stock_user_id = #{stockUserId} AND stock_code = #{stockCode}
-
-
-    </update>
     <!--根据记录id 更新资产-->
     <update id="updateRechargeById">
         UPDATE stock_user_capital_fund
         SET usable_fund =
         TRUNCATE(usable_fund +
                  #{money} , 8)
-        WHERE stock_user_id = #{id}
+        WHERE id = #{id}
     </update>
 
 </mapper>

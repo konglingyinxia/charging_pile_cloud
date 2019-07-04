@@ -20,7 +20,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 手机用户表
+ *  ic  卡用户记录
  * </p>
  *
  * @author kongling
@@ -30,69 +30,22 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="StockUser对象", description="手机用户表")
-public class StockUserVO extends Model<StockUserVO> {
+public class StockUserIcVO extends Model<StockUserIcVO> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "用户昵称")
-    @TableField("nickname")
-    private String nickname;
-
-    @ApiModelProperty(value = "真实姓名")
-    @TableField("username")
-    private String username;
-
     @ApiModelProperty(value = "登录帐号")
     @TableField("user_uid")
     private String userUid;
-
-    @ApiModelProperty(value = "手机号")
-    @TableField("tel")
-    private String tel;
-
-    @ApiModelProperty(value = "邮箱|帐号")
-    @TableField("email")
-    private String email;
-
-    @ApiModelProperty(value = "设备号")
-    @TableField("device_no")
-    private String deviceNo;
 
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-
-    @ApiModelProperty(value = "最后登录时间")
-    @TableField("last_login_time")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date lastLoginTime;
-
-    @ApiModelProperty(value = "0:未禁用 1：禁用")
-    @TableField("is_disable")
-    private Boolean isDisable;
-
-    @ApiModelProperty(value = "0:未删除 1:删除")
-    @TableField("is_deleted")
-    private Boolean isDeleted;
-
-    @TableField("timestamp")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date timestamp;
-
-    @ApiModelProperty(value = "头像")
-    @TableField("head_url")
-    private String headUrl;
-
-    @ApiModelProperty(value = "微信唯一id")
-    @TableField("open_id")
-    private String openId;
 
     @ApiModelProperty(value = "充电总金额")
     @TableField("charge_total_money")
@@ -113,6 +66,31 @@ public class StockUserVO extends Model<StockUserVO> {
     @TableField("user_type")
     private Integer userType;
 
+    //====== ic 卡 余额==========================
+
+    @ApiModelProperty(value = "可用")
+    @TableField("usable_fund")
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
+    private BigDecimal usableFund;
+
+
+    @ApiModelProperty(value = "钱包账号 卡号")
+    @TableField("card_num")
+    private String cardNum;
+
+    // =================================== 代理账号 名字
+
+    @ApiModelProperty(value = "帐号")
+    @TableField("agent_account")
+    private String agentAccount;
+
+    @ApiModelProperty(value = "用户名")
+    @TableField("agent_username")
+    private String agentUsername;
+
+    @ApiModelProperty(value = "添加代理商id")
+    @TableField("agent_user_id")
+    private Long agentUserId;
 
 
     @Override

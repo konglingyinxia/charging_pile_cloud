@@ -1,10 +1,14 @@
 package com.suda.platform.controller.app;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.suda.platform.VO.finance.StockUserCapitalFundAppVO;
 import com.suda.platform.VO.stockuser.*;
 import com.suda.platform.entity.StockUser;
+import com.suda.platform.entity.StockUserCapitalFund;
 import com.suda.platform.entity.StockUserInfo;
+import com.suda.platform.enums.finance.WalletTypeEnum;
 import com.suda.platform.service.ICommonService;
+import com.suda.platform.service.IStockUserCapitalFundService;
 import com.suda.platform.service.IStockUserInfoService;
 import com.suda.platform.service.IStockUserService;
 import com.util.Respons.ResponseMsg;
@@ -50,6 +54,10 @@ public class AppStockUserController {
     private IStockUserInfoService stockUserInfoService;
     @Autowired
     private com.suda.platform.common.RedisUtils redisUtils;
+
+    @Autowired
+    private IStockUserCapitalFundService stockUserCapitalFundService;
+
 
 
 
@@ -168,6 +176,27 @@ public class AppStockUserController {
         stockUser.setId(loginVO.getId());
         stockUserService.updateById(stockUser);
         return ResponseUtil.getSuccessMap();
+    }
+
+
+
+    /**
+     * 用户资产查询
+     *
+     * @param vo
+     * @return
+     */
+    @RequestMapping(value = "/getStockUserFunds",method ={RequestMethod.POST,RequestMethod.GET} )
+    @ResponseBody
+    public Map<String, Object> getStockUserFunds(StockUserParamsVO vo) {
+        if (vo.getStockUserId() == null) {
+            return ResponseUtil.getNotNormalMap(ResponseMsg.ID_IS_EMPTY);
+        }
+        //创建小程序钱包
+        StockUserCapitalFund app =  stockUserCapitalFundService.upAndSelectFund(vo.getStockUserId(), WalletTypeEnum.STATUS_2.getCode(),null);
+        StockUserCapitalFundAppVO appVO = new StockUserCapitalFundAppVO();
+        BeanUtils.copyProperties(app,appVO);
+        return ResponseUtil.getSuccessMap(appVO);
     }
 
 

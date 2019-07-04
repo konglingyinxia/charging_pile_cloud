@@ -1,11 +1,10 @@
 package com.suda.platform.controller.agent;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.stockuser.AdminUpdateAssetVo;
-import com.suda.platform.VO.stockuser.StockUserVO;
+import com.suda.platform.VO.stockuser.StockUserIcVO;
 import com.suda.platform.entity.StockUser;
-import com.suda.platform.entity.StockUserCapitalFund;
+import com.suda.platform.enums.stockuser.StockUserTypeEnum;
 import com.suda.platform.service.IStockUserCapitalFundService;
 import com.suda.platform.service.IStockUserService;
 import com.util.Respons.ResponseMsg;
@@ -45,13 +44,17 @@ public class AgentStockUserController {
     /**
      * 查询所有用户
      */
-    @RequestMapping(value = "/selectAllStockUser")
+    @RequestMapping(value = "/selectIcAllStockUser")
     @ResponseBody
-    public Map<String,Object> selectAllStockUser(StockUserVO stockUserVO, PageUtil pageUtil){
-
-       PageInfo<StockUserVO> list = stockUserService.selectAllStockUser(stockUserVO,  pageUtil);
+    public Map<String,Object> selectIcAllStockUser(StockUserIcVO stockUserVO, PageUtil pageUtil){
+        if(stockUserVO.getAgentUserId()==null){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
+        }
+        stockUserVO.setUserType(StockUserTypeEnum.STATUS_2.getCode());
+        PageInfo<StockUserIcVO> list = stockUserService.selectIcAllStockUser(stockUserVO,  pageUtil);
         return ResponseUtil.getSuccessMap(list);
     }
+
 
     /**
      * 禁用启用用户
@@ -72,28 +75,24 @@ public class AgentStockUserController {
     }
 
     /**
-     * 后台充值扣款
+     * ic 卡充值 扣款
+     *
+     * @param vo
+     * @param request
+     * @param response
+     * @return
      */
-    @RequestMapping(value = "updateRecharge", method = RequestMethod.POST)
+    @RequestMapping(value = "updateIcRecharge", method = RequestMethod.POST)
     @ResponseBody
     @LogMenthodName(name = "会员后台充值/扣款")
-    @ApiOperation(notes = "会员账户资产管理:id 用户id;卡号 stockCode;操作(1-充值2-扣款) operation; money 充值金额;备注 remark", value = "会员账户资产管理")
-    public Map<String, Object> recharge(AdminUpdateAssetVo vo, HttpServletRequest request,
-                                        HttpServletResponse response) {
-        if (StringUtils.isBlank(vo.getId(), vo.getMoney(), vo.getStockCode(), vo.getRemark(), vo.getOperation(),vo.getAgentUserId())) {
+    @ApiOperation(notes = "会员账户资产管理:id 用户id;卡号 cardNum;操作(1-充值2-扣款) operation; money 充值金额;备注 remark", value = "会员账户资产管理")
+    public Map<String, Object> rechargeIc(AdminUpdateAssetVo vo, HttpServletRequest request,
+                                          HttpServletResponse response) {
+        if (StringUtils.isBlank(vo.getMoney(), vo.getRemark(), vo.getOperation()
+                ,vo.getCardNum())||vo.getAgentUserId()==null ) {
             return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
         }
-
-        StockUserCapitalFund fund = stockUserCapitalFundService.getOne(new QueryWrapper<StockUserCapitalFund>()
-        .eq("stock_user_id",vo.getId()));
-        if(fund !=null){
-            if(!vo.getStockCode().equalsIgnoreCase(fund.getStockCode())){
-                return ResponseUtil.getNotNormalMap("充值人的卡号错误");
-            }
-        }
-        int res = stockUserService.updateWallet(vo);
+        int res = stockUserService.upIcdateWallet(vo);
         return res > 0 ? ResponseUtil.getSuccessMap() : ResponseUtil.getNotNormalMap();
     }
-
-
 }

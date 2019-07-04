@@ -15,16 +15,6 @@ import java.math.BigDecimal;
  * @since 2019-04-16
  */
 public interface StockUserCapitalFundMapper extends BaseMapper<StockUserCapitalFund> {
-
-    /**
-     * 根据账户id code 更新账户资产
-     * @param stockCode
-     * @param stockUserId
-     * @param money
-     * @return
-     */
-    int updateRechargeByCodeId(@Param("stockCode") String stockCode, @Param("stockUserId") Long stockUserId, @Param("money") BigDecimal money);
-
     /**
      * 根据记录id更新资产
      *

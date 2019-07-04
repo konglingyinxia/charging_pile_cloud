@@ -1,6 +1,7 @@
 package com.suda.platform.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.suda.platform.VO.stockuser.StockUserIcVO;
 import com.suda.platform.VO.stockuser.StockUserLoginVO;
 import com.suda.platform.VO.stockuser.StockUserVO;
 import com.suda.platform.entity.StockUser;
@@ -44,4 +45,12 @@ public interface StockUserMapper extends BaseMapper<StockUser> {
      * @return
      */
     int insertSelectiveDullUnion(StockUser user);
+
+    /**
+     * IC 卡用户查询
+     *
+     * @param stockUserVO
+     * @return
+     */
+    List<StockUserIcVO> selectIcAllStockUser(StockUserIcVO stockUserVO);
 }

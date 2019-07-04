@@ -25,19 +25,66 @@
         from stock_user
         <where>
             <if test="tel !='' and tel !=null">
-                tel=#{tel}
+              and  tel=#{tel}
             </if>
             <if test="email !='' and email !=null">
-                email=#{email}
+              and  email=#{email}
             </if>
             <if test=" userUid !=null">
-                user_uid=#{userUid}
+              and   user_uid=#{userUid}
             </if>
             <if test=" id !=null">
-                id=#{id}
+              and  id=#{id}
+            </if>
+            <if test="userType!=null">
+              and  user_type = #{userType}
             </if>
         </where>
+            order by id desc
+    </select>
 
+    <!--IC  卡 用户查询-->
+    <select id="selectIcAllStockUser"
+            resultType="com.suda.platform.VO.stockuser.StockUserIcVO">
+       select * from ( select stock_user.id,stock_user.user_uid, stock_user.create_time,stock_user.agent_user_id,
+        stock_user.user_type,
+        agent_user.account as agent_account , agent_user.username as agent_username,
+
+        stock_user_capital_fund.usable_fund ,stock_user_capital_fund.card_num,
+        ifnull((select sum(charge_total_money) from  charging_record  cr where
+        cr.stock_user_id=stock_user.id and cr.payment_status=1),0) as charge_total_money,
+        ifnull((select sum(charge_num) from  charging_record  cr where
+        cr.stock_user_id=stock_user.id and cr.payment_status=1),0) as charge_num,
+        ifnull((select count(id) from  charging_record  cr where
+        cr.stock_user_id=stock_user.id and cr.payment_status=1),0) as charge_count
+        from stock_user
+        left join agent_user  on agent_user.id=stock_user.agent_user_id
+        left join stock_user_capital_fund on stock_user_capital_fund.stock_user_id=stock_user.id
+        and stock_user_capital_fund.stock_code = 'ICCARD') as users
+        <where>
+            <if test=" userUid !=null">
+                and   users.user_uid=#{userUid}
+            </if>
+            <if test="agentUserId!=null">
+                and  users.agent_user_id = #{agentUserId}
+            </if>
+            <if test=" id !=null">
+                and  users.id=#{id}
+            </if>
+            <if test="userType!=null">
+                and  users.user_type = #{userType}
+            </if>
+            <if test="agentAccount!=null">
+                and  users.agent_account like '${agentAccount}%'
+            </if>
+            <if test="agentUsername!=null">
+                and  users.agent_username like '${agentUsername}%'
+            </if>
+            <if test="cardNum!=null">
+                and  users.card_num like '${cardNum}%'
+            </if>
+        </where>
+        order by users.id desc
     </select>
 
     <!--查询app登录账号信息-->

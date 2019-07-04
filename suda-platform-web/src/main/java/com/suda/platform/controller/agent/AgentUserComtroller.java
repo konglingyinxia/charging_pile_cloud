@@ -1,8 +1,10 @@
 package com.suda.platform.controller.agent;
 
 import com.alibaba.fastjson.JSONObject;
+import com.suda.platform.VO.adminuser.AdminUserPwdVO;
 import com.suda.platform.entity.AgentUser;
 import com.suda.platform.service.IAgentUserService;
+import com.util.Respons.ResponseMsg;
 import com.util.Respons.ResponseUtil;
 import com.util.auth.AuthSign;
 import com.util.cache.UserCacheUtil;
@@ -57,6 +59,35 @@ public class AgentUserComtroller {
         agentUserVO.setSessionId(token);
         agentUserVO.setPassword(null);
         return ResponseUtil.getSuccessMap(agentUserVO);
+    }
+
+
+    /**
+     * 更改登陆账户账户密码
+     */
+    @RequestMapping(value = "/updateAdminPassword", method = RequestMethod.POST)
+    @LogMenthodName(name = "更改账户密码")
+    @ResponseBody
+    public Map<String, Object> updateAdminPassword(AdminUserPwdVO agentUserVO) throws UnsupportedEncodingException {
+        if(agentUserVO.getId()==null
+        ){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
+        }
+        AgentUser agentUserSel = agentUserService.getById(agentUserVO.getId());
+        if(agentUserSel == null){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.NOUSER);
+        }
+        if(agentUserSel.getPassword().equalsIgnoreCase(agentUserVO.getNewPassword())){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.OLD_NEW_PASSWORD_NOT_EQUAL);
+        }
+        if(!agentUserSel.getPassword().equalsIgnoreCase(agentUserVO.getOldPassword())){
+            return ResponseUtil.getNotNormalMap(ResponseMsg.OLD_PASSWORD_IS_ERROR);
+        }
+        AgentUser adminUser = new AgentUser();
+        adminUser.setPassword(agentUserVO.getNewPassword());
+        adminUser.setId(agentUserVO.getId());
+        agentUserService.updateById(adminUser);
+        return ResponseUtil.getSuccessMap();
     }
 
 

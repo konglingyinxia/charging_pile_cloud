@@ -5,16 +5,11 @@ import com.Account;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageInfo;
-import com.suda.platform.VO.stockuser.AdminUpdateAssetVo;
-import com.suda.platform.VO.stockuser.StockUserLoginVO;
-import com.suda.platform.VO.stockuser.StockUserSignInVO;
-import com.suda.platform.VO.stockuser.StockUserVO;
+import com.suda.platform.VO.stockuser.*;
 import com.suda.platform.entity.StockUser;
 import com.suda.platform.entity.StockUserCapitalFund;
-import com.suda.platform.enums.finance.FinancialTypeEnum;
-import com.suda.platform.enums.finance.PayTypeEnum;
-import com.suda.platform.enums.finance.WaterTypeEnum;
-import com.suda.platform.enums.finance.WithdrawStatusEnum;
+import com.suda.platform.enums.finance.*;
+import com.suda.platform.enums.stockuser.StockUserTypeEnum;
 import com.suda.platform.mapper.StockUserMapper;
 import com.suda.platform.service.IStockUserCapitalFundService;
 import com.suda.platform.service.IStockUserChargeService;
@@ -172,22 +167,27 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
         Long id = vo.getId();
         Byte operation = vo.getOperation();
         BigDecimal money = vo.getMoney();
-
-        int status=0;
         StockUserCapitalFund stockUserCapitalFund = stockUserCapitalFundService.upAndSelectFund(id, stockCode,vo.getAgentUserId());
+        int status=  chargeCommon(stockUserCapitalFund,money,stockCode,vo.getRemark(),vo.getAgentUserId(),operation);
+        return status;
+    }
+
+    private int chargeCommon(StockUserCapitalFund fund, BigDecimal money, String stockCode, String remark, Long agentUserId, Byte operation) {
+        Long id =fund.getStockUserId();
+        int status=0;
         switch (operation.intValue()) {
             //充值
             case 1:
                 //更新账户资产
-                int i =  stockUserCapitalFundService.updateRechargeByCodeId(stockCode,id,money);
+                int i =  stockUserCapitalFundService.updateRechargeByCodeId(fund.getId(),money);
                 //资产流水
                 if(i>0){
                     stockUserMoneyDetailService.addUserMoneyDetail(
                             id,
                             money,
-                            stockUserCapitalFund.getUsableFund(),
+                            fund.getUsableFund(),
                             WaterTypeEnum.STATUS_1.getCode(),
-                            FinancialTypeEnum.TYPE_1,vo.getRemark(),
+                            FinancialTypeEnum.TYPE_1,remark,
                             null,
                             stockCode);
                 }
@@ -195,20 +195,20 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
                 break;
             //扣款
             case 2:
-                BigDecimal usableFund = stockUserCapitalFund.getUsableFund();
+                BigDecimal usableFund = fund.getUsableFund();
                 if(money.compareTo(usableFund)>0){
                     throw new CommonException(String.format(ResponseMsg.DEAL_COIN_LITTER,stockCode));
                 }
                 //更新账户资产
-                int j =  stockUserCapitalFundService.updateRechargeByCodeId(stockCode,id,money);
+                int j =  stockUserCapitalFundService.updateRechargeByCodeId(fund.getId(),money);
                 //资产流水
                 if(j>0) {
                     stockUserMoneyDetailService.addUserMoneyDetail(
                             id,
                             money.multiply(new BigDecimal(-1)),
-                            stockUserCapitalFund.getUsableFund(),
+                            fund.getUsableFund(),
                             WaterTypeEnum.STATUS_1.getCode(),
-                            FinancialTypeEnum.TYPE_1, vo.getRemark(),
+                            FinancialTypeEnum.TYPE_1, remark,
                             null,
                             stockCode);
                 }
@@ -220,7 +220,7 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
         if(status !=0){
             //添加充值记录
             String order =id+System.currentTimeMillis() + StringUtils.getRandom(9);
-            stockUserChargeService.addChargeRecord(vo.getAgentUserId(),id, money,stockCode, PayTypeEnum.STATUS_2, WithdrawStatusEnum.STATUS_2, order);
+            stockUserChargeService.addChargeRecord(agentUserId,id, money,stockCode, PayTypeEnum.STATUS_2, WithdrawStatusEnum.STATUS_2, order);
         }
         return status;
     }
@@ -240,7 +240,8 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
             stockUser = new StockUser();
             stockUser.setOpenId(sessionResult.getOpenid());
             stockUser.setCreateTime(DealDateUtil.getNowDate());
-           Integer insert = stockUserMapper.insertSelectiveDullUnion(stockUser);
+            stockUser.setUserType(StockUserTypeEnum.STATUS_1.getCode());
+            Integer insert = stockUserMapper.insertSelectiveDullUnion(stockUser);
             if (insert == 0) {
                 throw new CommonException(ResponseMsg.USER_HAS_EXIST);
             }
@@ -250,6 +251,60 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
         StockUserLoginVO loginVO = new StockUserLoginVO();
         BeanUtils.copyProperties(stockUser,loginVO);
         return loginVO;
+    }
+
+    /**
+     *  ic 卡用户查询
+     *
+     * @param stockUserVO
+     * @param pageUtil
+     * @return
+     */
+
+    @Override
+    public PageInfo<StockUserIcVO> selectIcAllStockUser(StockUserIcVO stockUserVO, PageUtil pageUtil) {
+        PageUtil.page(pageUtil);
+        List<StockUserIcVO> lists = stockUserMapper.selectIcAllStockUser(stockUserVO);
+        return new PageInfo<>(lists);
+    }
+
+    /**
+     * Ic 卡充值扣款
+     *
+     * @param vo
+     * @return
+     */
+
+    @Override
+    @Transactional(rollbackFor = {})
+    public int upIcdateWallet(AdminUpdateAssetVo vo) {
+        StockUserCapitalFund stockUserCapitalFund =
+                stockUserCapitalFundService.getOne(
+                        new QueryWrapper<StockUserCapitalFund>()
+                        .eq("card_num",vo.getCardNum())
+                );
+        //插入用户 记录
+        if(stockUserCapitalFund ==null){
+            StockUser stockUser = StockUser.builder().agentUserId(vo.getAgentUserId())
+                    .userType(StockUserTypeEnum.STATUS_2.getCode())
+                    .createTime(DealDateUtil.getNowDate()).build();
+            stockUserMapper.insert(stockUser);
+            stockUser.setUserUid(Account.getUserUid(stockUser.getId()));
+            stockUserMapper.updateById(stockUser);
+            //插入 钱包
+            stockUserCapitalFund = StockUserCapitalFund.builder()
+                    .usableFund(BigDecimal.ZERO)
+                    .stockUserId(stockUser.getId())
+                    .stockCode(WalletTypeEnum.STATUS_1.getCode())
+                    .cardNum(vo.getCardNum())
+                    .createTime(DealDateUtil.getNowDate()).build();
+            stockUserCapitalFundService.save(stockUserCapitalFund);
+        }
+        String stockCode = WalletTypeEnum.STATUS_1.getCode();
+        Byte operation = vo.getOperation();
+        BigDecimal money = vo.getMoney();
+        int status=  chargeCommon(stockUserCapitalFund,money,stockCode,vo.getRemark(),vo.getAgentUserId(),operation);
+        return status;
     }
 
 }

@@ -1,11 +1,13 @@
 package com.suda.platform.controller.admin;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
 import com.suda.platform.VO.stockuser.AdminUpdateAssetVo;
+import com.suda.platform.VO.stockuser.StockUserIcVO;
 import com.suda.platform.VO.stockuser.StockUserVO;
 import com.suda.platform.entity.StockUser;
 import com.suda.platform.entity.StockUserCapitalFund;
+import com.suda.platform.enums.finance.WalletTypeEnum;
+import com.suda.platform.enums.stockuser.StockUserTypeEnum;
 import com.suda.platform.service.IStockUserCapitalFundService;
 import com.suda.platform.service.IStockUserService;
 import com.util.Respons.ResponseMsg;
@@ -42,15 +44,18 @@ public class AdminStockUserController {
 
     @Autowired
     private IStockUserCapitalFundService stockUserCapitalFundService;
+
+
+    //====================小程序用户 =======================================
     /**
      * 查询所有用户
      */
     @RequestMapping(value = "/selectAllStockUser")
     @ResponseBody
     public Map<String,Object> selectAllStockUser(StockUserVO stockUserVO, PageUtil pageUtil){
-
+        stockUserVO.setUserType(StockUserTypeEnum.STATUS_1.getCode());
        PageInfo<StockUserVO> list = stockUserService.selectAllStockUser(stockUserVO,  pageUtil);
-        return ResponseUtil.getSuccessMap(list);
+       return ResponseUtil.getSuccessMap(list);
     }
 
     /**
@@ -77,19 +82,13 @@ public class AdminStockUserController {
     @RequestMapping(value = "updateRecharge", method = RequestMethod.POST)
     @ResponseBody
     @LogMenthodName(name = "会员后台充值/扣款")
-    @ApiOperation(notes = "会员账户资产管理:id 用户id;卡号 stockCode;操作(1-充值2-扣款) operation; money 充值金额;备注 remark", value = "会员账户资产管理")
+    @ApiOperation(notes = "会员账户资产管理:id 用户id;操作(1-充值2-扣款) operation; money 充值金额;备注 remark", value = "会员账户资产管理")
     public Map<String, Object> recharge(AdminUpdateAssetVo vo, HttpServletRequest request,
                                         HttpServletResponse response) {
-        if (StringUtils.isBlank(vo.getId(), vo.getMoney(), vo.getStockCode(), vo.getRemark(), vo.getOperation())) {
+        if (StringUtils.isBlank(vo.getId(), vo.getMoney(), vo.getRemark(), vo.getOperation())) {
             return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
         }
-        StockUserCapitalFund fund = stockUserCapitalFundService.getOne(new QueryWrapper<StockUserCapitalFund>()
-        .eq("stock_user_id",vo.getId()));
-        if(fund !=null){
-            if(!vo.getStockCode().equalsIgnoreCase(fund.getStockCode())){
-                return ResponseUtil.getNotNormalMap("充值人的卡号错误");
-            }
-        }
+        vo.setStockCode(WalletTypeEnum.STATUS_2.getCode());
         vo.setAgentUserId(0L);
         int res = stockUserService.updateWallet(vo);
         return res > 0 ? ResponseUtil.getSuccessMap() : ResponseUtil.getNotNormalMap();
@@ -111,5 +110,39 @@ public class AdminStockUserController {
         StockUserCapitalFund funds = stockUserCapitalFundService.getStockUserCapitalFundS(stockUserId,stockCode);
         return ResponseUtil.getSuccessMap(funds);
     }
+
+    //===============================IC 卡 用户查询=================================================
+
+    @RequestMapping(value = "/selectIcAllStockUser")
+    @ResponseBody
+    public Map<String,Object> selectIcAllStockUser(StockUserIcVO stockUserVO, PageUtil pageUtil){
+        stockUserVO.setUserType(StockUserTypeEnum.STATUS_2.getCode());
+        PageInfo<StockUserIcVO> list = stockUserService.selectIcAllStockUser(stockUserVO,  pageUtil);
+        return ResponseUtil.getSuccessMap(list);
+    }
+
+    /**
+     * ic 卡充值 扣款
+     *
+     * @param vo
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "updateIcRecharge", method = RequestMethod.POST)
+    @ResponseBody
+    @LogMenthodName(name = "会员后台充值/扣款")
+    @ApiOperation(notes = "会员账户资产管理:id 用户id;卡号 cardNum;操作(1-充值2-扣款) operation; money 充值金额;备注 remark", value = "会员账户资产管理")
+    public Map<String, Object> rechargeIc(AdminUpdateAssetVo vo, HttpServletRequest request,
+                                        HttpServletResponse response) {
+        if (StringUtils.isBlank(vo.getMoney(), vo.getRemark(), vo.getOperation()
+        ,vo.getCardNum())) {
+            return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
+        }
+        vo.setAgentUserId(0L);
+        int res = stockUserService.upIcdateWallet(vo);
+        return res > 0 ? ResponseUtil.getSuccessMap() : ResponseUtil.getNotNormalMap();
+    }
+
 
 }

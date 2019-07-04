@@ -1,5 +1,8 @@
 package com.suda.platform.VO.stockuser;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
 
 /**
@@ -32,6 +35,11 @@ public class AdminUpdateAssetVo {
      * 代理商id
      */
     private Long agentUserId;
+
+
+    @ApiModelProperty(value = "钱包账号 卡号")
+    @TableField("card_num")
+    private String cardNum;
 
     public Long getId() {
         return id;
@@ -80,5 +88,13 @@ public class AdminUpdateAssetVo {
 
     public void setAgentUserId(Long agentUserId) {
         this.agentUserId = agentUserId;
+    }
+
+    public String getCardNum() {
+        return cardNum;
+    }
+
+    public void setCardNum(String cardNum) {
+        this.cardNum = cardNum;
     }
 }

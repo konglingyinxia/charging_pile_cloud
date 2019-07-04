@@ -14,8 +14,6 @@ import java.util.Map;
 public enum  FinancialTypeMessageEnum {
     MESSAGE_1(1, "充电消费金额"),
     MESSAGE_2(2, "充电消费服务费"),
-
-
     ;
 
     private Integer code;

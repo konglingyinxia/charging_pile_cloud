@@ -3,10 +3,7 @@ package com.suda.platform.service;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
-import com.suda.platform.VO.stockuser.AdminUpdateAssetVo;
-import com.suda.platform.VO.stockuser.StockUserLoginVO;
-import com.suda.platform.VO.stockuser.StockUserSignInVO;
-import com.suda.platform.VO.stockuser.StockUserVO;
+import com.suda.platform.VO.stockuser.*;
 import com.suda.platform.entity.StockUser;
 import com.util.pageinfoutil.PageUtil;
 
@@ -99,4 +96,21 @@ public interface IStockUserService extends IService<StockUser> {
      * @return
      */
     StockUserLoginVO wxLogin(WxMaJscode2SessionResult sessionResult);
+
+    /**
+     * ic 卡用户查询
+     *
+     * @param stockUserVO
+     * @param pageUtil
+     * @return
+     */
+    PageInfo<StockUserIcVO> selectIcAllStockUser(StockUserIcVO stockUserVO, PageUtil pageUtil);
+
+    /**
+     *  ic 卡充值扣款
+     *
+     * @param vo
+     * @return
+     */
+    int upIcdateWallet(AdminUpdateAssetVo vo);
 }

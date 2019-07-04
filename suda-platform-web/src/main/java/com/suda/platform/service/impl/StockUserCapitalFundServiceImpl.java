@@ -57,21 +57,6 @@ public class StockUserCapitalFundServiceImpl extends ServiceImpl<StockUserCapita
         return stockUserCapitalFund;
     }
 
-
-
-    /**
-     * 更新账户资产
-     * @param stockCode
-     * @param stockUserId
-     * @param money
-     */
-
-    @Override
-    public int updateRechargeByCodeId(String stockCode, Long stockUserId, BigDecimal money) {
-     int  num =   stockUserCapitalFundMapper.updateRechargeByCodeId(stockCode ,stockUserId ,money) ;
-     return  num;
-    }
-
     /**
      * 根据记录id 更新资产
      * @param id

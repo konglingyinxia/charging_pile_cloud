@@ -1,8 +1,11 @@
 package com.suda.platform.controller.common;
 
+import com.suda.platform.VO.StatusStringVo;
 import com.suda.platform.VO.StatusVo;
 import com.suda.platform.enums.TelCodeTypeEnum;
 import com.suda.platform.enums.finance.FinancialTypeEnum;
+import com.suda.platform.enums.finance.WalletTypeEnum;
+import com.suda.platform.enums.stockuser.StockUserTypeEnum;
 import com.suda.platform.enums.version.AppVersionEnum;
 import com.util.Respons.ResponseUtil;
 import io.swagger.annotations.ApiOperation;
@@ -83,6 +86,40 @@ public class CommonStatusController {
         return ResponseUtil.getSuccessMap(list);
     }
 
+    /**
+     * 获取钱包类型
+     */
+    @RequestMapping(value = "getWalletTypes", method = RequestMethod.GET)
+    @ResponseBody
+    @ApiOperation(value = "获取财务类型")
+    public Map<String, Object> getWalletTypes() {
+        List<StatusStringVo> list = new ArrayList<>();
+        for (WalletTypeEnum o : WalletTypeEnum.values()) {
+            StatusStringVo vo = new StatusStringVo();
+            vo.setCode(o.getCode());
+            vo.setName(o.getMessage());
+            list.add(vo);
+        }
+        return ResponseUtil.getSuccessMap(list);
+    }
+
+    /**
+     * 用户类型
+     */
+
+    @RequestMapping(value = "getStockUserTypes", method = RequestMethod.GET)
+    @ResponseBody
+    @ApiOperation(value = "获取财务类型")
+    public Map<String, Object> getStockUserTypes() {
+        List<StatusVo> list = new ArrayList<>();
+        for (StockUserTypeEnum o : StockUserTypeEnum.values()) {
+            StatusVo vo = new StatusVo();
+            vo.setCode(o.getCode());
+            vo.setName(o.getMessage());
+            list.add(vo);
+        }
+        return ResponseUtil.getSuccessMap(list);
+    }
 
 
 
