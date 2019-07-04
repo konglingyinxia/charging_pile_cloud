@@ -96,7 +96,7 @@ public class Uart1CommunicationController {
             response.setCharacterEncoding("UTF-8");
             PrintWriter writer = response.getWriter();
             writer.print(grNum+","+pileNum+","+pileStatus+","+pileActivated
-            +","+chargeNumStr+","+icCard);
+            +","+chargeNumStr+","+isIcCard+","+icCard);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
