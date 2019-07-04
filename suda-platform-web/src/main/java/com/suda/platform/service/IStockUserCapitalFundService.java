@@ -32,12 +32,4 @@ public interface IStockUserCapitalFundService extends IService<StockUserCapitalF
      */
     int updateRechargeByCodeId( Long id, BigDecimal money);
 
-    /**
-     * 获取资产列表信息
-     *
-     * @param id
-     * @param stockCode
-     * @return
-     */
-    StockUserCapitalFund getStockUserCapitalFundS(Long id, String stockCode);
 }

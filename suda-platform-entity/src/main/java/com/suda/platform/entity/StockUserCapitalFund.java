@@ -60,9 +60,6 @@ public class StockUserCapitalFund extends Model<StockUserCapitalFund> {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-
-    @TableField("timestamp")
-    private Date timestamp;
     /**
      * agent_user_id
      * 代理商id

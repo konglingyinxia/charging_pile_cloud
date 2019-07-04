@@ -107,7 +107,7 @@ public class AdminStockUserController {
         if (stockUserId == null) {
             return ResponseUtil.getNotNormalMap(ResponseMsg.ID_IS_EMPTY);
         }
-        StockUserCapitalFund funds = stockUserCapitalFundService.getStockUserCapitalFundS(stockUserId,stockCode);
+        StockUserCapitalFund funds = stockUserCapitalFundService.upAndSelectFund(stockUserId,WalletTypeEnum.STATUS_2.getCode(),0L);
         return ResponseUtil.getSuccessMap(funds);
     }
 

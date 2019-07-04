@@ -5,6 +5,7 @@ import com.suda.platform.entity.ChargingPileInfo;
 import com.suda.platform.entity.ChargingRecord;
 import com.suda.platform.entity.ChargingStations;
 import com.suda.platform.entity.StockUserCapitalFund;
+import com.suda.platform.enums.finance.WalletTypeEnum;
 import com.suda.platform.service.IChargingPileInfoService;
 import com.suda.platform.service.IChargingRecordService;
 import com.suda.platform.service.IChargingStationsService;
@@ -53,12 +54,9 @@ public class AppChargingController {
         if(record.getStockUserId()==null || StringUtils.isBlank(pileInfo.getSerialNumber())){
             return ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
         }
-        StockUserCapitalFund stockUserCapitalFund = stockUserCapitalFundService.getStockUserCapitalFundS(record.getStockUserId(),null);
-        if(stockUserCapitalFund ==null){
-            return ResponseUtil.getNotNormalMap("还未办卡，不能使用充电桩！");
-        }
+        StockUserCapitalFund stockUserCapitalFund = stockUserCapitalFundService.upAndSelectFund(record.getStockUserId(), WalletTypeEnum.STATUS_2.getCode(),0L);
         if(stockUserCapitalFund.getUsableFund().compareTo(BigDecimal.ZERO)<=0){
-            return ResponseUtil.getNotNormalMap("请先充交卡费后，再使用充电桩！");
+            return ResponseUtil.getNotNormalMap("钱包余额不足！");
         }
         List<ChargingPileInfo> pileInfos = chargingPileInfoService.list(new QueryWrapper<ChargingPileInfo>()
         .eq("serial_number",pileInfo.getSerialNumber())
@@ -73,6 +71,9 @@ public class AppChargingController {
         }
         if(pileInfo.getOffLineIs()){
             return ResponseUtil.getNotNormalMap("该充电桩处于离线状态！");
+        }
+        if(pileInfo.getServiceCharge().compareTo(stockUserCapitalFund.getUsableFund())>=0){
+            return ResponseUtil.getNotNormalMap("钱包余额不足！");
         }
         //查询充电站是否禁用
         ChargingStations stations  = chargingStationsService.getById(pileInfo.getChargingStationsId());
@@ -102,7 +103,7 @@ public class AppChargingController {
         .eq("stock_user_id",record.getStockUserId())
         .ne("charge_status",2));
         if(record !=null) {
-            chargingRecordService.endCharge(record);
+            chargingRecordService.endCharge(record,WalletTypeEnum.STATUS_2.getCode());
         }
         return ResponseUtil.getSuccessMap();
     }

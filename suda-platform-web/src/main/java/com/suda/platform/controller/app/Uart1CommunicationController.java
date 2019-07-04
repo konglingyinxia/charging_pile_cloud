@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.suda.platform.entity.ChargingPileInfo;
 import com.suda.platform.entity.ChargingRecord;
 import com.suda.platform.entity.StockUserCapitalFund;
+import com.suda.platform.enums.finance.WalletTypeEnum;
 import com.suda.platform.service.IChargingPileInfoService;
 import com.suda.platform.service.IChargingRecordService;
 import com.suda.platform.service.IStockUserCapitalFundService;
@@ -44,8 +45,8 @@ public class Uart1CommunicationController {
     private HttpServletResponse response;
 
     /**
-     * UART1通讯字符串：分组号，桩号，桩状态，授权状态，电表度数,卡号
-     * uint8_t uart1_buf[]="00000,00000,0,0,00000,0000000";		// 定长
+     * UART1通讯字符串：分组号，桩号，桩状态，授权状态，电表度数,是否是IC卡充值,卡号
+     * uint8_t uart1_buf[]="00000,00000,0,0,00000,0,0000000";		// 定长
      * 0 否  1 是
      * @param data 交换数据
      */
@@ -62,32 +63,30 @@ public class Uart1CommunicationController {
         String  pileActivated = strArr[3];
         //电表度数
         String chargeNumStr = strArr[4];
+        //是否是 IC 卡充电
+        String isIcCard=strArr[5];
         //IC卡号
-        String stockCode = strArr[5];
+        String icCard = strArr[6];
+
         if(Integer.valueOf(pileStatus)==1){
-            //放电
-            if( Integer.valueOf(pileActivated)==1){
                 //更新充电金额
                 try{
-                    chargingRecordService.updateChargeMoney(pileNum,chargeNumStr,stockCode);
+                    //小程序充电
+                    if(Integer.valueOf(isIcCard)==0) {
+                        pileActivated =  chargingRecordService.updateChargeMoney(pileNum, chargeNumStr);
+                        //ic 卡充电
+                    }else {
+                        pileActivated = chargingRecordService.updateIcChargeMoney(pileNum, chargeNumStr,icCard);
+                    }
                 }catch (Exception e){
                     //更新充电金额失败
                     log.error("更新充电金额失败，放电失败！："+ ExceptionUtils.getFullStackTrace(e));
                     pileActivated="0";
                 }
-                //结束放电
-            }else if(Integer.valueOf(pileActivated)==0){
-                try{
-                   endCharge(pileNum,stockCode);
-                }catch (Exception e){
-                    log.error("结束放电！："+ ExceptionUtils.getFullStackTrace(e));
-                }
-                pileActivated="0";
-            }
             //未插枪 结束放电
         }else {
             try{
-                endCharge(pileNum,stockCode);
+                endCharge(pileNum,isIcCard);
             }catch (Exception e){
                 log.error("结束放电！："+ ExceptionUtils.getFullStackTrace(e));
             }
@@ -97,7 +96,7 @@ public class Uart1CommunicationController {
             response.setCharacterEncoding("UTF-8");
             PrintWriter writer = response.getWriter();
             writer.print(grNum+","+pileNum+","+pileStatus+","+pileActivated
-            +","+chargeNumStr+","+stockCode);
+            +","+chargeNumStr+","+icCard);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,9 +107,9 @@ public class Uart1CommunicationController {
      *  Uart1 通信结束充电
      *
      * @param pileNum
-     * @param stockCode
+     * @param isIcCard
      */
-    void endCharge(String pileNum, String stockCode){
+    void endCharge(String pileNum, String isIcCard){
         ChargingPileInfo pileInfo = chargingPileInfoService.getOne(new QueryWrapper<ChargingPileInfo>()
                 .eq("serial_number",pileNum)
                 .eq("is_deleted",0));
@@ -121,9 +120,14 @@ public class Uart1CommunicationController {
                     .ne("charge_status",2));
             //记录存在，并且是充电中
             if(record!=null && record.getChargeStatus()==1){
-                StockUserCapitalFund fund =stockUserCapitalFundService.getStockUserCapitalFundS(record.getStockUserId(),stockCode);
+                String walletType = WalletTypeEnum.STATUS_1.getCode();
+                if(Integer.valueOf(isIcCard)==0){
+                    walletType = WalletTypeEnum.STATUS_2.getCode();
+                }
+                StockUserCapitalFund fund = stockUserCapitalFundService.upAndSelectFund(record.getStockUserId(),
+                        walletType,0L);
                 if(fund !=null){
-                    chargingRecordService.endCharge(record);
+                    chargingRecordService.endCharge(record, WalletTypeEnum.STATUS_2.getCode());
                 }
             }
         }
