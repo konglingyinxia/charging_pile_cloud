@@ -91,6 +91,9 @@
             <if test="chargingStationsIds!=null and chargingStationsIds!=''">
                 and chargingStation.id in (${chargingStationsIds})
             </if>
+            <if test="id !=null">
+                and chargingStation.id = #{id}
+            </if>
         </where>
         <if test="longitude !=null and dimensionality !=null">
             order by chargingStation.distance asc
