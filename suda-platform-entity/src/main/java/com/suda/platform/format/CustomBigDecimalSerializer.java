@@ -24,7 +24,7 @@ public class CustomBigDecimalSerializer extends JsonSerializer<BigDecimal> {
         if (value == null) {
             value = BigDecimal.ZERO;
         }
-        String valueStr = value.setScale(CommonConstant.DECIMAL_PLACE, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
+        String valueStr = value.setScale(CommonConstant.DECIMAL_PLACE_EIGHT, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
         gen.writeNumber(valueStr);
     }
 }

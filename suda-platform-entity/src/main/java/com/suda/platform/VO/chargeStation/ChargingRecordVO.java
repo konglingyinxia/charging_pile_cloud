@@ -145,6 +145,10 @@ public class ChargingRecordVO extends Model<ChargingRecordVO> {
     @TableField("tel")
     private String tel;
 
+    @ApiModelProperty(value = "充值代理商ID")
+    @TableField("agent_user_id")
+    private Long agentUserId;
+
 
     @Override
     protected Serializable pkVal() {

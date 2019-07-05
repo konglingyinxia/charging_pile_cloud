@@ -30,6 +30,7 @@
             resultType="com.suda.platform.VO.chargeStation.ChargingRecordVO">
       select cr.* ,
       su.nickname,su.username,su.tel,
+        su.agent_user_id,
       cpi.serial_number,
       cs.station_name
       from  charging_record cr
@@ -54,6 +55,9 @@
           </if>
           <if test="endDate !=null and startDate !=null">
               and "create_time" BETWEEN #{startDate}  and #{endDate}
+          </if>
+          <if test=" agentUserId !=null">
+              and   su.agent_user_id=#{agentUserId}
           </if>
       </where>
         order by id desc

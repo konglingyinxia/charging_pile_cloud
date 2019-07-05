@@ -25,42 +25,49 @@
     <select id="getAdminStockUserCoinCharges"
             parameterType="com.suda.platform.VO.finance.StockUserChargeVO"
             resultType="com.suda.platform.VO.finance.StockUserChargeVO">
-        select
-        succ.*,
+       select * from ( select
+        succ.id, succ.swift_no, succ.stock_user_id, succ.fee, succ.withdraw_status,
+        succ.create_time, succ.is_deleted, succ.timestamp, succ.tran_id, succ.pay_type, succ.agent_user_id,
+        sucf.card_num as stock_code,
         su.nickname ,su.username ,su.user_uid,su.tel
         from stock_user_charge succ
         left join stock_user su on su.id = succ.stock_user_id
-        <where>
+        left join stock_user_capital_fund sucf on sucf.stock_user_id = su.id and su.user_type=2
+        )as chargs
 
+        <where>
             <if test="stockCode !=null and stockCode !=''">
-                and succ.stock_code = #{stockCode}
+                and chargs.stock_code = #{stockCode}
             </if>
             <if test="id !=null">
-                and succ.id = #{id}
+                and chargs.id = #{id}
             </if>
             <if test="agentUserId !=null">
-                and succ.agent_user_id = #{agentUserId}
+                and chargs.agent_user_id = #{agentUserId}
             </if>
             <if test="stockUserId !=null">
-                and succ.stock_user_id=#{stockUserId}
+                and chargs.stock_user_id=#{stockUserId}
             </if>
             <if test="tel !='' and tel !=null">
-                and su.tel=#{tel}
+                and chargs.tel=#{tel}
             </if>
             <if test=" userUid !=null">
-                and   su.user_uid=#{userUid}
+                and   chargs.user_uid=#{userUid}
             </if>
             <if test=" username !=null and username !=''">
-                and   su.username=#{username}
+                and   chargs.username=#{username}
             </if>
             <if test=" nickname !=null and nickname !=''">
-                and   su.nickname=#{nickname}
+                and   chargs.nickname=#{nickname}
             </if>
             <if test="startDate != null and startDate !='' and endDate != null and endDate != ''">
-                AND (succ.create_time BETWEEN #{startDate} and #{endDate})
+                AND (chargs.create_time BETWEEN #{startDate} and #{endDate})
+            </if>
+            <if test=" agentUserId !=null">
+                and   chargs.agent_user_id=#{agentUserId}
             </if>
         </where>
-        order  by id desc
+        order  by chargs.id desc
     </select>
 
 </mapper>

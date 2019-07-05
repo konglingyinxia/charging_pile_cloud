@@ -28,8 +28,9 @@
     <!--后台查询资产流水-->
     <select id="getAdminMoneyDetails" parameterType="com.suda.platform.VO.finance.StockUserMoneyDetailVO"
             resultType="com.suda.platform.VO.finance.StockUserMoneyDetailVO">
-        select
-        sumd. stock_code, sumd.money,
+        select * from (select
+        sumd.id,
+        sumd.money,
         sumd.money_before,
         sumd.money_after,
         sumd.detail,
@@ -38,34 +39,39 @@
         sumd.is_deleted,
         sumd.water_type,
         sumd.income,
+        sucf.card_num as stock_code,
         su.nickname ,su.username ,su.user_uid,su.tel,su.email
-        ,su.create_time,su.last_login_time
-         from stock_user_money_detail sumd
-         left join stock_user su on su.id = sumd.stock_user_id
+        ,su.last_login_time,
+        su.agent_user_id
+        from stock_user_money_detail sumd
+        left join stock_user su on su.id = sumd.stock_user_id
+        left join stock_user_capital_fund sucf on sucf.stock_user_id = su.id and su.user_type=2
+        )  as moneys
         <where>
             <if test="income!=null">
-                and  sumd.income = #{income}
+                and  moneys.income = #{income}
             </if>
             <if test="waterType!=null">
-                and  sumd.water_type = #{waterType}
+                and  moneys.water_type = #{waterType}
             </if>
             <if test="stockCode!=null">
-                and  sumd.stock_code = #{stockCode}
+                and  moneys.stock_code = #{stockCode}
             </if>
             <if test="type!=null">
-                and  sumd.type = #{type}
+                and  moneys.type = #{type}
             </if>
             <if test="tel !='' and tel !=null">
-                and su.tel=#{tel}
+                and moneys.tel=#{tel}
             </if>
-            <if test="email !='' and email !=null">
-                and su.email=#{email}
-            </if>
+
             <if test=" userUid !=null">
-                and   su.user_uid=#{userUid}
+                and   moneys.user_uid=#{userUid}
+            </if>
+            <if test=" agentUserId !=null">
+                and   moneys.agent_user_id=#{agentUserId}
             </if>
         </where>
-        order by sumd.id desc
+        order by moneys.id desc
     </select>
     <select id="getAppMoneyDetails" parameterType="com.suda.platform.VO.finance.StockUserMoneyDetailAppVO" resultType="com.suda.platform.VO.finance.StockUserMoneyDetailAppVO">
         select

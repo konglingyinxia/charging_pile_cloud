@@ -101,6 +101,10 @@ public class StockUserMoneyDetailVO extends Model<StockUserMoneyDetailVO> {
     @TableField("tel")
     private String tel;
 
+    @ApiModelProperty(value = "添加代理商id")
+    @TableField("agent_user_id")
+    private Long agentUserId;
+
 
 
 }
