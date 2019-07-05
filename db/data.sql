@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 02/07/2019 10:40:34
+ Date: 05/07/2019 09:32:40
 */
 
 SET NAMES utf8mb4;
@@ -126,7 +126,7 @@ CREATE TABLE `admin_user`  (
 -- ----------------------------
 -- Records of admin_user
 -- ----------------------------
-INSERT INTO `admin_user` VALUES (1, 'admin', '57dd03ed397eabaeaa395eb740b770fd', NULL, 'admin', NULL, NULL, '2019-04-26 09:59:05', NULL, NULL, 0, 0, 0, NULL, NULL, 1);
+INSERT INTO `admin_user` VALUES (1, 'admin', 'ac58ace355cb83a929837bb7ea13b000', NULL, 'admin', NULL, NULL, '2019-07-04 16:25:59', NULL, NULL, 0, 0, 0, NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for admin_user_role
@@ -169,7 +169,7 @@ CREATE TABLE `agent_user`  (
 -- ----------------------------
 -- Records of agent_user
 -- ----------------------------
-INSERT INTO `agent_user` VALUES (1, 'admin', '57dd03ed397eabaeaa395eb740b770fd', NULL, 'admin', NULL, NULL, '2019-06-13 13:59:25', NULL, NULL, 0, 0, 0, NULL, NULL, 1);
+INSERT INTO `agent_user` VALUES (1, 'admin', 'ac58ace355cb83a929837bb7ea13b000', NULL, 'admin', NULL, NULL, '2019-07-04 16:25:42', NULL, NULL, 0, 0, 0, NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for charging_pile_info
@@ -178,7 +178,7 @@ DROP TABLE IF EXISTS `charging_pile_info`;
 CREATE TABLE `charging_pile_info`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `charging_stations_id` bigint(20) NULL DEFAULT NULL COMMENT '充电站id',
-  `serial_number` varchar(8) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '编号',
+  `serial_number` char(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '编号',
   `parking_lot_no` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '车位号',
   `rate_of_work` decimal(25, 4) NULL DEFAULT NULL COMMENT '功率 单位 KW',
   `ac_dc` tinyint(2) NULL DEFAULT NULL COMMENT '1:直流 2:交流',
@@ -259,7 +259,7 @@ CREATE TABLE `charging_stations`  (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '0:未删除 1:删除',
   `is_disable` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '0:未禁用 1：禁用',
-  `gr_serial_number` varchar(8) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '编号（分组id）',
+  `gr_serial_number` char(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '编号（分组id）',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `gr_serial_number`(`gr_serial_number`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '充电站' ROW_FORMAT = Dynamic;
@@ -313,16 +313,18 @@ CREATE TABLE `stock_user`  (
   `head_url` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
   `open_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信唯一id',
   `agent_user_id` bigint(11) NULL DEFAULT NULL COMMENT '添加代理商id',
+  `user_type` tinyint(2) NULL DEFAULT NULL COMMENT '用户类型 1：小程序用户  2：ic卡用户',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `account_unique_index`(`user_uid`) USING BTREE,
   UNIQUE INDEX `open_id`(`open_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '手机用户表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '手机用户表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of stock_user
 -- ----------------------------
-INSERT INTO `stock_user` VALUES (1, NULL, NULL, '7HYHH', '13015582372', NULL, NULL, NULL, NULL, NULL, '2019-06-19 11:20:38', 0, 0, '2019-06-19 11:20:38', NULL, '1234', NULL);
-INSERT INTO `stock_user` VALUES (2, NULL, NULL, 'XX88553', NULL, NULL, NULL, NULL, NULL, '2019-06-14 13:46:25', '2019-06-19 11:20:38', 0, 0, '2019-06-19 11:21:04', NULL, 'oNi5a5CGoV0wKbfgMxapbL1HKXIA', NULL);
+INSERT INTO `stock_user` VALUES (1, NULL, NULL, '7HYHH', '13015582372', NULL, NULL, NULL, NULL, NULL, '2019-06-19 11:20:38', 0, 0, '2019-07-04 14:50:20', NULL, 'oNi5a5CGoV0wKbfgMxapbL1HKXIA', NULL, NULL);
+INSERT INTO `stock_user` VALUES (2, NULL, NULL, 'XX88553', NULL, NULL, NULL, NULL, NULL, '2019-06-14 13:46:25', '2019-06-19 11:20:38', 0, 0, '2019-07-04 14:50:18', NULL, '', 1, 2);
+INSERT INTO `stock_user` VALUES (4, NULL, NULL, 'XX88175', NULL, NULL, NULL, NULL, NULL, '2019-07-04 16:02:49', NULL, 0, 0, '2019-07-04 16:02:49', NULL, NULL, 0, 2);
 
 -- ----------------------------
 -- Table structure for stock_user_capital_fund
@@ -331,7 +333,7 @@ DROP TABLE IF EXISTS `stock_user_capital_fund`;
 CREATE TABLE `stock_user_capital_fund`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `stock_user_id` bigint(20) NOT NULL COMMENT '用户id',
-  `stock_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '卡号',
+  `stock_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '钱包类型',
   `stock_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '币种名字',
   `usable_fund` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '可用',
   `in_all_fee` decimal(25, 8) NULL DEFAULT 0.00000000 COMMENT '总充值金额',
@@ -339,16 +341,17 @@ CREATE TABLE `stock_user_capital_fund`  (
   `create_time` datetime NULL DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `agent_user_id` bigint(20) NULL DEFAULT 0 COMMENT '添加代理商id',
+  `card_num` char(7) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '钱包账号（卡号）',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `stock_user_id`(`stock_user_id`) USING BTREE,
-  UNIQUE INDEX `unique_id_code`(`stock_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '个人资产' ROW_FORMAT = Compact;
+  UNIQUE INDEX `stock_user_id`(`stock_user_id`, `stock_code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '个人资产' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of stock_user_capital_fund
 -- ----------------------------
-INSERT INTO `stock_user_capital_fund` VALUES (5, 1, '100', NULL, 200.00000000, 0.00000000, 0.00000000, '2019-06-12 02:18:38', '2019-06-12 10:53:13', 0);
-INSERT INTO `stock_user_capital_fund` VALUES (6, 2, '1000000', NULL, 0.00000000, 0.00000000, 0.00000000, NULL, '2019-06-20 10:57:38', 0);
+INSERT INTO `stock_user_capital_fund` VALUES (9, 1, 'APPLET', NULL, 0.00000000, 0.00000000, 0.00000000, '2019-07-04 13:43:38', '2019-07-04 21:05:04', 0, '1234567');
+INSERT INTO `stock_user_capital_fund` VALUES (10, 2, 'ICCARD', NULL, 0.00000000, 0.00000000, 0.00000000, NULL, '2019-07-04 14:49:51', 0, '10000');
+INSERT INTO `stock_user_capital_fund` VALUES (12, 4, 'ICCARD', NULL, 20.00000000, 0.00000000, 0.00000000, '2019-07-04 16:02:49', '2019-07-04 21:04:58', 0, '1234567');
 
 -- ----------------------------
 -- Table structure for stock_user_charge
@@ -366,9 +369,9 @@ CREATE TABLE `stock_user_charge`  (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `tran_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '三方支付平台的流水号',
   `pay_type` tinyint(3) UNSIGNED NULL DEFAULT 1 COMMENT '支付类型：1.微信 2.线下',
-  `agent_user_id` bigint(20) NULL DEFAULT NULL COMMENT '充值代理商ID',
+  `agent_user_id` bigint(20) NULL DEFAULT 0 COMMENT '充值代理商ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8699 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户出入金表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 8700 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户出入金表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of stock_user_charge
@@ -378,6 +381,7 @@ INSERT INTO `stock_user_charge` VALUES (8695, '156099972338933dhi1995', 2, '1000
 INSERT INTO `stock_user_charge` VALUES (8696, '15609997739706336ah68f', 2, '1000000', 100.00000000, 4, '2019-06-20 11:02:54', 0, '2019-06-20 11:02:54', '=wx20110254260656828c96d5971593619300', 1, NULL);
 INSERT INTO `stock_user_charge` VALUES (8697, '15609997878590w8986zm1', 2, '1000000', 100.00000000, 4, '2019-06-20 11:03:08', 0, '2019-06-20 11:03:08', 'wx20110308141196c8446e53541967918400', 1, NULL);
 INSERT INTO `stock_user_charge` VALUES (8698, '156099987291846k27m2vh', 2, '1000000', 100.99980000, 4, '2019-06-20 11:04:33', 0, '2019-06-20 11:04:33', 'wx20110433246643a8da45406c1197452100', 1, NULL);
+INSERT INTO `stock_user_charge` VALUES (8699, '15622276428395h34c14yo', 4, 'ICCARD', 20.00000000, 2, '2019-07-04 16:07:24', 0, '2019-07-04 16:07:24', '0', 2, 0);
 
 -- ----------------------------
 -- Table structure for stock_user_info
@@ -433,7 +437,7 @@ CREATE TABLE `stock_user_money_detail`  (
   `income` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0：支出 1：收入',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `stock_user_id_index`(`stock_user_id`, `stock_code`, `type`, `type_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户资金明细表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户资金明细表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of stock_user_money_detail
@@ -444,5 +448,6 @@ INSERT INTO `stock_user_money_detail` VALUES (3, 1, '100', 100.00000000, 0.00000
 INSERT INTO `stock_user_money_detail` VALUES (4, 1, '100', 100.00000000, 0.00000000, 100.00000000, 'dwqd', 1, NULL, '2019-06-12 02:17:37', 0, '2019-06-12 10:17:37', 1, 1);
 INSERT INTO `stock_user_money_detail` VALUES (5, 1, '100', 100.00000000, 0.00000000, 100.00000000, 'dwqd', 1, NULL, '2019-06-12 02:18:38', 0, '2019-06-12 10:18:38', 1, 1);
 INSERT INTO `stock_user_money_detail` VALUES (6, 1, '100', 100.00000000, 100.00000000, 200.00000000, 'dwqd', 1, NULL, '2019-06-12 02:53:13', 0, '2019-06-12 10:53:13', 1, 1);
+INSERT INTO `stock_user_money_detail` VALUES (7, 4, 'ICCARD', 20.00000000, 0.00000000, 20.00000000, '认为人为', 1, NULL, '2019-07-04 16:07:16', 0, '2019-07-04 16:07:18', 1, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
