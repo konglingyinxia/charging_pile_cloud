@@ -173,6 +173,8 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
     }
 
     private int chargeCommon(StockUserCapitalFund fund, BigDecimal money, String stockCode, String remark, Long agentUserId, Byte operation) {
+        //去除正负号
+        money =money.abs();
         Long id =fund.getStockUserId();
         int status=0;
         switch (operation.intValue()) {
@@ -199,13 +201,14 @@ public class StockUserServiceImpl extends ServiceImpl<StockUserMapper, StockUser
                 if(money.compareTo(usableFund)>0){
                     throw new CommonException(String.format(ResponseMsg.DEAL_COIN_LITTER,stockCode));
                 }
+                money = money.multiply(new BigDecimal(-1));
                 //更新账户资产
                 int j =  stockUserCapitalFundService.updateRechargeByCodeId(fund.getId(),money);
                 //资产流水
                 if(j>0) {
                     stockUserMoneyDetailService.addUserMoneyDetail(
-                            id,
-                            money.multiply(new BigDecimal(-1)),
+                            id,money
+                            ,
                             fund.getUsableFund(),
                             WaterTypeEnum.STATUS_1.getCode(),
                             FinancialTypeEnum.TYPE_1, remark,

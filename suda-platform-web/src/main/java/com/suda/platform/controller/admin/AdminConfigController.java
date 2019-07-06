@@ -75,7 +75,7 @@ public class AdminConfigController {
         }
         //查询是否有下级
         List<Object> areas = comConfigServiceService.listObjs(new QueryWrapper<ComConfigArea>()
-                .eq("areaParentId",area.getId())
+                .eq("area_parent_id",area.getId())
         );
         if(areas.size()>0){
             return ResponseUtil.getNotNormalMap("请先删除下级区域！");
