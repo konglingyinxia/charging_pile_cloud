@@ -136,12 +136,11 @@
 #### 网站：
 
  - github 同步更新地址：
-    
- `https://github.com/konglingyinxia/charging_pile_cloud `
+     [https://github.com/konglingyinxia/charging_pile_cloud](https://github.com/konglingyinxia/charging_pile_cloud)
       
  - gitee  同步更新地址：
- 
- `https://gitee.com/kongling_admin/charging_pile_cloud`  
+     [https://gitee.com/kongling_admin/charging_pile_cloud](https://gitee.com/kongling_admin/charging_pile_cloud)
+
     
     
 
