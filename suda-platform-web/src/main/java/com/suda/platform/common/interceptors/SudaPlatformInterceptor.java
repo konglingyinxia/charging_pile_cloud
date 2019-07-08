@@ -2,6 +2,7 @@ package com.suda.platform.common.interceptors;
 
 import com.alibaba.fastjson.JSONObject;
 import com.suda.platform.entity.AdminUser;
+import com.suda.platform.entity.AgentUser;
 import com.util.Respons.ResponseUtil;
 import com.util.StringUtils;
 import com.util.auth.AuthSign;
@@ -129,8 +130,10 @@ public class SudaPlatformInterceptor implements HandlerInterceptor {
         String jsonUser =  redisUtils.getStorageAdminUser(id);
         if(jsonUser != null){
             AdminUser adminUser = JSONObject.toJavaObject(JSONObject.parseObject(jsonUser), AdminUser.class);
-            if(!adminUser.getIsDisable()){
-                return false;
+            if(adminUser.getIsDisable()!=null) {
+                if (!adminUser.getIsDisable()) {
+                    return false;
+                }
             }
         }
         userCacheUtil.storeAdminUserRefreshExpire(id);
@@ -161,9 +164,11 @@ public class SudaPlatformInterceptor implements HandlerInterceptor {
         //用户禁用启用状态
         String jsonUser =  redisUtils.getStorageAgentUser(id);
         if(jsonUser != null){
-            AdminUser adminUser = JSONObject.toJavaObject(JSONObject.parseObject(jsonUser), AdminUser.class);
-            if(!adminUser.getIsDisable()){
-                return false;
+            AgentUser agentUser = JSONObject.toJavaObject(JSONObject.parseObject(jsonUser), AgentUser.class);
+            if(agentUser.getIsDisable()!=null) {
+                if (!agentUser.getIsDisable()) {
+                    return false;
+                }
             }
         }
         userCacheUtil.storeAdminUserRefreshExpire(id);
