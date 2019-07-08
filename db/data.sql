@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 05/07/2019 09:32:40
+ Date: 08/07/2019 19:20:15
 */
 
 SET NAMES utf8mb4;
@@ -113,7 +113,7 @@ CREATE TABLE `admin_user`  (
   `last_login_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` tinyint(2) NULL DEFAULT NULL COMMENT '其他状态',
-  `is_disable` tinyint(1) NULL DEFAULT NULL COMMENT '0:有效 1:禁止登录',
+  `is_disable` tinyint(1) NULL DEFAULT 0 COMMENT '0:有效 1:禁止登录',
   `is_delete` tinyint(1) NULL DEFAULT 0 COMMENT '1:删除，0:未删除',
   `admin_parent_id` bigint(20) NULL DEFAULT 0 COMMENT '父级管理员id',
   `agent_parent_id` bigint(20) NULL DEFAULT 0 COMMENT '父级分销代理商id',
@@ -194,13 +194,12 @@ CREATE TABLE `charging_pile_info`  (
   `off_line_is` tinyint(1) NULL DEFAULT 0 COMMENT '0未离线 1：离线',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `create_time`(`create_time`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '充电桩' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '充电桩' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of charging_pile_info
 -- ----------------------------
 INSERT INTO `charging_pile_info` VALUES (4, 1, '1', NULL, 50.0000, NULL, 1, NULL, NULL, 1.8000, 1.0000, NULL, '2019-07-01 17:21:08', 0, 0, 0);
-INSERT INTO `charging_pile_info` VALUES (3, 2, '3', 'dsf', 10.0000, 1, 1, '03:11:11', NULL, 1.8000, 1.2000, NULL, '2019-07-01 17:23:13', 0, 0, NULL);
 
 -- ----------------------------
 -- Table structure for charging_record
@@ -292,6 +291,48 @@ CREATE TABLE `com_config_area`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 900001 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '区域字典' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for log_admin_agent
+-- ----------------------------
+DROP TABLE IF EXISTS `log_admin_agent`;
+CREATE TABLE `log_admin_agent`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `request_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求地址',
+  `request_way` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求方式',
+  `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'IP',
+  `method_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '方法地址',
+  `method_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '方法别名',
+  `request_param` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '请求参数',
+  `return_param` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '返回参数',
+  `time` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '耗时',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `operator_id` bigint(255) NULL DEFAULT NULL COMMENT '操作人id',
+  `operator_platform` tinyint(2) NULL DEFAULT 1 COMMENT '1,admin，2，agent',
+  `login_facility` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录设备',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 405 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for log_app_pc
+-- ----------------------------
+DROP TABLE IF EXISTS `log_app_pc`;
+CREATE TABLE `log_app_pc`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `request_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求地址',
+  `request_way` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求方式',
+  `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'IP',
+  `method_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '方法地址',
+  `method_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '方法别名',
+  `request_param` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求参数',
+  `return_param` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '返回参数',
+  `time` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '耗时',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `operator_id` bigint(20) NULL DEFAULT NULL COMMENT '操作人id',
+  `operator_platform` tinyint(2) NULL DEFAULT 1 COMMENT '1,app',
+  `login_facility` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录设备',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 570 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for stock_user
 -- ----------------------------
 DROP TABLE IF EXISTS `stock_user`;
@@ -381,7 +422,7 @@ INSERT INTO `stock_user_charge` VALUES (8695, '156099972338933dhi1995', 2, '1000
 INSERT INTO `stock_user_charge` VALUES (8696, '15609997739706336ah68f', 2, '1000000', 100.00000000, 4, '2019-06-20 11:02:54', 0, '2019-06-20 11:02:54', '=wx20110254260656828c96d5971593619300', 1, NULL);
 INSERT INTO `stock_user_charge` VALUES (8697, '15609997878590w8986zm1', 2, '1000000', 100.00000000, 4, '2019-06-20 11:03:08', 0, '2019-06-20 11:03:08', 'wx20110308141196c8446e53541967918400', 1, NULL);
 INSERT INTO `stock_user_charge` VALUES (8698, '156099987291846k27m2vh', 2, '1000000', 100.99980000, 4, '2019-06-20 11:04:33', 0, '2019-06-20 11:04:33', 'wx20110433246643a8da45406c1197452100', 1, NULL);
-INSERT INTO `stock_user_charge` VALUES (8699, '15622276428395h34c14yo', 4, 'ICCARD', 20.00000000, 2, '2019-07-04 16:07:24', 0, '2019-07-04 16:07:24', '0', 2, 0);
+INSERT INTO `stock_user_charge` VALUES (8699, '15622276428395h34c14yo', 4, 'ICCARD', 20.00000000, 2, '2019-07-04 16:07:24', 0, '2019-07-05 11:09:22', '0', 2, 1);
 
 -- ----------------------------
 -- Table structure for stock_user_info
