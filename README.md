@@ -141,6 +141,18 @@
 #### 备注：
     1、后台超级管理员 admin 密码初始为：123456  
       前端加密 加密方式为：账号+*+输入密码 MD5加密 例：（MD5(admin*123456)）
+      
+
+
+#### 网站：
+
+ - github 同步更新地址：
+    
+ `https://github.com/konglingyinxia/charging_pile_cloud `
+      
+ - gitee  同步更新地址：
+ 
+ `https://gitee.com/kongling_admin/charging_pile_cloud`  
     
     
 
