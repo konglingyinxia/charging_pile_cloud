@@ -23,7 +23,7 @@ public class AuthSign {
     /**
      * 认证token 键
      */
-    public static   String token = "token";
+    public static   String token = "sessionId";
 
     /**
      * 加密值

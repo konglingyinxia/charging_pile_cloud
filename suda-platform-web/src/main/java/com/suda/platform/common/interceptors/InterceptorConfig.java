@@ -31,6 +31,8 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
                      "/layui/**",
                      "/static/**",
                      "/index.html",
+                     "/admin/user/login",
+                     "/agent/user/login",
                      "/app/uart1/**",
                      "/app/chargeStation/**",
                      "/app/comConfig/**",
