@@ -73,6 +73,15 @@ public class AppUserController  {
         return ResponseUtil.getSuccessMap();
     }
 
+    /**
+     * 验证验证码 绑定手机号
+     *
+     * @param vo
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "bindPhone", method = RequestMethod.POST)
     @ApiOperation(notes = "用户手机号绑定 ：openId:用户微信openId ;account:手机号；code:验证码", value = "用户手机号绑定")
     @ResponseBody
@@ -95,6 +104,34 @@ public class AppUserController  {
         }
         return ResponseUtil.getNotNormalMap();
     }
+
+    /**
+     * 不须验证验证码绑定手机号
+     * @param vo
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "bindPhoneNoCode", method = RequestMethod.POST)
+    @ApiOperation(notes = "用户手机号绑定 ：openId:用户微信openId ;account:手机号；code:验证码", value = "用户手机号绑定")
+    @ResponseBody
+    public Map<String, Object> bindPhoneNoCode(StockUserSignInVO vo, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        StockUserLoginVO  loginVO =  stockUserService.selectByAccount(vo.getAccount());
+        if(loginVO !=null){
+            return  ResponseUtil.getNotNormalMap(ResponseMsg.USER_HAS_EXIST);
+        }
+        boolean success= stockUserService.update(new UpdateWrapper<StockUser>()
+                .set("tel",vo.getAccount())
+                .eq("open_id",vo.getOpenId()));
+        if(success){
+            return   ResponseUtil.getSuccessMap();
+        }
+        return ResponseUtil.getNotNormalMap();
+    }
+
+
 
     /**
      * 修改帐号密码
