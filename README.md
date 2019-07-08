@@ -72,6 +72,24 @@
        com.suda.platform.common.interceptors.InterceptorConfig.addResourceHandlers
         
    ![Image text](./img/1562033336(1).jpg)
+   
+ 4、项目登陆权限校验 (基于拦截器)
+    
+    使用技术：redis+JWT 
+    
+    具体方法： 
+        1。用户登陆后生成 jwt token 信息，每次 生成 token 信息都不一样
+        2。存储到redis 中，设置超时
+        3。用户登陆成功后，返回前端token 信息
+        4。前端请求接口 时 把 token 放入 heder 头中
+        5。每次请求，通过拦截器校验 token 信息
+        6。登陆状态
+           未登录：拦截器中获取不到 token  信息 则用户未登陆
+           单设备登录：请求头中获取的 token信息 与 redis 中存储的不一致 则用户已在其他地方登陆
+           登陆超时：redis 中 获取不到用户的 token 信息，则用户登陆超时
+            
+ ![Image text](./img/1562575615(1).jpg)       
+  
     
     
 
