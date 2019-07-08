@@ -12,6 +12,7 @@ import com.util.auth.AuthSign;
 import com.util.cache.UserCacheUtil;
 import com.util.pageinfoutil.PageUtil;
 import config.annotation.LogMenthodName;
+import config.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,8 @@ public class AdminUserComtroller {
     private IAdminUserService adminUserService;
     @Autowired
     private  UserCacheUtil  userCacheUtil;
+    @Autowired
+    private RedisUtils redisUtils;
 
     /**
      * 登陆请求
@@ -50,6 +53,8 @@ public class AdminUserComtroller {
     public Map<String, Object> doLogin(String account, String password, HttpServletRequest req) throws UnsupportedEncodingException {
         AdminUser adminUserVO = adminUserService .selectByAccountLogin(account,password);
         Long id=adminUserVO.getId();
+        //存储登陆用户信息
+        redisUtils.setStorageAdminUser(id,JSONObject.toJSON(adminUserVO).toString());
         /**
          * 生成token 存储
          */

@@ -1,7 +1,6 @@
 package com.suda.platform.service.impl;
 
 
-import com.suda.platform.common.RedisUtils;
 import com.suda.platform.service.ICommonService;
 import config.advice.CommonException;
 import lombok.extern.slf4j.Slf4j;

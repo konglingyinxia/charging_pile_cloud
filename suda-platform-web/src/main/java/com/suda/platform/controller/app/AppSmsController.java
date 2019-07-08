@@ -1,7 +1,6 @@
 package com.suda.platform.controller.app;
 
 import com.suda.platform.VO.stockuser.StockUserLoginVO;
-import com.suda.platform.common.RedisUtils;
 import com.suda.platform.entity.TelCodeTypeVO;
 import com.suda.platform.enums.TelCodeTypeEnum;
 import com.suda.platform.service.IStockUserService;

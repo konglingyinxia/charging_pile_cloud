@@ -1,11 +1,19 @@
 package com.util.Respons;
 
+import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+
+import javax.servlet.ServletResponse;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author 卫星 2017年9月28日 14:38:24
  */
+@Slf4j
 public class ResponseUtil {
 
     /**
@@ -175,5 +183,30 @@ public class ResponseUtil {
    //请求错误 commen异常
     public static Map<String, Object> RequestException(String msg) {
         return ResponseUtil.getResultMap(ResponseCode.NOT_NORMAL, "", msg);
+    }
+
+
+    /**
+     * response 输出JSON
+     * 输出流json
+     * @param response
+     * @param resultMap
+     */
+    public static void out(ServletResponse response, Object resultMap) {
+
+        PrintWriter out = null;
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/html;charset=utf-8");
+            out = response.getWriter();
+            out.print(JSONObject.fromObject(resultMap).toString());
+            out.flush();
+        } catch (Exception e) {
+            log.error("输出JSON报错:\n"+ ExceptionUtils.getStackTrace(e));
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
     }
 }

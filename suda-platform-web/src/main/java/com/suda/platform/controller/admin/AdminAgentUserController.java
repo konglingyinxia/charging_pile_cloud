@@ -1,5 +1,6 @@
 package com.suda.platform.controller.admin;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.pagehelper.PageInfo;
@@ -10,6 +11,7 @@ import com.util.Respons.ResponseMsg;
 import com.util.Respons.ResponseUtil;
 import com.util.pageinfoutil.PageUtil;
 import config.annotation.LogMenthodName;
+import config.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +38,9 @@ public class AdminAgentUserController {
 
     @Autowired
     private IAgentUserService agentUserService;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     /**
      * 代理商列表
@@ -103,6 +108,8 @@ public class AdminAgentUserController {
         agentUserService.update(new UpdateWrapper<AgentUser>()
                 .set("is_disable",vo.getIsDisable())
                 .eq("id",vo.getId()));
+        //存储更新后的信息
+        redisUtils.setStorageAgentUser(vo.getId(), JSONObject.toJSON(agentUserService.getById(vo.getId())).toString());
         return ResponseUtil.getSuccessMap();
     }
 

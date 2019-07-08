@@ -30,7 +30,9 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
                      "/app/chargeStation/**",
                      "/app/comConfig/**",
                      "/app/sms/**",
-                     "/app/user/**"
+                     "/app/user/**",
+                     "/common/**",
+                     "/file/**"
 
             };
          registry.addInterceptor(  appinterceptor()).addPathPatterns("/**").excludePathPatterns(excludePathPatterns);
