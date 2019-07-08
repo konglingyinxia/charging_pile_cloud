@@ -67,6 +67,17 @@ public class SudaPlatformInterceptor implements HandlerInterceptor {
 
     }
 
+    /**
+     * 手机app 登陆权限控制
+     *
+     * 接入微信小程序，暂不使用权限校验
+     *
+     * @param request
+     * @param response
+     * @param path
+     * @param token
+     * @return
+     */
     private Boolean processApp(HttpServletRequest request, HttpServletResponse response, String path,String token) {
        /* Long id = AuthSign.getUserId(token);
         //获取存储sessionId
