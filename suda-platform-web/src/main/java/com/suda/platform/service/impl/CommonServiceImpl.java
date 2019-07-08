@@ -3,6 +3,7 @@ package com.suda.platform.service.impl;
 
 import com.suda.platform.service.ICommonService;
 import config.advice.CommonException;
+import config.redis.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;

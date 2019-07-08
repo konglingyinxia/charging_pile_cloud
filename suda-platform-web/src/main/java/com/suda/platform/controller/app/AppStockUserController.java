@@ -15,6 +15,7 @@ import com.util.Respons.ResponseMsg;
 import com.util.Respons.ResponseUtil;
 import com.util.StringUtils;
 import config.annotation.LogMenthodName;
+import config.redis.RedisUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.BeanUtils;
@@ -53,7 +54,7 @@ public class AppStockUserController {
     @Autowired
     private IStockUserInfoService stockUserInfoService;
     @Autowired
-    private com.suda.platform.common.RedisUtils redisUtils;
+    private RedisUtils redisUtils;
 
     @Autowired
     private IStockUserCapitalFundService stockUserCapitalFundService;

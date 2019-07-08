@@ -23,6 +23,7 @@ public class UserCacheUtil {
     private static final String AGENT_USER_CACHE_KEY = "login:com.suda.agent.user.cache";
     private static final String APP_USER_CACHE_KEY = "login:com.suda.app.user.cache";
     private static final String PC_USER_CACHE_KEY = "login:com.suda.pc.user.cache";
+    private static final String WX_LOGIN_APP_USER_CACHE_KEY = "wx:login:com.suda.app.user.cache";
 
     //==========================管理员后台登陆信息=======================================================
 
@@ -143,4 +144,29 @@ public class UserCacheUtil {
     public static String generateAppUserOnlineKey(String str) {
         return APP_USER_CACHE_KEY + str;
     }
+
+
+
+    //===============================微信登陆信息 存储=====================================================
+
+
+    //===============================微信登陆存储微信登陆session信息
+
+    /**
+     * 存储app用户登录信息
+     * @param openId
+     * @param jsonStr
+     */
+    public  void storeAppStockUserWxLoginInfo(String  openId, String jsonStr) {
+        if (StringUtils.isNotBlank(jsonStr)) {
+            //存储用户登录状态
+            String onlineFlag = generateWxAppUserOnlineKey(openId);
+            JedisCache.setStr(onlineFlag, jsonStr);
+
+        }
+    }
+    public static String generateWxAppUserOnlineKey(String str) {
+        return WX_LOGIN_APP_USER_CACHE_KEY + str;
+    }
+
 }
