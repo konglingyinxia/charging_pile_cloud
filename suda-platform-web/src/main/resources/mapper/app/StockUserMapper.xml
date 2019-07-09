@@ -30,7 +30,7 @@
             <if test="email !='' and email !=null">
               and  email=#{email}
             </if>
-            <if test=" userUid !=null">
+            <if test=" userUid !=null and userUid !=''">
               and   user_uid=#{userUid}
             </if>
             <if test=" id !=null">

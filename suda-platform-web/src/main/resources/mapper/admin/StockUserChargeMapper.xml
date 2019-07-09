@@ -60,7 +60,7 @@
             <if test=" nickname !=null and nickname !=''">
                 and   chargs.nickname=#{nickname}
             </if>
-            <if test="startDate != null and startDate !='' and endDate != null and endDate != ''">
+            <if test="startDate != null and endDate != null">
                 AND (chargs.create_time BETWEEN #{startDate} and #{endDate})
             </if>
             <if test=" agentUserId !=null">
