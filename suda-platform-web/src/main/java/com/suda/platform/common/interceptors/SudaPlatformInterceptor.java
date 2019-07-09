@@ -171,7 +171,7 @@ public class SudaPlatformInterceptor implements HandlerInterceptor {
                 }
             }
         }
-        userCacheUtil.storeAdminUserRefreshExpire(id);
+        userCacheUtil.storeAgentUserRefreshExpire(id);
         return true;
     }
 
