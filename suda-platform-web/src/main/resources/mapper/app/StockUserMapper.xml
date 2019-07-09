@@ -62,7 +62,7 @@
         left join stock_user_capital_fund on stock_user_capital_fund.stock_user_id=stock_user.id
         and stock_user_capital_fund.stock_code = 'ICCARD') as users
         <where>
-            <if test=" userUid !=null">
+            <if test=" userUid !=null and userUid!=''">
                 and   users.user_uid=#{userUid}
             </if>
             <if test="agentUserId!=null">
@@ -74,13 +74,13 @@
             <if test="userType!=null">
                 and  users.user_type = #{userType}
             </if>
-            <if test="agentAccount!=null">
+            <if test="agentAccount!=null and agentAccount !=''">
                 and  users.agent_account like '${agentAccount}%'
             </if>
-            <if test="agentUsername!=null">
+            <if test="agentUsername!=null and agentUsername !=''">
                 and  users.agent_username like '${agentUsername}%'
             </if>
-            <if test="cardNum!=null">
+            <if test="cardNum!=null and cardNum !=''">
                 and  users.card_num like '${cardNum}%'
             </if>
         </where>
