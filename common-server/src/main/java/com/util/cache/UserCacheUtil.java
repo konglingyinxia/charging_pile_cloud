@@ -153,7 +153,7 @@ public class UserCacheUtil {
     //===============================微信登陆存储微信登陆session信息
 
     /**
-     * 存储app用户登录信息
+     * 存储用户微信登录会话信息
      * @param openId
      * @param jsonStr
      */
@@ -165,6 +165,16 @@ public class UserCacheUtil {
 
         }
     }
+
+    /**
+     * 获取用户微信登录会话信息
+     * @param openId
+     */
+    public  String getAppStockUserWxLoginInfo(String  openId) {
+         String onlineFlag = generateWxAppUserOnlineKey(openId);
+         return   JedisCache.getStr(onlineFlag);
+    }
+
     public static String generateWxAppUserOnlineKey(String str) {
         return WX_LOGIN_APP_USER_CACHE_KEY + str;
     }

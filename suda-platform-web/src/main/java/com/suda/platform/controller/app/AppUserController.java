@@ -1,7 +1,9 @@
 package com.suda.platform.controller.app;
 
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
+import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.suda.platform.VO.stockuser.StockUserLoginVO;
 import com.suda.platform.VO.stockuser.StockUserSignInVO;
@@ -72,7 +74,7 @@ public class AppUserController  {
         stockUserService.telRegister(vo);
         return ResponseUtil.getSuccessMap();
     }
-
+    //=================================修改手机号 ================================================================
     /**
      * 验证验证码 绑定手机号
      *
@@ -131,8 +133,27 @@ public class AppUserController  {
         return ResponseUtil.getNotNormalMap();
     }
 
+    /**
+     * 微信用户手机号信息解密
+     */
+    @RequestMapping(value = "wxPhoneDecode", method = {RequestMethod.POST,RequestMethod.GET})
+    @ApiOperation(notes = "微信用户手机号信息解密", value = "")
+    @ResponseBody
+    public Map<String, Object> wxDecode(StockUserSignInVO vo, HttpServletRequest req,
+                                        HttpServletResponse res) throws WxErrorException, UnsupportedEncodingException {
+        if(com.util.StringUtils.isBlank(vo.getOpenId(),vo.getEncryptedData(),vo.getIvStr())){
+            return  ResponseUtil.getNotNormalMap(ResponseMsg.ERROR_PARAM);
+        }
+        WxMaJscode2SessionResult sessionResult =JSONObject.toJavaObject(JSONObject.parseObject(userCacheUtil.getAppStockUserWxLoginInfo(vo.getOpenId())),WxMaJscode2SessionResult.class);
+        WxMaPhoneNumberInfo p =WxMaConfiguration.getWxMaService().getUserService().getPhoneNoInfo(sessionResult.getSessionKey(),vo.getEncryptedData(),vo.getIvStr());
+        stockUserService.update(new UpdateWrapper<StockUser>()
+                .set("tel",p.getPurePhoneNumber())
+                .eq("open_id",vo.getOpenId()));
+        return ResponseUtil.getSuccessMap(p);
+    }
 
 
+    // ==========================================修改密码 =============================================================
     /**
      * 修改帐号密码
      */
@@ -285,6 +306,9 @@ public class AppUserController  {
         return ResponseUtil.getSuccessMap(loginVO);
     }
 
+    public static void main(String[] args) {
+        System.out.println(JSONObject.toJSONString(ResponseUtil.getSuccessMap(new WxMaPhoneNumberInfo()), SerializerFeature.WriteMapNullValue));
+    }
 
 
 }

@@ -38,5 +38,14 @@ public class StockUserSignInVO {
     @TableField("open_id")
     private String openId;
 
+    /**
+     * 微信解密数据
+     */
+    private String encryptedData;
+    /**
+     * 微信解密向量
+     */
+    private String ivStr;
+
 
 }
