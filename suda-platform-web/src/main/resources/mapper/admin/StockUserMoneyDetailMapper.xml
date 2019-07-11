@@ -64,7 +64,7 @@
                 and moneys.tel=#{tel}
             </if>
 
-            <if test=" userUid !=null and userUid !=null">
+            <if test=" userUid !=null and userUid !=''">
                 and   moneys.user_uid=#{userUid}
             </if>
             <if test=" agentUserId !=null">
