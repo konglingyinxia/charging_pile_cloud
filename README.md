@@ -46,6 +46,8 @@
     
     log:日志目录
     
+    page：管理后台页面
+    
     suda-common-constant:公共常量
     
     suda-common-entity:项目实体类
