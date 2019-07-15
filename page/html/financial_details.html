@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./../layui/css/layui.css" media="all">
+    <script src="./../layui/layui.js"></script>
+    <script src="./../js/jquery-1.8.3.min.js"></script>
+    <script src="./../js/env.js"></script>
+    <title>financial</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>财务明细</legend>
+</fieldset>
+<form class="layui-form" action="">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">卡号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="title" id="stockCode" required lay-verify="required" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <label class="layui-form-label">流水类型</label>
+        <div class="layui-input-inline">
+            <select id="waterType" lay-filter="quiz3">
+                <option value="">请选择</option>
+                <option value="1">后台操作</option>
+                <option value="2">正常流水</option>
+            </select>
+        </div>
+        <label class="layui-form-label">财务类型</label>
+        <div class="layui-input-inline">
+            <select id="type" lay-filter="quiz3">
+                <option value="">请选择</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户UID</label>
+        <div class="layui-input-inline">
+            <input type="text" name="title" id="userUid" required lay-verify="required" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="title" id="tel" required lay-verify="required" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <button class="layui-btn" onclick="sech()" data-method="offset" type="button">搜索</button>
+        <button type="reset" onclick="chong()" data-method="offset" class="layui-btn">重置</button>
+    </div>
+</form>
+
+
+<table id="demo" lay-filter="test"></table>
+</body>
+
+</html>
+<script>
+    if (layui.sessionData('user').userInfo === undefined) {
+        window.location.href = "../html/login.html"
+    }
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var laydate = layui.laydate;
+        type();
+        var whereData = {};
+        //卡号
+        whereData.stockCode = $("#stockCode").val();
+        //财务类型
+        whereData.type = $("#type").val();
+        //用户UID
+        whereData.userUid = $("#userUid").val();
+        //手机号
+        whereData.tel = $("#tel").val();
+        //流水类型
+        whereData.waterType = $("#waterType").val();
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , id: "testReload"
+            , where: whereData
+            , headers: {sessionId: getToken()}
+            , height: 312
+            , url: abc() + '/agent/financial/getMoneyDetails?agentUserId=' + layui.sessionData('user').userInfo.id //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'stockCode', title: '卡号', sort: true, fixed: 'left', align: 'center'}
+                , {field: 'money', title: '变化金额', align: 'center'}
+                , {field: 'moneyBefore', title: '变化前金额', align: 'center'}
+                , {field: 'moneyAfter', title: '变化后金额', align: 'center'}
+                , {field: 'detail', title: '详情描述', align: 'center'}
+                , {
+                    field: 'type', title: '财务类型', align: 'center', templet: function (val) {
+                        if (val.type == 1) {
+                            return "平台充值";
+                        }
+                        if (val.type == 2) {
+                            return "商品活动";
+                        }
+                        if (val.type === 3) {
+                            return "商城购物";
+                        }
+                    }
+                }
+                , {field: 'createTime', title: '2019-05-08 10:42:10', align: 'center'}
+                , {field: 'username', title: '用户名', align: 'center'}
+
+                , {
+                    field: 'waterType', title: '流水类型', align: 'center', templet: function (val) {
+                        if (val.waterType == 1) {
+                            return "后台操作"
+                        } else {
+                            return "正常流水"
+                        }
+                    }
+                }
+                , {field: 'userUid', title: '用户UID', align: 'center'}
+                , {field: 'tel', title: '手机号', align: 'center'}
+                , {field: 'email', title: '邮箱', align: 'center'}
+
+            ]]
+            , request: {
+                pageName: 'page' //页码的参数名称，默认：page
+                , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            , done: function (res, curr, count) {
+                if (res.code === 100) {
+                    layer.msg("登录失效，请重新登录")
+                    window.location.href = "../html/login.html"
+                    return;
+                }
+            }
+            , parseData: function (res) { //res 即为原始返回的数据
+                if (res.code !== 0) {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg //解析提示文本
+                    };
+                } else {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg, //解析提示文本
+                        "count": res.data.total, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                }
+
+            }
+        });
+
+    });
+
+    //搜索
+    function sech() {
+        var whereData = {};
+        //卡号
+        whereData.stockCode = $("#stockCode").val();
+        //财务类型
+        whereData.type = $("#type").val();
+        //用户UID
+        whereData.userUid = $("#userUid").val();
+        //手机号
+        whereData.tel = $("#tel").val();
+        //流水类型
+        whereData.waterType = $("#waterType").val();
+        //表刷新方法
+        var table = layui.table;
+        table.reload('testReload', {
+            url: abc() + '/agent/financial/getMoneyDetails?agentUserId=' + layui.sessionData('user').userInfo.id
+            , where: whereData
+        });
+
+    }
+
+    //把重置添加一个点击事件点击重置刷新页面
+    function chong() {
+        window.location.reload();
+    }
+
+    function type() {
+        var param = {};
+        var response = MyAjax("Get", "/common/status/getFinancialTypes", param, getToken());
+        var result = response.data;
+        if (response.code === 0) {
+            for (var i = 0; i < result.length; i++) {
+                $("#type").append('<option value="' + result[i].code + '">' + result[i].name + '</option>');
+            }
+            layui.form.render(); //更新全部
+        }
+    }
+</script>

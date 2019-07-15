@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./../layui/css/layui.css" media="all">
+    <script src="./../layui/layui.js"></script>
+    <script src="./../js/jquery-1.8.3.min.js"></script>
+    <script src="./../js/env.js"></script>
+    <title>recharge_record</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>获取充值记录</legend>
+</fieldset>
+<div class="layui-form-item">
+    <label class="layui-form-label">卡号</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="stockCode" required lay-verify="required" autocomplete="off"
+               class="layui-input">
+    </div>
+    <label class="layui-form-label">用户ID</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="stockUserId" required lay-verify="required" autocomplete="off"
+               class="layui-input">
+    </div>
+    <label class="layui-form-label">手机号</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="tel" required lay-verify="required" autocomplete="off"
+               class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">用户UID</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="userUid" required lay-verify="required" autocomplete="off"
+               class="layui-input">
+    </div>
+    <label class="layui-form-label">开始时间：</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="date1" required lay-verify="required" placeholder="yyyy-MM-dd"
+               autocomplete="off" class="layui-input">
+    </div>
+    <label class="layui-form-label">结束时间：</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="date2" required lay-verify="required" placeholder="yyyy-MM-dd"
+               autocomplete="off" class="layui-input">
+    </div>
+
+    <button class="layui-btn" onclick="sech()" data-method="offset" type="button">搜索</button>
+    <button type="reset" onclick="chong()" data-method="offset" class="layui-btn">重置</button>
+</div>
+<table id="demo" lay-filter="test"></table>
+</body>
+
+</html>
+<script>
+    if (layui.sessionData('user').userInfo === undefined) {
+        window.location.href = "../html/login.html"
+    }
+
+    layui.use(['form', 'layedit', 'laydate', 'upload', 'table'], function () {
+        var table = layui.table;
+        var laydate = layui.laydate;
+        var whereData = {}
+        whereData.stockCode = $("#stockCode").val();
+        whereData.stockUserId = $("#stockUserId").val();
+        whereData.tel = $("#tel").val();
+        whereData.userUid = $("#userUid").val();
+        whereData.startDate = $("#date1").val();
+        whereData.endDate = $("#date2").val();
+        laydate.render({
+            elem: '#date1', type: "datetime"
+        });
+        laydate.render({
+            elem: '#date2', type: "datetime"
+        });
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            ,
+            where: whereData
+            ,
+            headers: {sessionId: getToken()}
+            ,
+            id: 'testReload'
+            ,
+            height: 312
+            ,
+            url: abc() + '/agent/financial/getStockUserCoinCharges?agentUserId=' + layui.sessionData('user').userInfo.id //数据接口
+            ,
+            page: true //开启分页
+            ,
+            cols: [[ //表头
+                {field: 'id', title: 'id', sort: true, fixed: 'left', align: 'center'}
+                , {field: 'swiftNo', title: '流水号', align: 'center'}
+                // , {field: 'stockUserId', title: '手机用户ID', align: 'center'}
+                , {field: 'stockCode', title: 'IC卡号', align: 'center'}
+                , {field: 'fee', title: '金额', align: 'center'}
+                , {
+                    field: 'withdrawStatus', title: '支付状态', templet: function (val) {
+                        if (val.withdrawStatus = 1) {
+                            return "未支付";
+                        }
+                        if (val.withdrawStatus = 2) {
+                            return "支付成功";
+                        }
+                        if (val.withdrawStatus = 3) {
+                            return "支付失败 ";
+                        }
+                        if (val.withdrawStatus = 4) {
+                            return "处理中";
+                        }
+                    }, align: 'center'
+                }
+                , {field: 'createTime', title: '创建时间', align: 'center'}
+                , {field: 'timestamp', title: '修改时间', align: 'center'}
+                , {
+                    field: 'payType', title: '支付类型', templet: function (val) {
+                        if (val.payType = 1) {
+                            return "微信";
+                        }
+                        if (val.payType = 2) {
+                            return "线下";
+                        }
+                    }, align: 'center'
+                }
+                , {field: 'agentUserId', title: '代理商ID', align: 'center'}
+                , {field: 'userUid', title: '用户ID', align: 'center'}
+                , {field: 'tel', title: '手机号', align: 'center'}
+            ]]
+            ,
+            request: {
+                pageName: 'page' //页码的参数名称，默认：page
+                , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            ,
+            done: function (res, curr, count) {
+                if (res.code === 100) {
+                    layer.msg("登录失效，请重新登录")
+                    window.location.href = "../html/login.html"
+                    return;
+                }
+            }
+            ,
+            parseData: function (res) { //res 即为原始返回的数据
+                if (res.code !== 0) {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg //解析提示文本
+                    };
+                } else {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg, //解析提示文本
+                        "count": res.data.total, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                }
+
+            }
+        });
+
+    });
+
+    //搜索
+    function sech() {
+        var whereData = {};
+        whereData.stockCode = $("#stockCode").val();
+        whereData.stockUserId = $("#stockUserId").val();
+        whereData.tel = $("#tel").val();
+        whereData.userUid = $("#userUid").val();
+        whereData.startDate = $("#date1").val();
+        whereData.endDate = $("#date2").val();
+        //表刷新方法
+        var table = layui.table;
+        table.reload('testReload', {
+            url: abc() + '/agent/financial/getStockUserCoinCharges?agentUserId=' + layui.sessionData('user').userInfo.id
+            , where: whereData
+        });
+
+    }
+
+    //把重置添加一个点击事件点击重置刷新页面
+    function chong() {
+        window.location.reload();
+    }
+</script>

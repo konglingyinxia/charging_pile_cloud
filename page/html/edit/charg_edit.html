@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+    <script src="../../layui/layui.js"></script>
+    <script src="../../js/jquery-1.8.3.min.js"></script>
+    <script src="../../js/env.js"></script>
+    <title>编辑充电站</title>
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title">
+    <legend id="aaa">充电站编辑</legend>
+</fieldset>
+<div class="demoTable">
+    <button class="layui-btn layui-btn-radius" data-method="offset" type="button"
+            style="background-color: #0092EF;" onclick="javascript :history.back(-1)">返&nbsp;&nbsp;&nbsp;&nbsp;回
+    </button>
+</div>
+<br>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">经维度</label>
+        <div class="layui-input-block">
+            <input type="text" onclick="showMap()" id="latlng" name="title" lay-verify="title" autocomplete="off"
+                   placeholder="请输入经维度" class="layui-input">
+            <input type="hidden" id="lat">
+            <input type="hidden" id="lng">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">充电站名字</label>
+        <div class="layui-input-block">
+            <input type="text" id="stationName" name="title" lay-verify="title" autocomplete="off" placeholder="请输入充电站名字"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">详情</label>
+        <div class="layui-input-block">
+            <textarea type="text" id="stationDetails" style="width: 473px;height: 226px;" name="title"
+                      lay-verify="title" autocomplete="off" placeholder="请输入详情" class="layui-input">
+            </textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">地区</label>
+        <div class="layui-input-inline">
+            <select id="quiz1" lay-filter="quiz1">
+                <option value="0">请选择</option>
+
+            </select>
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">详细地点</label>
+        <div class="layui-input-block">
+            <input type="text" id="address" name="title" lay-verify="title" autocomplete="off" placeholder="请输入详细地点"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">价格单位元/度</label>
+        <div class="layui-input-block">
+            <input type="text" id="price" name="title" lay-verify="title" autocomplete="off" placeholder="请输入价格"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">停车费</label>
+        <div class="layui-input-block">
+            <input type="text" id="parkingFeeDetails" name="title" lay-verify="title" autocomplete="off"
+                   placeholder="请输入停车费" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">有无停车费</label>
+        <div class="layui-input-block">
+            <input type="radio" id="no" name="sex" value="1" title="有" lay-filter="haveParkingFee">
+            <input type="radio" id="yes" name="sex" value="0" title="无" lay-filter="haveParkingFee">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开放开始时间</label>
+        <div class="layui-input-block">
+            <input type="text" id="date1" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开放结束时间</label>
+        <div class="layui-input-block">
+            <input type="text" id="date2" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+
+    <div class="layui-upload-drag">
+        <div id="file1Div">
+
+        </div>
+        <i class="layui-icon" id="file1"></i>
+        <p>点击图标上传充电站<span style="color: red">轮播图</span>，或将文件拖拽到此处</p>
+    </div>
+
+    <div class="layui-upload-drag">
+        <div id="file2Div">
+
+        </div>
+        <i class="layui-icon" id="file2"></i>
+        <p>点击图标上传充电站<span style="color: red">封面图</span>，或将文件拖拽到此处</p>
+    </div>
+
+    <button class="layui-btn" style="margin:0 50%;" onclick="sub()" data-method="offset" type="button" align="center">
+        保存
+    </button>
+</form>
+
+<script>
+    if (layui.sessionData('user').userInfo === undefined) {
+        window.location.href = "../html/login.html"
+    }
+    var param = {};
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        var upload = layui.upload;
+
+        //日期
+        laydate.render({
+            elem: '#date1',
+            type: "time"
+        });
+        laydate.render({
+            elem: '#date2',
+            type: "time"
+        });
+
+        //相册
+        function imageOpen(elemtId) {
+            //调用示例
+            layer.photos({
+                photos: elemtId
+                , anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+            });
+        }
+
+        var area = MyAjax("GET", "/admin/config/getAreaLatLog", {}, getToken());
+        if (area.code === 0) {
+            var responesArea = area.data;
+            for (var i = 0; i < responesArea.length; i++) {
+                $("#quiz1").append(
+                    '<option value="' + responesArea[i].areaName + '">' + responesArea[i].areaName + '</option>'
+                )
+
+            }
+            form.render();
+        }
+        //普通图片上传1
+        upload.render({
+            elem: '#file1'
+            , url: abc() + '/common/file/upImg'
+            , before: function (obj) {
+                layer.load(1); //风格1的加载
+            }
+            , done: function (res) {
+                layer.closeAll('loading');
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                //预读本地文件示例，不支持ie8
+                $('#file1Div').append('<div id="' + abc() + res.data + '"><img src="' + abc() + res.data + '" style="width: 342px;height: 136px"><button type="button" class="layui-btn layui-btn-danger" onclick="deleteImage(' + "'" + res.data + "'" + ')">删除</button></div>'); //图片链接（base64）
+
+                //上传成功
+                if (param.bannerImg === undefined) {
+                    param.bannerImg = res.data;
+                } else {
+                    param.bannerImg = param.bannerImg + "," + res.data;
+                }
+                imageOpen('#file1Div');
+                return layer.msg('上传成功');
+            }
+        });
+        //普通图片上传2
+        upload.render({
+            elem: '#file2'
+            , url: abc() + '/common/file/upImg'
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#file2Div').html('<img src="' + result + '" style="width: 342px;height: 136px">'); //图片链接（base64）
+                });
+                layer.load(1); //风格1的加载
+            }
+            , done: function (res) {
+                layer.closeAll('loading');
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                param.coverImg = res.data;
+                imageOpen('#file2Div');
+                return layer.msg('上传成功');
+
+            }
+        });
+
+        form.on('radio(haveParkingFee)', function (data) {
+            param.haveParkingFee = data.value; //被点击的radio的value值
+        });
+
+        param.id = getParam("id");
+        //回显
+        var responseOne = MyAjax("GET", "/admin/chargeStation/selectAllChargingStations", param, getToken());
+        var oneData = responseOne.data.list[0];
+        //先把请求出的数据 赋值给要提交的数据
+        param = oneData;
+        $("#latlng").val("经度：" + oneData.longitude + "   维度：" + oneData.dimensionality)
+        $("#lng").val(oneData.longitude)
+        $("#lat").val(oneData.dimensionality)
+        $("#stationDetails").val(oneData.stationDetails)
+        $("#stationName").val(oneData.stationName)
+        $("#address").val(oneData.address)
+        $("#price").val(oneData.price)
+        $("#parkingFeeDetails").val(oneData.parkingFeeDetails)
+        $("#date1").val(oneData.openStartTime)
+        $("#date2").val(oneData.openEndTime)
+        if (oneData.haveParkingFee == 1) {
+            $("#no").attr("checked", true)
+        } else {
+            $("#yes").attr("checked", true)
+        }
+        setTimeout(function () {
+            //省级选择框添加的标签  并回显选择
+            $("#quiz1").find("option").each(function () {
+                if ($(this).text() == oneData.province) {
+                    $(this).attr("selected", true);
+                    form.render();
+                }
+            });
+        }, 1000)
+
+        //轮播图回显
+        var banners = oneData.bannerImg.split(",")
+        for (var i = 0; i < banners.length; i++) {
+            $('#file1Div').append('<div id="' + abc() + banners[i] + '"><img layer-src="' + abc() + banners[i] + '" src="' + abc() + banners[i] + '" style="width: 342px;height: 136px"><button type="button" class="layui-btn layui-btn-danger" onclick="deleteImage(' + "'" + banners[i] + "'" + ')">删除</button></div>');
+        }
+        imageOpen('#file1Div');
+
+        //封面图回显
+        $('#file2Div').html(' <img src="' + abc() + oneData.coverImg + '" style="width: 342px;height: 136px">  '); //图片链接（base64）
+        imageOpen('#file2Div');
+    });
+
+    //弹出层
+    function showMap() {
+        layer.open({
+            title: "鼠标点击获取经纬度",
+            type: 2,
+            anim: 2,
+            content: "../add/charg_map.html",//这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            area: ['800px', '600px']
+        });
+    }
+    function sub() {
+        //如果轮播图第一个是逗号  那么截取逗号后的东西
+        if (param.bannerImg.substr(0, 1) == ",") {
+            param.bannerImg = param.bannerImg.slice(1);
+        }
+        if (param.bannerImg.length == 0) {
+            layer.msg("请上传轮播图");
+            return;
+        }
+        param.longitude = $("#lng").val()
+        param.dimensionality = $("#lat").val()
+        param.stationName = $("#stationName").val()
+        param.stationDetails = $("#stationDetails").val()
+        param.province = $("#quiz1").find("option:selected").text()
+        param.city = $("#quiz1").find("option:selected").text()
+        param.county = $("#quiz1").find("option:selected").text()
+        param.address = $("#address").val()
+        param.price = $("#price").val()
+        param.parkingFeeDetails = $("#parkingFeeDetails").val()
+        param.openStartTime = $("#date1").val()
+        param.openEndTime = $("#date2").val()
+        var respones = MyAjax('POST', '/admin/chargeStation/addAndEditStations', param, getToken());
+        if (respones.code === 0) {
+            layer.msg("保存成功");
+            window.location.href = "../charging.html";
+        }
+    }
+
+    //删除图片  要删除轮播图数组的元素
+    function deleteImage(fileUrl) {
+
+        $("#file1Div").find("div").each(function () {
+            if ($(this).attr("id") == abc() + fileUrl) {
+                $(this).remove();
+            }
+        });
+        var banners = param.bannerImg.split(",")
+        for (var i = 0; i < banners.length; i++) {
+            if (banners[i] == fileUrl) {
+                delete banners[i]
+            }
+        }
+        param.bannerImg = banners.toString()
+        if (param.bannerImg.substr(0, 1) == ",") {
+            param.bannerImg = param.bannerImg.slice(1);
+        }
+
+    }
+
+</script>
+</body>
+</html>

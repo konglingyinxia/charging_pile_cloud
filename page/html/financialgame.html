@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./../layui/css/layui.css" media="all">
+    <script src="./../layui/layui.js"></script>
+    <script src="./../js/jquery-1.8.3.min.js"></script>
+    <script src="./../js/env.js"></script>
+    <title>财务管理</title>
+    <style>
+
+    </style>
+</head>
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>财务管理</legend>
+</fieldset>
+<script type="text/html" id="barDemo">
+    <button type="button" onclick="look('{{d.stockCode}}')" class="layui-btn layui-btn-sm layui-btn-normal"
+            lay-event="edit"
+            style="background: green">充值记录
+    </button>
+</script>
+<body>
+<table id="demo" lay-filter="test"></table>
+</body>
+
+</html>
+<script>
+
+    if (layui.sessionData('user').userInfo === undefined) {
+        window.location.href = "../html/login.html"
+    }
+
+    layui.use('table', function () {
+        var table = layui.table;
+
+        var whereData = {};
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , id: 'testReload'
+            , where: whereData
+            , headers: {sessionId: getToken()}
+            , height: 312
+            , url: abc() + '/admin/financial/getMoneyDetails' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                 {field: 'stockCode', title: '卡号', align: 'center'}
+                , {field: 'money', title: '变化金额', align: 'center'}
+                , {field: 'moneyBefore', title: '变化前金额', align: 'center'}
+                , {field: 'moneyAfter', title: '变化后金额', align: 'center'}
+                , {field: 'detail', title: '详情描述', align: 'center'}
+                , {
+                    field: 'type', title: '财务类型', templet: function (val) {
+                        if (val.type == 1) {
+                            return "平台充值";
+                        }
+                        if (val.type == 2) {
+                            return "商品活动";
+                        }
+                        if (val.type === 3) {
+                            return "商城购物";
+                        }
+                    }, align: 'center'
+                }
+                , {field: 'typeStr', title: '财务类型描述', align: 'center'}
+                , {field: 'createTime', title: '创建时间', align: 'center'}
+                , {field: 'timestamp', title: '修改时间', align: 'center'}
+                , {
+                    field: 'waterType', title: '流水类型', templet: function (val) {
+                        if (val.waterType == 1) {
+                            return "后台操作";
+                        }
+                        if (val.waterType == 2) {
+                            return "正常流水";
+                        }
+                    }, align: 'center'
+                }
+                , {
+                    field: 'income', title: '收支类型', templet: function (val) {
+                        if (val.income == 0) {
+                            return "支出";
+                        }
+                        if (val.income == 1) {
+                            return "收入";
+                        }
+                    }, align: 'center'
+                }
+                , {field: 'userUid', title: '用户UID', align: 'center'}
+                , {field: 'tel', title: '电话', align: 'center'}
+                , {field: 'right', title: '操作', width: 100, toolbar: '#barDemo', align: 'center'}
+            ]]
+            , request: {
+                pageName: 'page' //页码的参数名称，默认：page
+                , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            ,done: function(res, curr, count){
+                if (res.code ===100) {
+                    layer.msg("登录失效，请重新登录")
+                    window.location.href = "../html/login.html"
+                    return;
+                }
+            }
+            , parseData: function (res) { //res 即为原始返回的数据
+                if (res.code !== 0) {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg //解析提示文本
+                    };
+                } else {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg, //解析提示文本
+                        "count": res.data.total, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                }
+
+            }
+        });
+
+    });
+    //查看充值记录
+    function look(stockCode) {
+        window.location.href = "/html/financial_look.html?stockCode=" + stockCode;
+    }
+</script>

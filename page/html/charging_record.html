@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./../layui/css/layui.css" media="all">
+    <script src="./../layui/layui.js"></script>
+    <script src="./../js/jquery-1.8.3.min.js"></script>
+    <script src="./../js/env.js"></script>
+    <title>charging_record</title>
+    <style>
+        .layui-btn {
+            margin-left: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>充电记录</legend>
+    </fieldset>
+    <form class="layui-form" action="">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户昵称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" id="nickname" required lay-verify="required" autocomplete="off"
+                    class="layui-input">
+            </div>
+            <label class="layui-form-label">用户名字</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" id="username" required lay-verify="required" autocomplete="off"
+                    class="layui-input">
+            </div>
+            <label class="layui-form-label">电话号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" id="tel" required lay-verify="required" autocomplete="off"
+                    class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户id</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" id="stockUserId" required lay-verify="required" autocomplete="off"
+                    class="layui-input">
+            </div>
+            <label class="layui-form-label">查询开始时间：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" id="date1" required lay-verify="required" placeholder="yyyy-MM-dd"
+                    autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">结束：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" id="date2" required lay-verify="required" placeholder="yyyy-MM-dd"
+                    autocomplete="off" class="layui-input">
+            </div>
+
+            <button class="layui-btn" onclick="sech()" data-method="offset" type="button">搜索 </button>
+
+        </div>
+
+
+        <table id="demo" lay-filter="test"></table>
+    </form>
+</body>
+
+</html>
+<script>
+    if (layui.sessionData('user').userInfo === undefined) {
+        window.location.href = "../html/login.html"
+    }
+    layui.use(['form', 'layedit', 'laydate', 'upload', 'table'], function () {
+        var table = layui.table;
+        var laydate = layui.laydate;
+        var whereData = {}
+        whereData.nickname = $("#nickname").val();
+        whereData.username = $("#username").val();
+        whereData.tel = $("#tel").val();
+        whereData.stockUserId = $("#stockUserId").val();
+        whereData.startDate = $("#date1").val()
+        whereData.endDate = $("#date2").val()
+        laydate.render({
+            elem: '#date1', type: "datetime"
+        });
+        laydate.render({
+            elem: '#date2', type: "datetime"
+        });
+
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , id: 'testReload',
+            headers: { sessionId: getToken() }
+            , height: 312
+            , where: whereData
+            , url: abc() + '/agent/financial/selectAllChargingRecords?agentUserId=' + layui.sessionData('user').userInfo.id //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                { field: 'id', title: '充电桩id', sort: true, fixed: 'left', align: 'center' }
+                , { field: 'nickname', title: '用户昵称', align: 'center' }
+                , { field: 'username', title: '用户名字', align: 'center' }
+                , { field: 'tel', title: '电话号', align: 'center' }
+                , { field: 'stockUserId', title: '用户id', align: 'center' }
+                , { field: 'chargeStartTime', title: '充电开始时间', align: 'center' }
+                , { field: 'chargeEndTime', title: '充电结束时间', align: 'center' }
+                , { field: 'chargeTotalMoney', title: '充电总金额', align: 'center' }
+                , { field: 'chargeNum', title: '充电总度数', align: 'center' }
+                , { field: 'address', title: '详细地址', align: 'center' }
+                , { field: 'price', title: '价格单位元', align: 'center' }
+
+            ]]
+            , request: {
+                pageName: 'page' //页码的参数名称，默认：page
+                , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            , done: function (res, curr, count) {
+                if (res.code === 100) {
+                    layer.msg("登录失效，请重新登录")
+                    window.location.href = "../html/login.html"
+                    return;
+                }
+            }
+            , parseData: function (res) { //res 即为原始返回的数据
+                if (res.code !== 0) {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg //解析提示文本
+                    };
+                } else {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg, //解析提示文本
+                        "count": res.data.total, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                }
+
+            }
+        });
+
+    });
+    function sech() {
+        var whereData = {};
+        whereData.nickname = $("#nickname").val();
+        whereData.username = $("#username").val();
+        whereData.tel = $("#tel").val();
+        whereData.stockUserId = $("#stockUserId").val();
+        //表刷新方法
+        var table = layui.table;
+        table.reload('testReload', {
+            url: abc() + '/agent/financial/selectAllChargingRecords?agentUserId=' + layui.sessionData('user').userInfo.id
+            , where: whereData
+        });
+
+    }
+</script>

@@ -1,0 +1,115 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>main</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="./js/env.js"></script>
+    <script src="./js/jquery-1.8.3.min.js"></script>
+    <script src="./layui/layui.js"></script>
+    <script src="layui/layui.js"></script>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">充电桩管理后台系统</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <!--<ul class="layui-nav layui-layout-left">-->
+            <!--<li class="layui-nav-item"><a href="">控制台</a></li>-->
+            <!--<li class="layui-nav-item"><a href="">商品管理</a></li>-->
+            <!--<li class="layui-nav-item"><a href="">用户</a></li>-->
+            <!--<li class="layui-nav-item">-->
+            <!--<a href="javascript:;">其它系统</a>-->
+            <!--<dl class="layui-nav-child">-->
+            <!--<dd><a href="">邮件管理</a></dd>-->
+            <!--<dd><a href="">消息管理</a></dd>-->
+            <!--<dd><a href="">授权管理</a></dd>-->
+            <!--</dl>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="userA">
+                    </a>
+<!--                    <dl class="layui-nav-child">-->
+<!--                        <dd><a href="">基本资料</a></dd>-->
+<!--                        <dd><a href="">安全设置</a></dd>-->
+<!--                    </dl>-->
+                </li>
+                <li class="layui-nav-item" onclick="deleteSession()"><a href="#">退了</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item">
+                        <a class="" href="javascript:;">用户管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;" href-url="./html/agent_password.html">修改密码</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;">财务管理</a>
+                        <dl class="layui-nav-child">
+<!--                            <dd><a href="javascript:;" href-url="./html/charging_record.html">充电记录</a></dd>-->
+                            <dd><a href="javascript:;" href-url="./html/financial_details.html">财务明细</a></dd>
+                            <dd><a href="javascript:;" href-url="./html/recharge_record.html">获取充值记录</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item ">
+                        <a href="javascript:;">会员管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;" href-url="./html/agentmember.html">IC卡用户</a></dd>
+                        </dl>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <iframe src="./html/financial_details.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            © layui.com - 底部固定区域
+        </div>
+    </div>
+    <script src="layui/layui.js"></script>
+    <script>
+        if (layui.sessionData('user').userInfo === undefined) {
+            window.location.href = "./html/login.html"
+        }
+        $("#userA").html(getUser().account)
+        //JavaScript代码区域
+        layui.use('element', function () {
+            var element = layui.element;
+            var $ = layui.$;
+            element.on('nav(test)', function (data) {
+                var lay_url = "";
+                var url = lay_url ? lay_url : data.children('a').attr('href-url');
+
+                $(".layui-body").find("iframe").attr("src", url);
+            });
+
+        });
+        console.log(layui.data('user').userInfo.sessionId)
+
+        function deleteSession() {
+            //【删】：删除test表的nickname字段
+            layui.sessionData('user', {
+                key: 'userInfo'
+                , remove: true
+            });
+            window.location.href = "./html/login.html"
+        }
+    </script>
+</body>
+
+</html>

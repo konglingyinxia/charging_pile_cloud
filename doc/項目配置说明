@@ -87,3 +87,23 @@ uint8_t uart1_buf[]="00000,00000,0,0,00000,0000000";		// 定长
 
 0断开  1连接
 
+
+-2019-07-13 更改协议
+// UART1通讯字符串：桩号，桩状态，授权状态，电表度数，卡标志，卡号
+typedef struct {
+ uint32_t pile_id;  // 桩ID,4
+ uint8_t comma1;
+ uint8_t pile_status; // 桩状态,1
+ uint8_t comma2;
+ uint8_t auth_status; // 授权状态,1
+ uint8_t comma3;
+ uint32_t power_meter; // 电量,4
+ uint8_t comma4;
+ uint8_t card_flag;  // 刷卡标志,1
+ uint8_t comma5;
+ uint8_t card_id[7];  // 卡号,7
+ uint8_t str_end;
+} UART1_COMM_Type;
+
+最大值：buf="FFFF,1,0,FFFF,1,FFFFFFF"
+最小值：buf="0001,1,0,0001,1,0000001"

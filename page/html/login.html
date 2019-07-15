@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./../layui/css/layui.css" media="all">
+    <script src="./../layui/layui.js"></script>
+    <script src="./../js/jquery-1.8.3.min.js"></script>
+    <script src="./../js/jQuery.md5.js"></script>
+    <script src="./../js/env.js"></script>
+
+    <title>login</title>
+    <style>
+        .signin {
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 200px;
+        }
+
+        .signin h1 {
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        .layui-btn {
+            width: 300px;
+        }
+
+        .layui-input-block {
+            width: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+
+<body style="background-image: url('../imge/body.jpg');   background-size:100%;">
+    <div class="signin-p">
+        <div class="signin">
+            <h1 style="color: white">系统登录</h1>
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="text" name="title" id="account" required lay-verify="required"
+                            placeholder="请输入管理员账户" value="admin" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="password" name="password" id="password" required lay-verify="required"
+                            placeholder="请输入密码" value="123456" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <select id="sel" lay-filter="test">
+                            <option value="1">代理商登录</option>
+                            <option value="2">管理员登录</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-filter="formDemo" onclick="dl()" type="button">登录</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    //控制跳出ifream框架
+    if (window != top)
+        top.location.href = location.href;
+</script>
+<script>
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form;
+        // form.on('select(test)', function (data) {
+        //     console.log(data.elem); //得到select原始DOM对象
+        //     console.log(data.value); //得到被选中的值
+        //     console.log(data.othis); //得到美化后的DOM对象
+        //     window.location.href = "./signin.html";
+        // });
+
+
+    });
+
+    function dl() {
+        //需要发送到接口的数据
+        var requestData = {
+            "account": $("#account").val(),
+            "password": $.md5($("#account").val() + "*" + $("#password").val())
+        };
+        //如果是管理员登录
+        if ($("#sel").val() == "2") {
+            var responseData = MyAjax("GET", "/admin/user/login", requestData)
+            if (responseData.code === 0) {
+                //缓存用户登录信息 
+                layui.sessionData('user', {
+                    key: 'userInfo'
+                    , value: responseData.data
+                });
+
+                window.location.href = "./../index.html"
+            }
+
+            //如果是代理商登录
+        } else {
+            var responseData = MyAjax("GET", "/agent/user/login", requestData)
+            if (responseData.code === 0) {
+                layui.sessionData('user', {
+                    key: 'userInfo'
+                    , value: responseData.data
+                });
+
+                window.location.href = "./../main.html"
+            }
+
+        }
+
+    }
+
+
+    function show_sub(v) {
+        alert(v);
+    }
+
+</script>

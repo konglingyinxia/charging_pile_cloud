@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+    <script src="../../layui/layui.js"></script>
+    <script src="../../js/jquery-1.8.3.min.js"></script>
+    <script src="../../js/env.js"></script>
+    <title>添加IC卡用户</title>
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title"  >
+    <legend id="aaa">添加IC卡用户</legend>
+</fieldset>
+<div class="demoTable">
+    <button type="button" class="layui-btn" style="margin-left: 10px;margin-bottom: 10px" onclick="javascript :history.back(-1)">返回</button>
+</div>
+<form class="layui-form" action="">
+    <br>
+    <div class="layui-form-item">
+        <div class="layui-inline" >
+            <label class="layui-form-label"><i style="color:red">*</i>&nbsp;卡号</label>
+            <div class="layui-input-inline">
+                <input name="cardNum" lay-verify="required" placeholder="请输入卡号" autocomplete="off" class="layui-input" id="cardNum" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline" >
+            <label class="layui-form-label"><i style="color:red">*</i>&nbsp;金额</label>
+            <div class="layui-input-inline">
+                <input name="money" lay-verify="required" placeholder="请输入金额"  autocomplete="off" class="layui-input" id="money" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline" >
+            <label class="layui-form-label"><i style="color:red">*</i>&nbsp;备注信息</label>
+            <div class="layui-input-inline">
+                <input name="remark" lay-verify="required" placeholder="请输入备注信息"  autocomplete="off" class="layui-input" id="remark" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-radius" type="button" onclick="sub()" lay-submit="" lay-filter=""style="background-color: #0092EF;">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    if (layui.sessionData('user').userInfo === undefined) {
+        window.location.href = "../html/login.html"
+    }
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+
+    });
+    //添加IC卡
+    function sub() {
+        var param = {};
+        //卡号
+        param.cardNum = $("#cardNum").val();
+        //校验金额
+        var reg = /^[1-9]{1}[0-9]{0,10}[.]{0,1}[0-9]{0,2}$/;
+        if(!reg.test($("#money").val())){
+            layer.msg("金额只能是数字");
+            return;
+        }
+        //金额
+        param.money = $("#money").val();
+        //备注信息
+        param.remark = $("#remark").val();
+        //代理商
+        param.agentUserId = layui.sessionData("user").userInfo.id;
+        //充值
+        param.operation = 1;
+        //url
+        var url = getParam("url");
+        var response = MyAjax("POST", url, param, getToken());
+        if(response.code===0){
+            layer.msg("添加成功");
+            setTimeout(function () {
+                history.back(-1)
+            },500)
+        }
+    }
+
+</script>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+    <script src="../../layui/layui.js"></script>
+    <script src="../../js/jquery-1.8.3.min.js"></script>
+    <script src="../../js/env.js"></script>
+    <title>我的资产</title>
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title"  >
+    <legend id="aaa">我的资产</legend>
+</fieldset>
+<div class="demoTable"  >
+    <button class="layui-btn layui-btn-radius"   data-method="offset" type="button"
+            style="background-color: #0092EF;" onclick="javascript :history.back(-1)">返&nbsp;&nbsp;&nbsp;&nbsp;回
+    </button>
+</div>
+<form class="layui-form" action="">
+    <br>
+    <input type="hidden" id="id">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户ID</label>
+        <div class="layui-input-block">
+            <input type="text" id="stockUserId" name="title" lay-verify="title" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">钱包类型</label>
+        <div class="layui-input-block">
+            <input type="text" id="stockCode" name="title" lay-verify="title" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">余额</label>
+        <div class="layui-input-block">
+            <input type="text" id="usableFund" name="title" lay-verify="title" autocomplete="off"  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">总入金</label>
+        <div class="layui-input-block">
+            <input type="text" id="inAllFee" name="title" lay-verify="title" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">创建时间</label>
+        <div class="layui-input-block">
+            <input type="text"  id="createTime" name="title" lay-verify="title" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    if(layui.sessionData('user').userInfo===undefined){
+        window.location.href = "../html/login.html"
+    }
+    layui.use(['form', 'layedit', 'laydate','upload'], function() {
+
+    });
+
+    $(function () {
+        var param = {};
+        param.stockUserId = getParam("id")
+        var response = MyAjax("Get", "/admin/stockUser/getMyStockUserFunds", param, getToken());
+        if (response.code === 0) {
+            $("#stockUserId").val(response.data.stockUserId);
+            $("#stockCode").val(response.data.stockCode);
+            $("#usableFund").val(response.data.usableFund);
+            $("#inAllFee").val(response.data.inAllFee);
+            $("#createTime").val(response.data.createTime);
+            setTimeout(function () {
+                parent.layer.closeAll();
+            }, 500)
+            //表刷新方法
+            var table = parent.layui.table;
+            table.reload('testReload', {
+                url: abc() + '/admin/stockUser/selectAllStockUser'
+            });
+
+        }
+    })
+
+</script>
+</html>

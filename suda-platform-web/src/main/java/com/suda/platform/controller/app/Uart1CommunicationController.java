@@ -45,38 +45,40 @@ public class Uart1CommunicationController {
     private HttpServletResponse response;
 
     /**
-     * UART1通讯字符串：分组号，桩号，桩状态，授权状态，电表度数,是否是IC卡充值,卡号
-     * uint8_t uart1_buf[]="00000,00000,0,0,00000,0,0000000";		// 定长
+     * UART1通讯字符串：桩号，桩插枪状态，授权状态，电表度数，卡标志，卡号
+     * 最大值：buf="FFFF,1,0,FFFF,1,FFFFFFF" //定长
+     * 最小值：buf="0001,1,0,0001,1,0000001"
      * 0 否  1 是
      * @param data 交换数据
      */
     @RequestMapping(value = "exchangeData", method = RequestMethod.POST)
     public void exchangeData(@RequestParam("data") String data){
         String[]  strArr = data.split(",");
-        //分组号
-        String grNum = strArr[0];
         //桩编号
-        String pileNum = strArr[1];
+        String pileNum = strArr[0];
         //桩插枪状态 0 否  1 是
-        String pileStatus = strArr[2];
+        String pileStatus = strArr[1];
         //桩授权充电状态 0 否  1 是
-        String  pileActivated = strArr[3];
+        String  pileActivated = strArr[2];
         //电表度数
-        String chargeNumStr = strArr[4];
+        String chargeNumStr = strArr[3];
+        String chargeNum = String.valueOf(Integer.parseInt(chargeNumStr,16));
         //是否是 IC 卡充电
-        String isIcCard=strArr[5];
-        //IC卡号
-        String icCard = strArr[6];
-
+        String isIcCard=strArr[4];
+        String icCard=null;
+        if(Integer.valueOf(isIcCard)==1){
+            //IC卡号
+            icCard = strArr[5];
+        }
         if(Integer.valueOf(pileStatus)==1){
                 //更新充电金额
                 try{
                     //小程序充电
                     if(Integer.valueOf(isIcCard)==0) {
-                        pileActivated =  chargingRecordService.updateChargeMoney(pileNum, chargeNumStr);
+                        pileActivated =  chargingRecordService.updateChargeMoney(pileNum, chargeNum);
                         //ic 卡充电
                     }else {
-                        pileActivated = chargingRecordService.updateIcChargeMoney(pileNum, chargeNumStr,icCard);
+                        pileActivated = chargingRecordService.updateIcChargeMoney(pileNum, chargeNum,icCard);
                     }
                 }catch (Exception e){
                     //更新充电金额失败
@@ -95,8 +97,13 @@ public class Uart1CommunicationController {
         try {
             response.setCharacterEncoding("UTF-8");
             PrintWriter writer = response.getWriter();
-            writer.print(grNum+","+pileNum+","+pileStatus+","+pileActivated
-            +","+chargeNumStr+","+isIcCard+","+icCard);
+            if(Integer.valueOf(isIcCard)==1) {
+                writer.print(pileNum + "," + pileStatus + "," + pileActivated
+                        + "," + chargeNumStr + "," + isIcCard + "," + icCard);
+            }else {
+                writer.print(pileNum + "," + pileStatus + "," + pileActivated
+                        + "," + chargeNumStr + "," + isIcCard);
+            }
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -158,5 +165,20 @@ public class Uart1CommunicationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     *问题描述
+    　　从键盘输入一个不超过8位的正的十六进制数字符串，将它转换为正的十进制数后输出。
+     　　注：十六进制数中的10~15分别用大写的英文字母A、B、C、D、E、F表示。
+     *样例输入
+        FFFF
+     *样例输出
+    65535
+*/
+    public static void main(String[] args) {
+        System.out.println(Integer.parseInt("ffff",16));
+
+
     }
 }

@@ -1,0 +1,126 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>index</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="./js/env.js"></script>
+    <script src="./../js/jquery-1.8.3.min.js"></script>
+    <script src="./../layui/layui.js"></script>
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">充电桩Charge后台管理系统</div>
+
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;" id="userA">
+                </a>
+<!--                <dl class="layui-nav-child">-->
+<!--                    <dd><a href="">基本资料</a></dd>-->
+<!--                    <dd><a href="">安全设置</a></dd>-->
+<!--                </dl>-->
+            </li>
+            <li class="layui-nav-item" onclick="deleteSession()"><a href="#">退了</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item"><a href="javascript:;" href-url="./html/statistics.html">统计信息</a></li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="./html/admin_password.html">修改密码</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">区域管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="./html/area.html">区域管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">代理管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="./html/agent.html">代理管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">充电站管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="./html/map.html">地图</a></dd>
+                        <dd><a href="javascript:;" href-url="./html/charging.html">充电站管理</a></dd>
+                    </dl>
+                </li>
+<!--                <li class="layui-nav-item layui-nav-itemed">-->
+<!--                    <a href="javascript:;">充电记录</a>-->
+<!--                    <dl class="layui-nav-child">-->
+<!--                        <dd><a href="javascript:;" href-url="./html/record.html">充电记录</a></dd>-->
+<!--                    </dl>-->
+<!--                </li>-->
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">财务管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="./html/financial.html">财务流水</a></dd>
+                        <dd><a href="javascript:;" href-url="./html/financialgame.html">财务管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">会员管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="./html/member.html">小程序用户</a></dd>
+                        <dd><a href="javascript:;" href-url="./html/icmember.html">IC卡用户</a></dd>
+                    </dl>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <iframe src="./html/statistics.html" width="100%" height="100%" frameborder="0"></iframe>
+    </div>
+
+</div>
+<script src="layui/layui.js"></script>
+<script>
+    if (layui.sessionData('user').userInfo === undefined) {
+        window.location.href = "./html/login.html"
+    }
+      $("#userA").html(getUser().account)
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+        var $ = layui.$;
+        element.on('nav(test)', function (data) {
+            var lay_url = "";
+            var url = lay_url ? lay_url : data.children('a').attr('href-url');
+
+            $(".layui-body").find("iframe").attr("src", url);
+        });
+
+    });
+    layui.use('form', function () {
+
+    })
+
+    function deleteSession() {
+        //【删】：删除test表的nickname字段
+        layui.sessionData('user', {
+            key: 'userInfo'
+            , remove: true
+        });
+        window.location.href = "./html/login.html"
+    }
+
+</script>
+</body>
+
+</html>

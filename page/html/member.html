@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./../layui/css/layui.css" media="all">
+    <script src="./../layui/layui.js"></script>
+    <script src="./../js/jquery-1.8.3.min.js"></script>
+    <script src="./../js/env.js"></script>
+    <title>小程序用户</title>
+</head>
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>小程序用户</legend>
+</fieldset>
+<form method="get" action="" class="layui-form">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"> 用户UID</label>
+            <div class="layui-input-inline">
+                <input id="userUid" autocomplete="off" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label"> 手机号</label>
+            <div class="layui-input-inline">
+                <input id="tel" autocomplete="off" class="layui-input" type="text">
+            </div>
+        </div>
+        <button class="layui-btn" onclick="sech()" data-method="offset" type="button">搜索</button>
+        <button type="reset" onclick="chong()" data-method="offset" class="layui-btn">重置</button>
+    </div>
+
+</form>
+<body>
+<script type="text/html" id="barDemo">
+    <button type="button" onclick="record('{{d.id}}')" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit"
+            style="background: green">充电记录
+    </button>
+    <button type="button" onclick="myMoeny('{{d.id}}')" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit"
+            style="background: dodgerblue">我的资产
+    </button>
+    <button type="button" onclick="add('{{d.id}}')" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit"
+            style="background: dodgerblue">充值
+    </button>
+    <button type="button" onclick="edit('{{d.id}}')" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit"
+            style="background: red">扣款
+    </button>
+    <!--等于0的时候就是启用  按钮显示禁用-->
+    {{#  if(d.isDisable == 0 ){ }}
+    <button onclick="isClose('{{d.id}}')" type="button" class="layui-btn layui-btn-sm layui-btn-normal"
+            style="background:red">禁用
+    </button>&nbsp;
+    {{#  } else { }}
+    <button onclick="isOpen('{{d.id}}')" type="button" class="layui-btn layui-btn-sm layui-btn-normal"
+            style="background:red">启用
+    </button>&nbsp;
+
+    {{#  } }}
+</script>
+<table id="demo" lay-filter="test"></table>
+</body>
+
+</html>
+<script>
+
+    if (layui.sessionData('user').userInfo === undefined) {
+        window.location.href = "../html/login.html"
+    }
+
+    layui.use(['form', 'layedit', 'laydate', 'upload', 'table'], function () {
+        var form = layui.form
+            , table = layui.table
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        var whereData = {};
+        whereData.tel = $("#tel").val()
+        whereData.userUid = $("#userUid").val();
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , id: 'testReload'
+            , where: whereData
+            , headers: {sessionId: getToken()}
+            , height: 312
+            , url: abc() + '/admin/stockUser/selectAllStockUser' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'id', title: 'id', sort: true, fixed: 'left', align: 'center'}
+                // , {field: 'nickname', title: '昵称', align: 'center'}
+                // , {field: 'username', title: '用户名', width: 76, align: 'center'}
+                , {field: 'userUid', title: '用户UID', align: 'center'}
+                , {field: 'tel', title: '手机号', align: 'center'}
+                , {field: 'email', title: '邮箱', align: 'center'}
+                , {field: 'pswd', title: '密码', align: 'center'}
+                // , {field: 'tradePwd', title: '', align: 'center'}
+                // , {field: 'deviceNo', title: '', align: 'center'}
+                , {field: 'createTime', title: '创建时间', align: 'center'}
+                // , {field: 'lastLoginTime', title: '', align: 'center'}
+                , {
+                    field: 'isDisable', title: '状态', templet: function (val) {
+                        if (val.isDisable == 0) {
+                            return "启用"
+                        };
+                        if (val.isDisable == 1) {
+                            return "禁用"
+                        };
+                        if (val.isDisable == undefined) {
+                            return ""
+                        };
+                    }, align: 'center'
+                }
+                // , {field: 'isDeleted', title: '0：未删除 1：删除', align: 'center'}
+                // , {field: 'timestamp', title: '', align: 'center'}
+                // , {field: 'headUrl', title: '', align: 'center'}
+                , {field: 'openId', title: '微信ID', align: 'center'}
+                , {field: 'chargeTotalMoney', title: '充电总金额', align: 'center'}
+                , {field: 'chargeNum', title: '充电总度数', align: 'center'}
+                , {field: 'chargeCount', title: '充电总次数', align: 'center'}
+                , {field: 'right', title: '操作', width: 450, toolbar: '#barDemo', align: 'center'}
+            ]]
+            , request: {
+                pageName: 'page' //页码的参数名称，默认：page
+                , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            , done: function (res, curr, count) {
+                if (res.code === 100) {
+                    layer.msg("登录失效，请重新登录")
+                    window.location.href = "../html/login.html"
+                    return;
+                }
+            }
+            , parseData: function (res) { //res 即为原始返回的数据
+                if (res.code !== 0) {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg //解析提示文本
+                    };
+                } else {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg, //解析提示文本
+                        "count": res.data.total, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                }
+
+            }
+        });
+
+    });
+
+    //搜索
+    function sech() {
+        var whereData = {};
+        whereData.tel = $("#tel").val();
+        whereData.userUid = $("#userUid").val();
+        //表刷新方法
+        var table = layui.table;
+        table.reload('testReload', {
+            url: abc() + '/admin/stockUser/selectAllStockUser'
+            , where: whereData
+        });
+
+    }
+
+    //把重置添加一个点击事件点击重置刷新页面
+    function chong() {
+        window.location.reload();
+    }
+
+    //我的资产
+    function myMoeny(id) {
+        window.location.href = "/html/my_moeny.html?id=" + id;
+    }
+
+    //启用
+    function isOpen(id) {
+        var param = {};
+        param.isDisable = 0;
+        param.id = id;
+        var response = MyAjax("POST", "/admin/stockUser/updateDisableUser", param, getToken());
+        if (response.code === 0) {
+            layer.msg("启用成功");
+            sech();
+        }
+    }
+
+    //禁用
+    function isClose(id) {
+        var param = {};
+        param.isDisable = 1;
+        param.id = id;
+        var response = MyAjax("POST", "/admin/stockUser/updateDisableUser", param, getToken());
+        if (response.code === 0) {
+            layer.msg("禁用成功");
+            sech();
+        }
+    }
+
+    //充值
+    function add(id) {
+        layer.open({
+            type: 2,
+            title: "充值",
+            anim: 2,
+            maxmin: true,
+            content: "./add/moeny_add.html",//这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            area: ['500px', '557px'],
+            success: function (layero, index) {
+                var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                iframeWin.$("#id").val(id)
+            }
+        });
+    }
+
+    //扣款
+    function edit(id) {
+        layer.open({
+            type: 2,
+            title: "扣款",
+            anim: 2,
+            maxmin: true,
+            content: "./edit/moeny_edit.html",//这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            area: ['500px', '557px'],
+            success: function (layero, index) {
+                var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                iframeWin.$("#id").val(id)
+            }
+        });
+    }
+
+    //充电记录
+    function record(id) {
+        window.location.href = "/html/record.html?id=" + id;
+    }
+</script>

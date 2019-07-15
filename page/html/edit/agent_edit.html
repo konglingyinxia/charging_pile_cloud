@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>代理商编辑</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+    <script src="../../layui/layui.js"></script>
+    <script src="../../js/jquery-1.8.3.min.js"></script>
+    <script src="../../js/env.js"></script>
+    <script src="../../js/jQuery.md5.js"></script>
+    <script>
+        if(layui.sessionData('user').userInfo===undefined){
+            window.location.href = "../login.html"
+        }
+    </script>
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title"  >
+    <legend id="aaa">代理商编辑</legend>
+</fieldset>
+<!--<div class="demoTable"  >-->
+    <!--<button class="layui-btn layui-btn-radius"   data-method="offset" type="button"-->
+            <!--style="background-color: #0092EF;" onclick="javascript :history.back(-1)">返&nbsp;&nbsp;&nbsp;&nbsp;回-->
+    <!--</button>-->
+<!--</div>-->
+<!--<br>-->
+<form action="" class="layui-form">
+    <input type="hidden" id="id"/>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"><i style="color:red">*</i>&nbsp;用户名</label>
+            <div class="layui-input-inline">
+                <input name="username"  autocomplete="off" placeholder="请输入用户名" class="layui-input" id="username" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"><i style="color:red">*</i>&nbsp;密码</label>
+            <div class="layui-input-inline">
+                <input name="password"  autocomplete="off"  placeholder="请输入密码" class="layui-input" id="password" type="password">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-radius" type="button" onclick="submi()" lay-submit="" lay-filter=""style="background-color: #0092EF;">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius">重置</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate','layer'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+    });
+
+
+    function submi() {
+        var requestData = {
+            "username": $("#username").val(),
+            "id": $("#id").val(),
+            "password": $.md5($("#account").val() + "*" + $("#password").val())
+        };
+        var respones=MyAjax('POST','/admin/agentUser/editAndAddAgentUser',requestData,getToken());
+        if(respones.code===0){
+            layer.msg("保存成功");
+            setTimeout(function(){
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            },300)
+            var table = parent.layui.table;
+            //表刷新方法
+            table.reload('testReload', {
+                url: abc() +'/admin/agentUser/getAgentUsers'
+                ,where: {} //设定异步数据接口的额外参数
+                //,height: 300
+            });
+        }
+    }
+
+
+
+</script>
+<script>
+
+
+    
+    
+</script>
+</body>
+
+</html>
