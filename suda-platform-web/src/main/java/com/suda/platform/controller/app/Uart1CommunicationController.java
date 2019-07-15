@@ -46,6 +46,7 @@ public class Uart1CommunicationController {
 
     /**
      * UART1通讯字符串：桩号，桩插枪状态，授权状态，电表度数，卡标志，卡号
+     * 数据都为16进制 须转换
      * 最大值：buf="FFFF,1,0,FFFF,1,FFFFFFF" //定长
      * 最小值：buf="0001,1,0,0001,1,0000001"
      * 0 否  1 是
