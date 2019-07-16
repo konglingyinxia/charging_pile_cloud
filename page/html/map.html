@@ -149,12 +149,14 @@
 
 
     function htm(data) {
-        return '<fieldset class="layui-elem-field layui-field-title">' +
+        return '<div style="background-image: url(' +data.coverImg +')">'+
+        '<fieldset class="layui-elem-field layui-field-title">' +
             '    <legend>' + data.stationName + '</legend>' +
             '</fieldset>'
             + '<blockquote class="layui-elem-quote">详细地址：' + data.address + '</blockquote>'
             + '<blockquote class="layui-elem-quote">充电站详情：' + data.stationDetails + '</blockquote>'
-            + '<blockquote class="layui-elem-quote">区域：' + data.province + '</blockquote>'
+            + '<blockquote class="layui-elem-quote">区域：' + data.province + '</blockquote>' +
+            '</div>'
     }
 
 

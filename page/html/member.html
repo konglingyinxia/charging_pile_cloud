@@ -90,16 +90,11 @@
             , page: true //开启分页
             , cols: [[ //表头
                 {field: 'id', title: 'id', sort: true, fixed: 'left', align: 'center'}
-                // , {field: 'nickname', title: '昵称', align: 'center'}
-                // , {field: 'username', title: '用户名', width: 76, align: 'center'}
+                , {field: 'nickname', title: '昵称', align: 'center'}
+                , {field: 'username', title: '用户名',align: 'center'}
                 , {field: 'userUid', title: '用户UID', align: 'center'}
                 , {field: 'tel', title: '手机号', align: 'center'}
-                , {field: 'email', title: '邮箱', align: 'center'}
-                , {field: 'pswd', title: '密码', align: 'center'}
-                // , {field: 'tradePwd', title: '', align: 'center'}
-                // , {field: 'deviceNo', title: '', align: 'center'}
                 , {field: 'createTime', title: '创建时间', align: 'center'}
-                // , {field: 'lastLoginTime', title: '', align: 'center'}
                 , {
                     field: 'isDisable', title: '状态', templet: function (val) {
                         if (val.isDisable == 0) {
@@ -113,9 +108,6 @@
                         };
                     }, align: 'center'
                 }
-                // , {field: 'isDeleted', title: '0：未删除 1：删除', align: 'center'}
-                // , {field: 'timestamp', title: '', align: 'center'}
-                // , {field: 'headUrl', title: '', align: 'center'}
                 , {field: 'openId', title: '微信ID', align: 'center'}
                 , {field: 'chargeTotalMoney', title: '充电总金额', align: 'center'}
                 , {field: 'chargeNum', title: '充电总度数', align: 'center'}

@@ -9,102 +9,132 @@
     <script src="./../layui/layui.js"></script>
     <script src="./../js/jquery-1.8.3.min.js"></script>
     <script src="./../js/env.js"></script>
-    <title>财务管理</title>
+    <title>充值记录</title>
     <style>
 
     </style>
 </head>
-<fieldset class="layui-elem-field layui-field-title">
-    <legend>财务管理</legend>
-</fieldset>
-<script type="text/html" id="barDemo">
-    <button type="button" onclick="look('{{d.stockCode}}')" class="layui-btn layui-btn-sm layui-btn-normal"
-            lay-event="edit"
-            style="background: green">充值记录
-    </button>
-</script>
+
 <body>
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>充值记录</legend>
+</fieldset>
+<div class="layui-form-item">
+    <label class="layui-form-label">卡号</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="stockCode" required lay-verify="required" autocomplete="off"
+               class="layui-input">
+    </div>
+    <label class="layui-form-label">用户UID</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="userUid" required lay-verify="required" autocomplete="off"
+               class="layui-input">
+    </div>
+    <label class="layui-form-label">手机号</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="tel" required lay-verify="required" autocomplete="off"
+               class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item">
+
+    <label class="layui-form-label">开始时间：</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="date1" required lay-verify="required" placeholder="yyyy-MM-dd"
+               autocomplete="off" class="layui-input">
+    </div>
+    <label class="layui-form-label">结束时间：</label>
+    <div class="layui-input-inline">
+        <input type="text" name="title" id="date2" required lay-verify="required" placeholder="yyyy-MM-dd"
+               autocomplete="off" class="layui-input">
+    </div>
+
+    <button class="layui-btn" onclick="sech()" data-method="offset" type="button">搜索</button>
+    <button type="reset" onclick="chong()" data-method="offset" class="layui-btn">重置</button>
+</div>
 <table id="demo" lay-filter="test"></table>
 </body>
 
 </html>
 <script>
-
     if (layui.sessionData('user').userInfo === undefined) {
         window.location.href = "../html/login.html"
     }
 
-    layui.use('table', function () {
+    layui.use(['form', 'layedit', 'laydate', 'upload', 'table'], function () {
         var table = layui.table;
-
-        var whereData = {};
+        var laydate = layui.laydate;
+        var whereData = {}
+        whereData.stockCode = $("#stockCode").val();
+        whereData.userUid = $("#userUid").val();
+        whereData.tel = $("#tel").val();
+        whereData.startDate = $("#date1").val();
+        whereData.endDate = $("#date2").val();
+        laydate.render({
+            elem: '#date1', type: "datetime"
+        });
+        laydate.render({
+            elem: '#date2', type: "datetime"
+        });
         //第一个实例
         table.render({
-            elem: '#demo'
-            , id: 'testReload'
-            , where: whereData
-            , headers: {sessionId: getToken()}
-            , height: 312
-            , url: abc() + '/admin/financial/getMoneyDetails' //数据接口
-            , page: true //开启分页
-            , cols: [[ //表头
-                 {field: 'stockCode', title: '卡号', align: 'center'}
-                , {field: 'money', title: '变化金额', align: 'center'}
-                , {field: 'moneyBefore', title: '变化前金额', align: 'center'}
-                , {field: 'moneyAfter', title: '变化后金额', align: 'center'}
-                , {field: 'detail', title: '详情描述', align: 'center'}
+            elem: '#demo',
+            where: whereData,
+            headers: {sessionId: getToken()},
+            id: 'testReload',
+            height: 312,
+            url: abc() + '/admin/financial/getStockUserCoinCharges',
+            page: true,
+            cols: [[ //表头
+                {field: 'swiftNo', title: '流水号', align: 'center'}
+                // , {field: 'stockUserId', title: '手机用户ID', align: 'center'}
+                , {field: 'stockCode', title: 'IC卡号', align: 'center'}
+                , {field: 'fee', title: '金额', align: 'center'}
                 , {
-                    field: 'type', title: '财务类型', templet: function (val) {
-                        if (val.type == 1) {
-                            return "平台充值";
+                    field: 'withdrawStatus', title: '支付状态', templet: function (val) {
+                        if (val.withdrawStatus = 1) {
+                            return "未支付";
                         }
-                        if (val.type == 2) {
-                            return "商品活动";
+                        if (val.withdrawStatus = 2) {
+                            return "支付成功";
                         }
-                        if (val.type === 3) {
-                            return "商城购物";
+                        if (val.withdrawStatus = 3) {
+                            return "支付失败 ";
+                        }
+                        if (val.withdrawStatus = 4) {
+                            return "处理中";
                         }
                     }, align: 'center'
                 }
-                , {field: 'typeStr', title: '财务类型描述', align: 'center'}
                 , {field: 'createTime', title: '创建时间', align: 'center'}
-                , {field: 'timestamp', title: '修改时间', align: 'center'}
                 , {
-                    field: 'waterType', title: '流水类型', templet: function (val) {
-                        if (val.waterType == 1) {
-                            return "后台操作";
+                    field: 'payType', title: '支付类型', templet: function (val) {
+                        if (val.payType = 1) {
+                            return "微信";
                         }
-                        if (val.waterType == 2) {
-                            return "正常流水";
-                        }
-                    }, align: 'center'
-                }
-                , {
-                    field: 'income', title: '收支类型', templet: function (val) {
-                        if (val.income == 0) {
-                            return "支出";
-                        }
-                        if (val.income == 1) {
-                            return "收入";
+                        if (val.payType = 2) {
+                            return "线下";
                         }
                     }, align: 'center'
                 }
                 , {field: 'userUid', title: '用户UID', align: 'center'}
-                , {field: 'tel', title: '电话', align: 'center'}
-                , {field: 'right', title: '操作', width: 100, toolbar: '#barDemo', align: 'center'}
+                , {field: 'tel', title: '手机号', align: 'center'}
             ]]
-            , request: {
+            ,
+            request: {
                 pageName: 'page' //页码的参数名称，默认：page
                 , limitName: 'pageSize' //每页数据量的参数名，默认：limit
             }
-            ,done: function(res, curr, count){
-                if (res.code ===100) {
+            ,
+            done: function (res, curr, count) {
+                if (res.code === 100) {
                     layer.msg("登录失效，请重新登录")
                     window.location.href = "../html/login.html"
                     return;
                 }
             }
-            , parseData: function (res) { //res 即为原始返回的数据
+            ,
+            parseData: function (res) { //res 即为原始返回的数据
                 if (res.code !== 0) {
                     return {
                         "code": res.code, //解析接口状态
@@ -123,8 +153,26 @@
         });
 
     });
-    //查看充值记录
-    function look(stockCode) {
-        window.location.href = "/html/financial_look.html?stockCode=" + stockCode;
+
+    //搜索
+    function sech() {
+        var whereData = {};
+        whereData.stockCode = $("#stockCode").val();
+        whereData.userUid = $("#userUid").val();
+        whereData.tel = $("#tel").val();
+        whereData.startDate = $("#date1").val();
+        whereData.endDate = $("#date2").val();
+        //表刷新方法
+        var table = layui.table;
+        table.reload('testReload', {
+            url: abc() + '/admin/financial/getStockUserCoinCharges'
+            , where: whereData
+        });
+
+    }
+
+    //把重置添加一个点击事件点击重置刷新页面
+    function chong() {
+        window.location.reload();
     }
 </script>
