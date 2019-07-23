@@ -5,10 +5,14 @@ import eu.bitwalker.useragentutils.UserAgent;
 import eu.bitwalker.useragentutils.Version;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * @Description:
@@ -99,6 +103,35 @@ public class HttpRequestUtil {
             log.info("获取系统设备信息失败："+ ExceptionUtils.getStackTrace(e));
         }
         return info;
+    }
+
+
+    /**
+     * 获取request 字节流
+     */
+
+    public  static String  getRequestInputStream(HttpServletRequest request,String encoding){
+        InputStream inputStream;
+        String str = "";
+        // 获得响应流，获得输入对象
+        try {
+            request.setCharacterEncoding(encoding);
+
+            inputStream = request.getInputStream();
+            // 建立接收流缓冲，准备处理
+            StringBuffer requestBuffer = new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, encoding));
+            // 读入流，并转换成字符串
+            String readLine;
+            while ((readLine = reader.readLine()) != null) {
+                requestBuffer.append(readLine);
+            }
+            reader.close();
+            str = StringUtils.trim(requestBuffer.toString());
+        } catch (Exception e) {
+             log.error("接收同步消息失败"+e);
+        }
+        return str;
     }
 
 }

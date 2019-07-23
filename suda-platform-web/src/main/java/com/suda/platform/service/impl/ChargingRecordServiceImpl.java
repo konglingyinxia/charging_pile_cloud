@@ -18,6 +18,7 @@ import com.suda.platform.service.*;
 import com.util.DealDateUtil;
 import com.util.pageinfoutil.PageUtil;
 import config.advice.CommonException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ import java.util.List;
  * @since 2019-05-30
  */
 @Service
+@Slf4j
 public class ChargingRecordServiceImpl extends ServiceImpl<ChargingRecordMapper, ChargingRecord> implements IChargingRecordService {
 
     @Autowired
@@ -226,26 +228,29 @@ public class ChargingRecordServiceImpl extends ServiceImpl<ChargingRecordMapper,
         .eq("stock_code", WalletTypeEnum.STATUS_1.getCode())
         .eq("card_num",icCard));
         if(fund ==null){
-            throw new CommonException("IC卡错误！");
+            log.info("IC卡错误！");
+            return "0";
         }
         //查询充电桩
         ChargingPileInfo pileInfo = chargingPileInfoService.getOne(new QueryWrapper<ChargingPileInfo>()
                 .eq("serial_number",pileNum)
                 .eq("is_deleted",0));
         if(pileInfo==null){
-            throw new CommonException("充电桩错误！");
+            log.info("充电桩错误！");
+            return "0";
         }
         //充电度数
         BigDecimal chargeNum =new BigDecimal(chargeNumStr).divide(new BigDecimal(10),1);
         //本次充电费用
         BigDecimal  nowChargeFee = chargeNum.multiply(pileInfo.getPrice()).add(chargeNum.multiply(pileInfo.getServiceCharge()));
-        if(fund.getUsableFund().compareTo(nowChargeFee)<0){
+        if(fund.getUsableFund().compareTo(nowChargeFee)<=0){
             //查询充电记录
             ChargingRecord record = chargingRecordMapper.selectOne(new QueryWrapper<ChargingRecord>()
                     .eq("charging_pile_info_id",pileInfo.getId())
                     .ne("charge_status",2));
             if(record==null){
-                throw new CommonException("本次充电已经结束！");
+                log.info("本次充电已经结束！");
+                return "0";
             }
             commonEndCharge(record,WalletTypeEnum.STATUS_1.getCode());
             return "0";
@@ -253,22 +258,26 @@ public class ChargingRecordServiceImpl extends ServiceImpl<ChargingRecordMapper,
         //查询充电记录
         ChargingRecord record = chargingRecordMapper.selectOne(new QueryWrapper<ChargingRecord>()
                 .eq("charging_pile_info_id",pileInfo.getId())
-                .ne("charge_status",2));
+                .ne("charge_status",2).last("limit 1"));
         //第一次插枪充电
         if(record==null){
             if(pileInfo.getUseStatus()){
-                throw new CommonException("该充电桩正在使用！");
+                log.info("该充电桩正在使用！");
+                return "0";
             }
             if(pileInfo.getOffLineIs()){
-                throw new CommonException("该充电桩处于离线状态！");
+                log.info("该充电桩处于离线状态！");
+                return "0";
             }
             //查询充电站是否禁用
             ChargingStations stations  = chargingStationsService.getById(pileInfo.getChargingStationsId());
             if(stations==null){
-                throw new CommonException("该充电桩分组不正确！");
+                log.info("该充电桩分组不正确！");
+                return "0";
             }
             if(stations.getIsDisable()){
-                throw new CommonException("该充电桩分组已经停用！");
+                log.info("该充电桩分组已经停用！");
+                return "0";
             }
             insertCommontChargingRecord(fund.getStockUserId(), pileInfo,stations);
         }else {

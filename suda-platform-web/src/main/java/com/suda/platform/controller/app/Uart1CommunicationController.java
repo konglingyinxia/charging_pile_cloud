@@ -1,6 +1,8 @@
 package com.suda.platform.controller.app;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.suda.platform.VO.Uart1VO;
 import com.suda.platform.entity.ChargingPileInfo;
 import com.suda.platform.entity.ChargingRecord;
 import com.suda.platform.entity.StockUserCapitalFund;
@@ -8,7 +10,10 @@ import com.suda.platform.enums.finance.WalletTypeEnum;
 import com.suda.platform.service.IChargingPileInfoService;
 import com.suda.platform.service.IChargingRecordService;
 import com.suda.platform.service.IStockUserCapitalFundService;
+import com.util.request.HttpRequestUtil;
+import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,6 +49,9 @@ public class Uart1CommunicationController {
     private IStockUserCapitalFundService stockUserCapitalFundService;
     @Autowired
     private HttpServletResponse response;
+    @Autowired
+    private HttpServletRequest request;
+
 
     /**
      * UART1通讯字符串：桩号，桩插枪状态，授权状态，电表度数，卡标志，卡号
@@ -50,11 +59,16 @@ public class Uart1CommunicationController {
      * 最大值：buf="FFFF,1,0,FFFF,1,FFFFFFF" //定长
      * 最小值：buf="0001,1,0,0001,1,0000001"
      * 0 否  1 是
-     * @param data 交换数据
      */
-    @RequestMapping(value = "exchangeData", method = RequestMethod.POST)
-    public void exchangeData(@RequestParam("data") String data){
+    @RequestMapping(value = "exchangeData", method = {RequestMethod.GET,RequestMethod.POST})
+    public void exchangeData(Uart1VO uart1VO){
+        String data = uart1VO.getData();
+        if(StringUtils.isBlank(data)){
+          data = HttpRequestUtil.getRequestInputStream(request, CharsetUtil.UTF_8.name());
+        }
+        System.out.println(data);
         String[]  strArr = data.split(",");
+
         //桩编号
         String pileNum = strArr[0];
         //桩插枪状态 0 否  1 是
@@ -126,17 +140,22 @@ public class Uart1CommunicationController {
             ChargingRecord record = chargingRecordService.getOne(new QueryWrapper<ChargingRecord>()
                     .eq("charging_pile_info_id",pileInfo.getId())
                     .ne("charge_status",2));
-            //记录存在，并且是充电中
-            if(record!=null && record.getChargeStatus()==1){
+            //记录存在，并且是充电未结束
+            if(record!=null){
                 String walletType = WalletTypeEnum.STATUS_1.getCode();
                 if(Integer.valueOf(isIcCard)==0){
                     walletType = WalletTypeEnum.STATUS_2.getCode();
                 }
-                StockUserCapitalFund fund = stockUserCapitalFundService.upAndSelectFund(record.getStockUserId(),
-                        walletType,0L);
+                StockUserCapitalFund fund = stockUserCapitalFundService.getOne(new QueryWrapper<StockUserCapitalFund>()
+                .eq("stock_user_id",record.getStockUserId())
+                .eq("stock_code",walletType));
                 if(fund !=null){
-                    chargingRecordService.endCharge(record, WalletTypeEnum.STATUS_2.getCode());
+                    chargingRecordService.endCharge(record, fund.getStockCode());
                 }
+            }else {
+                chargingPileInfoService.update(new UpdateWrapper<ChargingPileInfo>()
+                        .set("use_status",0)
+                        .eq("serial_number",pileNum));
             }
         }
     }
@@ -178,7 +197,9 @@ public class Uart1CommunicationController {
     65535
 */
     public static void main(String[] args) {
-        System.out.println(Integer.parseInt("ffff",16));
+        String data ="00001,1,0,000   00,1,00  000000   ABCDEF ";
+
+        System.out.println(data.replaceAll(" ",""));
 
 
     }

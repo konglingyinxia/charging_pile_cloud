@@ -41,6 +41,7 @@ public class StockUserCapitalFundServiceImpl extends ServiceImpl<StockUserCapita
      */
     @Override
     public StockUserCapitalFund upAndSelectFund(Long id, String stockCode, Long agentUserId) {
+
         StockUserCapitalFund stockUserCapitalFund = baseMapper.selectOne(new QueryWrapper<StockUserCapitalFund>()
         .eq(id!=null,"stock_user_id",id).eq(stockCode!=null,"stock_code",stockCode));
         if(stockUserCapitalFund ==null){
